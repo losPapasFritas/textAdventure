@@ -49,6 +49,19 @@ function combatSetup(enemy){
 }
 
 function inspect(){
+    let hpPercent = eHp/maxEHp;
+    if(hpPercent > maxEHp*0.75 ){
+        allMain+=`<br><br><br><br>The ${enemy} looks very healthy.`
+    }
+    else if(hpPercent > maxEHp*0.5){
+        allMain+=`<br><br><br><br>The ${enemy} looks a little hurt.`
+    }
+    else if(hpPercent > maxEHp*0.25){
+        allMain+=`<br><br><br><br>The ${enemy} looks like it will collapse.`
+    }
+    else if(hpPercent > maxEHp*0.1){
+        allMain+=`<br><br><br><br>The ${enemy} looks near death.`
+    }
     // allMain+=
 }
 
