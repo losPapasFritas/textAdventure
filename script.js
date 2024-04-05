@@ -5,42 +5,62 @@ let char = `none`,
     maxEHp = 0,
     eDef = 0,
     eLvl = 0,
-    pMagicDmg = 0,
-    pBlockDef = 0,
-    pLvl = 0,
-    pHp = 50;
+    pMagicDmg = 1,
+    pBlockDef = 10,
+    pLvl = 1,
+    pSpells = [],
+    pHp = 100;
 
 let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `mud man`, `walking fish`, `stone golem`, `cyclopes`];
-let eHpAll = [];
-let eLvlAll = [];
-let eDefAll = [];
+let eHpAll = [25];
+let eLvlAll = [1];
+let eDefAll = [0];
 let pItems = [];
+let allPSpellType = [`fire`,
+                     `water`,
+                     `earth`]
+let allPSpells = [`Fireball`,
+                  `Healing Spring`,
+                  `Stone Bullet`];
+let pSpellDmg = [10,
+                 20,
+                 5];
+let pSpellAttkMax = [1,
+                     1,
+                     5];
 
-let contBtns = document.getElementsByClassName(`continue`);
-
-
-let webPage = document.getElementById(`main`)
 function hannahSelect() {
     char = `h`
-    allMain += `<br><br><br><br><section id="hannahDesc" class="visible">You take the vessel of Hannah, the noble yet troublesome apprentice of the Grand Wizard Master Kobain. She has an immense desire to obtain the powers of the world's elements, however she has a long and dangerous road if she wants to achieve this magnitude of power. Her conscience and belief in the Grand Wizard repels her from the most desperate bargains of terrible evils.  <br><br> <button id="hannahSelect">Select this character</button> <button class="paul">Paul the Knight</button> <button class="mathew">Mathew the Tamer</button></section>`;
-    allMain += `<section>Violence was never a rarity in the Eastern Slums, but matters have only further deteriorated from the threat of the Dragon's wrath in this past month.  You remember that night with defining clarity. <button onclick="han0">Next.</button>`;
-    webPage.innerHTML = allMain
+    pMagicDmg = 1.5;
+    pSpells = [`Fireball`, `Healing Spring`, `Stone Bullet`];
+    allMain+=`<br><br><br><br><section id="hannahDesc" class="visible">The noble yet troublesome apprentice of the Grand Wizard Master Kobain. She has an immense desire to obtain the powers of the world's elements, however she has a long and dangerous road if she wants to achieve this magnitude of power. Her conscience and belief in the Grand Wizard repels her from the most desperate bargains of terrible evils.  <br><br> <button id="hannahSelect">Select this character</button> <button>Paul the Knight</button> <button>Mathew the Tamer</button></section> `
+    allMain += `<br><br><br><br><section class="visible">You take the vessel of Hannah, the noble yet troublesome apprentice of the Grand Wizard Master Kobain. She has an immense desire to obtain the powers of the world's elements, however she has a long and dangerous road if she wants to achieve this magnitude of power. Her conscience and belief in the Grand Wizard repels her from the most desperate bargains of terrible evils.  <br><br></section>`;
+    allMain += `<section>Violence was never a rarity in the Eastern Slums, but matters have only further deteriorated from the threat of the Dragon's wrath in this past month.  You remember that night with defining clarity. <br><br><button onclick="han0()">Next.</button></section>`;
+    document.getElementById(`main`).innerHTML = allMain;
 }
-function whatIsThis(e){
-    console.log(e)
-}
-// function han0() {
-//     allMain += `<section>Violence was never a rarity in the Eastern Slums, but matters have only further deteriorated from the threat of the Dragon's wrath in this past month.  You remember that night with defining clarity.<br><br><button>Next.</button></section>`;
-//     webPage.innerHTML = allMain
-// }
 
-// function han1() {
-//     allMain += `<section>Violence was never a rarity in the Eastern Slums, but matters have only further deteriorated from the threat of the Dragon's wrath in this past month.  You remember that night with defining clarity.<br><br><button>Next.</button></section>`;
-//     webPage.innerHTML = allMain
-// }
+function han0() {
+    allMain += `<br><br><br><br><section>Night was overtaken by the fury from the monsters beneath the land. Great cracks manifested their way from the ground with unknown creatures seeping out of them. Disturbed from their long slumber, the inherent violence of the tangible beings ran rampant throughout the streets of the town. <br><br><button onclick="han1()">Next.</button></section>`;
+    document.getElementById(`main`).innerHTML = allMain
+}
+
+function han1() {
+    allMain += `<br><br><br><br><section>You are in the dusty unpaved town square. Before you is a dimly lit alley.<br><br><button onclick="han2()">Go in the alley.</button></section>`;
+    document.getElementById(`main`).innerHTML = allMain
+}
+
+function han2(){
+    allMain+=`<br><br><br><br><section>Large wax candles hang from rusted metal poles that do a terrible job at illuminating the pathway. In the distance of the dark, flickering orange expanse emerges a gruffled shape.<br><br><button onclick="combatSetup(enemies[0])">Fight Engage.</button></section>`
+    document.getElementById(`main`).innerHTML = allMain
+}
 
 function combatSetup(enemy) {
     currentE = enemy
+    let eIndx = enemies.indexOf(currentE);
+    eHp = eHpAll[eIndx];
+    maxEHp = eHpAll[eIndx];
+    eDef = eDefAll[eIndx];
+    eLvl = eLvlAll[eIndx];
     let aOrAn = `a`;
     switch (enemy[0]) {
         case `a`:
@@ -67,7 +87,7 @@ function combatSetup(enemy) {
         allMain += `<button onclick="generalAttk()">Fight</button> `
     }
     allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="items()">Inventory</button> <button onclick="run()">Run</section>`
-    webPage.innerHTML = allMain
+    document.getElementById(`main`).innerHTML = allMain
 }
 
 function inspect() {
@@ -101,12 +121,49 @@ function inspect() {
     }
     allMain += `<br>Would you like to do a deep inspection?<br><br> <button onclick="deepInspect()">Yes</button><button onclick="combatContinue()">No</button></section>`
     // allMain+=
-    webPage.innerHTML = allMain
+    document.getElementById(`main`).innerHTML = allMain
 }
 
 function run() {
     allMain += `<br><br><br><br><section>Would you like to run from this encounter?<br><br> <button onclick="pleaseRun()">Yes</button><button onclick="combatContinue()">No</button></section>`
-    webPage.innerHTML = allMain
+    document.getElementById(`main`).innerHTML = allMain
+}
+
+function magicAttk(){
+    allMain+=`<br><br><br><br><section>Your current spells :<br><br>`;
+    for(item of pSpells){
+        allMain+=`<button onclick='magicAttkAction("${item}")'>${item}</button> `
+    }
+    allMain+=`<button onclick="combatContinue()">Cancel</button></section>`
+    document.getElementById(`main`).innerHTML = allMain
+}
+
+function magicAttkAction(spell){
+    let castSpellIndx = allPSpells.indexOf(spell);
+    let dmgToE = 0;
+    let attkMiss = false;
+    let attkChance = 0.8;
+    while(!attkMiss){
+        if(Math.random() < attkChance){
+            dmgToE += pSpellDmg[castSpellIndx];
+            attkChance -= 0.1;
+        }
+        else{
+            attkMiss = true;
+        }
+    }
+    if(`fire` === allPSpellType[castSpellIndx]){
+        //stuff
+    }
+    else if(`earth` === allPSpellType[castSpellIndx]){
+        pMagicDmg += 0.25
+    }
+    else{
+        pHp += dmgToE;
+        return undefined;
+    }
+    dmgToE *= pMagicDmg;
+    eHp -= dmgToE;
 }
 
 function combatContinue() {
@@ -118,18 +175,13 @@ function combatContinue() {
         allMain += `<button onclick="generalAttk()">Fight</button> `
     }
     allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="items()">Inventory</button> <button onclick="run()">Run</section>`
-    webPage.innerHTML = allMain
+    document.getElementById(`main`) .innerHTML = allMain
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     let paulAll = document.getElementsByClassName(`paul`);
     let hannahAll = document.getElementsByClassName(`hannah`);
     let mathewAll = document.getElementsByClassName(`mathew`);
-    for(item of contBtns){
-        item.addEventListener(`click`,function(e){
-            console.log(e);
-        });
-    }
     for (item of paulAll) {
         item.addEventListener(`click`, function () {
             document.getElementById(`paulDesc`).classList.remove(`hidden`);
