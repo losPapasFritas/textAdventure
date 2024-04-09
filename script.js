@@ -7,6 +7,7 @@ let char = `none`,
     enemy4,
     pMagicDmg = 1,
     pBlockDef = 10,
+    pBlockBuff = 0,
     pLvl = 1,
     pSpells = [],
     pHp = 100;
@@ -18,29 +19,43 @@ class enemy {
         this.eDmg = eDmg;
         this.eLvl = eLvl;
         this.eDef = eDef;
+        this.dotLength = 0;
+        this.dot = 0;
     }
     get hpPercent() {
         return this.eHp / this.maxEHp
     }
 }
 let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `mud man`, `walking fish`, `stone golem`, `cyclopes`];
-let eHpAll = [25, 1000];
-let eDmgAll = [10, 1];
-let eLvlAll = [1, 50];
-let eDefAll = [0, 99];
+let eHpAll = [25, 1000, 40];
+let eDmgAll = [10, 1, 15];
+let eLvlAll = [1, 50, 7];
+let eDefAll = [0, 99, 10];
 let pItems = [];
-let allPSpellType = [`fire`,
+let allPSpellType = [
+    `fire`,
     `water`,
     `earth`]
-let allPSpells = [`Fireball`,
+let allPSpells = [
+    `Fireball`,
     `Healing Spring`,
     `Stone Bullet`];
-let pSpellDmg = [10,
+let pSpellDmg = [
+    10,
     20,
     5];
-let pSpellAttkMax = [1,
+let pSpellAttkMax = [
+    1,
     1,
     5];
+let pSpellAttkNum = [
+    1,
+    1,
+    2]
+
+function end(){
+    document.getElementById(`main`).innerHTML = allMain
+}
 
 function getRandomInt(min, max) {
     const minCeiled = Math.ceil(min);
@@ -77,22 +92,22 @@ function hannahSelect() {
     allMain += `<br><br><br><br><section id="hannahDesc" class="visible">The noble yet troublesome apprentice of the Grand Wizard Master Kobain. She has an immense desire to obtain the powers of the world's elements, however she has a long and dangerous road if she wants to achieve this magnitude of power. Her conscience and belief in the Grand Wizard repels her from the most desperate bargains of terrible evils.  <br><br> <button id="hannahSelect">Select this character</button> <button>Paul the Knight</button> <button>Mathew the Tamer</button></section> `
     allMain += `<br><br><br><br><section class="visible">You take the vessel of Hannah, the noble yet troublesome apprentice of the Grand Wizard Master Kobain. She has an immense desire to obtain the powers of the world's elements, however she has a long and dangerous road if she wants to achieve this magnitude of power. Her conscience and belief in the Grand Wizard repels her from the most desperate bargains of terrible evils.  <br><br></section>`;
     allMain += `<section>Violence was never a rarity in the Eastern Slums, but matters have only further deteriorated from the threat of the Dragon's wrath in this past month.  You remember that night with defining clarity. <br><br><button onclick="han0()">Next.</button></section>`;
-    document.getElementById(`main`).innerHTML = allMain;
+    end();
 }
 
 function han0() {
     allMain += `<br><br><br><br><section>Night was overtaken by the fury from the monsters beneath the land. Great cracks manifested their way from the ground with unknown creatures seeping out of them. Disturbed from their long slumber, the inherent violence of the tangible beings ran rampant throughout the streets of the town. <br><br><button onclick="han1()">Next.</button></section>`;
-    document.getElementById(`main`).innerHTML = allMain
+    end();
 }
 
 function han1() {
     allMain += `<br><br><br><br><section>You are in the dusty unpaved town square. Before you is a dimly lit alley.<br><br><button onclick="han2()">Go in the alley.</button></section>`;
-    document.getElementById(`main`).innerHTML = allMain
+    end();
 }
 
 function han2() {
     allMain += `<br><br><br><br><section>Large wax candles hang from rusted metal poles that do a terrible job at illuminating the pathway. In the distance of the dark, flickering orange expanse emerges a gruffled shape.<br><br><button onclick="combatSetup(1,0)">Fight Engage.</button></section>`
-    document.getElementById(`main`).innerHTML = allMain
+    end();
 }
 
 function combatSetup(setCombat = 0, eIndx = 1) {
@@ -149,15 +164,20 @@ function combatSetup(setCombat = 0, eIndx = 1) {
         allMain += `<button onclick="generalAttk()">Fight</button> `
     }
     allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="items()">Inventory</button> <button onclick="run()">Run</section>`
-    document.getElementById(`main`).innerHTML = allMain
+    end();
+}
+
+function blockE(){
+    pBlockDef += pBlockBuff;
+    enemyTurn();
 }
 
 function inspect() {
-    allMain +=`<br><br><br><br><section>`
+    allMain += `<br><br><br><br><section>`
     let iteratorNum = 0;
     for (item of currentEs) {
-        if(iteratorNum > 0){
-            allMain+=`<br>`;
+        if (iteratorNum > 0) {
+            allMain += `<br>`;
         }
         if (item.hpPercent > 0.75) {
             allMain += `The ${item.e} looks very healthy`;
@@ -186,16 +206,46 @@ function inspect() {
         else if (item.eLvl > pLvl) {
             allMain += ` and it looks much stonger than you.`;
         }
+        if(item.dotLength > 0){
+            allMain += ` It also seems to be taking more damage as time goes on.`
+        }
         iteratorNum++;
     }
-    allMain += `<br>Would you like to do a deep inspection?<br><br> <button onclick="deepInspect()">Yes</button><button onclick="combatContinue()">No</button></section>`
+    allMain += `<br>Would you like to do an in depth inspection?<br><br> <button onclick="deepInspect()">Yes</button><button onclick="combatContinue()">No</button></section>`
     // allMain+=
-    document.getElementById(`main`).innerHTML = allMain
+    end();
+}
+
+function deepInspect() {
+    allMain += `<br><br><br><br><section>`
+    let iteratorNum = 0;
+    for (item of currentEs) {
+        if (iteratorNum > 0) {
+            allMain += `<br>`;
+        }
+        allMain += `The ${item.e}'s health is ${item.eHp}, and its level is ${item.eLvl}.`
+        if(item.dotLength > 0){
+            allMain += ` It should be taking ${item.dot} damage for ${item.dotLength} more `
+            if(item.dotLength != 1){
+                allMain+=`turns.`
+            }
+            else{
+                allMain+=`turn.`
+            }
+        }
+    }
+    allMain += `</section>`
+    end();
+    enemyTurn();
 }
 
 function run() {
     allMain += `<br><br><br><br><section>Would you like to run from this encounter?<br><br> <button onclick="pleaseRun()">Yes</button><button onclick="combatContinue()">No</button></section>`
-    document.getElementById(`main`).innerHTML = allMain
+    end();
+}
+//similar to combat end
+function pleaseRun(){
+    allMain += ``
 }
 
 function magicAttkNames() {
@@ -204,7 +254,7 @@ function magicAttkNames() {
         allMain += `<button onclick='magicAttkAction("${item}")'>${item}</button> `
     }
     allMain += `<button onclick="combatContinue()">Cancel</button></section>`
-    document.getElementById(`main`).innerHTML = allMain
+    end();
 }
 
 function magicAttkAction(spell) {
@@ -228,15 +278,40 @@ function magicAttkAction(spell) {
         pMagicDmg += 0.25
     }
     else {
+        dmgToE *= pMagicDmg;
+        dmgToE = Math.ceil(dmgToE);
         pHp += dmgToE;
 
         return undefined;
     }
     dmgToE *= pMagicDmg;
-    eHp -= dmgToE;
+    dmgToE = Math.ceil(dmgToE);
+    if (pSpellAttkNum[castSpellIndx] > 1) {
+        for (item of currentEs) {
+            item.eHp -= dmgToE;
+        }
+    }
+    else {
+        currentEs[0].eHp -= dmgToE;
+    }
+    for (let i = 0; i < currentEs.length; i++) {
+        if (currentEs[i].eHp <= 0) {
+            currentEs.splice(i, 1);
+            i--;
+        }
+    }
+    if (currentEs.length == 0) {
+        combatEnd();
+    }
+    else{
+        enemyTurn();
+    }
+    
+    // eHp -= dmgToE;
 }
 
 function combatContinue() {
+    end();
     allMain += `<br><br><br><br> <section>Select an action<br><br>`
     if (char = `h`) {
         allMain += `<button onclick="magicAttkNames()">Magic</button> `
@@ -245,7 +320,55 @@ function combatContinue() {
         allMain += `<button onclick="generalAttk()">Fight</button> `
     }
     allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="items()">Inventory</button> <button onclick="run()">Run</section>`
-    document.getElementById(`main`).innerHTML = allMain
+    end();
+}
+
+function enemyTurn(){
+    let dmgToP = 0;
+    let randomDmg = 0;
+    for(item of currentEs){
+        while(randomDmg < 0.75){
+            randomDmg = Math.random();
+        }
+        dmgToP += Math.round(item.eDmg*randomDmg);
+        randomDmg = 0;
+    }
+    pHp-= dmgToP;
+    allMain+=`<br><br><br><br> <section>The ${currentEs[0].e}`
+    if (currentEs.length == 4) {
+        allMain += `, ${currentEs[1].e}, ${currentEs[2].e},`;
+    }
+    else if (currentEs.length == 3) {
+        allMain += `, ${currentEs[0].e},`
+    }
+    if (currentEs.length >= 2) {
+        allMain += ` and ${currentEs[currentEs.length - 1].e}`
+    }
+    allMain+= ` dealt ${dmgToP} damage to you.`
+    for(item of currentEs){
+        if(item.dotLength > 0){
+            item.eHp -= item.dot;
+            item.dotLength--;
+            allMain+=` The ${item.e} took ${item.dot} damage right now.`
+        }
+    }
+    for (let i = 0; i < currentEs.length; i++) {
+        if (currentEs[i].eHp <= 0) {
+            currentEs.splice(i, 1);
+            i--;
+        }
+    }
+    if (currentEs.length == 0) {
+        combatEnd();
+    }
+    allMain+=`</section>`
+    end();
+    combatContinue();
+}
+
+function combatEnd() {
+    allMain+=`You win(The demo)`;
+    end();
 }
 
 document.addEventListener("DOMContentLoaded", function () {
