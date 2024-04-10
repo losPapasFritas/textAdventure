@@ -1,5 +1,6 @@
 let allMain = `<section>Choose a character! <br><br> <button class="paul">Paul the Knight</button> <button class="hannah">Hannah the Magician</button> <button class="mathew">Mathew the Tamer</button></section>`
 let char = `none`,
+    saveState = 0,
     currentEs = [],
     enemy1,
     enemy2,
@@ -40,6 +41,12 @@ let allPSpells = [
     `Fireball`,
     `Healing Spring`,
     `Stone Bullet`];
+let allFireDotLength = [
+    5
+];
+let allFireDot = [
+    3
+];
 let pSpellDmg = [
     10,
     20,
@@ -53,7 +60,7 @@ let pSpellAttkNum = [
     1,
     2]
 
-function end(){
+function end() {
     document.getElementById(`main`).innerHTML = allMain
 }
 
@@ -167,7 +174,7 @@ function combatSetup(setCombat = 0, eIndx = 1) {
     end();
 }
 
-function blockE(){
+function blockE() {
     pBlockDef += pBlockBuff;
     enemyTurn();
 }
@@ -206,13 +213,12 @@ function inspect() {
         else if (item.eLvl > pLvl) {
             allMain += ` and it looks much stonger than you.`;
         }
-        if(item.dotLength > 0){
+        if (item.dotLength > 0) {
             allMain += ` It also seems to be taking more damage as time goes on.`
         }
         iteratorNum++;
     }
     allMain += `<br>Would you like to do an in depth inspection?<br><br> <button onclick="deepInspect()">Yes</button><button onclick="combatContinue()">No</button></section>`
-    // allMain+=
     end();
 }
 
@@ -224,13 +230,13 @@ function deepInspect() {
             allMain += `<br>`;
         }
         allMain += `The ${item.e}'s health is ${item.eHp}, and its level is ${item.eLvl}.`
-        if(item.dotLength > 0){
+        if (item.dotLength > 0) {
             allMain += ` It should be taking ${item.dot} damage for ${item.dotLength} more `
-            if(item.dotLength != 1){
-                allMain+=`turns.`
+            if (item.dotLength != 1) {
+                allMain += `turns.`
             }
-            else{
-                allMain+=`turn.`
+            else {
+                allMain += `turn.`
             }
         }
     }
@@ -243,10 +249,7 @@ function run() {
     allMain += `<br><br><br><br><section>Would you like to run from this encounter?<br><br> <button onclick="pleaseRun()">Yes</button><button onclick="combatContinue()">No</button></section>`
     end();
 }
-//similar to combat end
-function pleaseRun(){
-    allMain += ``
-}
+
 
 function magicAttkNames() {
     allMain += `<br><br><br><br><section>Your current spells :<br><br>`;
@@ -262,22 +265,21 @@ function magicAttkAction(spell) {
     let dmgToE = 0;
     let attkMiss = false;
     let attkChance = 0.8;
-    while (!attkMiss) {
+    let hitNum = 0;
+    while (!attkMiss && hitNum < pSpellAttkNum[castSpellIndx]) {
         if (Math.random() < attkChance) {
             dmgToE += pSpellDmg[castSpellIndx];
             attkChance -= 0.1;
+            hitNum++;
         }
         else {
             attkMiss = true;
         }
     }
-    if (`fire` === allPSpellType[castSpellIndx]) {
-        //stuff
-    }
-    else if (`earth` === allPSpellType[castSpellIndx]) {
+    if (`earth` === allPSpellType[castSpellIndx]) {
         pMagicDmg += 0.25
     }
-    else {
+    else if (`water` === allPSpellType[castSpellIndx]) {
         dmgToE *= pMagicDmg;
         dmgToE = Math.ceil(dmgToE);
         pHp += dmgToE;
@@ -288,11 +290,20 @@ function magicAttkAction(spell) {
     dmgToE = Math.ceil(dmgToE);
     if (pSpellAttkNum[castSpellIndx] > 1) {
         for (item of currentEs) {
+            if (`fire` === allPSpellType[castSpellIndx]) {
+                if (item.dot < allFireDot[castSpellIndx]) {
+                    item.dot = allFireDot[castSpellIndx];
+                }
+                item.dotLength += allFireDotLength[castSpellIndx];
+            }
             item.eHp -= dmgToE;
+            console.log(`run`)
         }
+        allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemies.</section>`
     }
     else {
         currentEs[0].eHp -= dmgToE;
+        allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemy.</section>`
     }
     for (let i = 0; i < currentEs.length; i++) {
         if (currentEs[i].eHp <= 0) {
@@ -303,11 +314,9 @@ function magicAttkAction(spell) {
     if (currentEs.length == 0) {
         combatEnd();
     }
-    else{
+    else {
         enemyTurn();
     }
-    
-    // eHp -= dmgToE;
 }
 
 function combatContinue() {
@@ -323,18 +332,18 @@ function combatContinue() {
     end();
 }
 
-function enemyTurn(){
+function enemyTurn() {
     let dmgToP = 0;
     let randomDmg = 0;
-    for(item of currentEs){
-        while(randomDmg < 0.75){
+    for (item of currentEs) {
+        while (randomDmg < 0.75) {
             randomDmg = Math.random();
         }
-        dmgToP += Math.round(item.eDmg*randomDmg);
+        dmgToP += Math.round(item.eDmg * randomDmg);
         randomDmg = 0;
     }
-    pHp-= dmgToP;
-    allMain+=`<br><br><br><br> <section>The ${currentEs[0].e}`
+    pHp -= dmgToP;
+    allMain += `<br><br><br><br> <section>The ${currentEs[0].e}`
     if (currentEs.length == 4) {
         allMain += `, ${currentEs[1].e}, ${currentEs[2].e},`;
     }
@@ -344,12 +353,12 @@ function enemyTurn(){
     if (currentEs.length >= 2) {
         allMain += ` and ${currentEs[currentEs.length - 1].e}`
     }
-    allMain+= ` dealt ${dmgToP} damage to you.`
-    for(item of currentEs){
-        if(item.dotLength > 0){
+    allMain += ` dealt ${dmgToP} damage to you.`
+    for (item of currentEs) {
+        if (item.dotLength > 0) {
             item.eHp -= item.dot;
             item.dotLength--;
-            allMain+=` The ${item.e} took ${item.dot} damage right now.`
+            allMain += ` The ${item.e} took ${item.dot} damage right now.`
         }
     }
     for (let i = 0; i < currentEs.length; i++) {
@@ -361,13 +370,20 @@ function enemyTurn(){
     if (currentEs.length == 0) {
         combatEnd();
     }
-    allMain+=`</section>`
+    allMain += `</section>`
     end();
     combatContinue();
 }
 
 function combatEnd() {
-    allMain+=`You win(The demo)`;
+    allMain += `<br><br><br><br><section>You win(The demo)</section>`;
+    end();
+}
+
+//similar to combat end
+function pleaseRun() {
+    currentEs = [];
+    allMain += `<br><br><br><br><section>You literally ran from the only enemy. I have no words.</section>`
     end();
 }
 
