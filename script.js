@@ -1,19 +1,20 @@
-let allMain = `<section>Choose a character! <br><br> <button class="paul">Paul the Knight</button> <button class="hannah">Hannah the Magician</button> <button class="mathew">Mathew the Tamer</button></section>`
+    let allMain = `<section>Choose a character! <br><br> <button class="paul">Paul the Knight</button> <button class="hannah">Hannah the Magician</button> <button class="mathew">Mathew the Tamer</button></section>`
 let char = `none`,
-    saveState = 0,
+    saveState = `none`,
     currentEs = [],
     enemy1,
     enemy2,
     enemy3,
     enemy4,
     pMagicDmg = 1,
+    pDmg = 1,
     pBlockDef = 10,
-    pBlockBuff = 0,
+    pBlockBuff = 10,
     pLvl = 1,
     pSpells = [],
     pHp = 100;
 class enemy {
-    constructor(e, eHp, eDmg, eLvl, eDef) {
+    constructor(e, eHp, eDmg, eLvl, eDef, magicDmg = 0) {
         this.e = e;
         this.eHp = eHp;
         this.maxEHp = eHp;
@@ -22,6 +23,7 @@ class enemy {
         this.eDef = eDef;
         this.dotLength = 0;
         this.dot = 0;
+        this.magicDmg = magicDmg;
     }
     get hpPercent() {
         return this.eHp / this.maxEHp
@@ -31,7 +33,8 @@ let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `mud man`, `walking f
 let eHpAll = [25, 1000, 40];
 let eDmgAll = [10, 1, 15];
 let eLvlAll = [1, 50, 7];
-let eDefAll = [0, 99, 10];
+let eDefAll = [10, 99.99999999, 10];
+let itemList = [{name:`Enchanted Golden Apple`, hp:10000, def:10000, dmg: 100, magic:19}]
 let pItems = [];
 let allPSpellType = [
     `fire`,
@@ -59,6 +62,52 @@ let pSpellAttkNum = [
     1,
     1,
     2]
+
+class buffItem {
+    constructor(itemName, hpBuff, defBuff, dmgBuff, magicBuff) {
+        this.itemName = itemName;
+        this.hpBuff = hpBuff;
+        this.defBuff = defBuff;
+        this.dmgBuff = dmgBuff;
+        this.magicBuff = magicBuff;
+    }
+    use() {
+        pHp+= this.hpBuff;
+        pBlockDef+=this.defBuff;
+        pDmg += this.dmgBuff;
+        pMagicDmg += this.magicBuff;
+        pItems.splice(pItems.indexOf(this),1);
+    }
+}
+
+class debuffItem {
+    constructor(itemName, hpDebuff, defDebuff, dmgDebuff, targetNum = 1) {
+        this.itemName = itemName;
+        this.hpDebuff = hpDebuff;
+        this.defDebuff = defDebuff;
+        this.dmgDebuff = dmgDebuff;
+        this.targetNum = targetNum;
+    }
+    use() {
+        pHp+= this.hpBuff;
+        pBlockDef+=this.defBuff;
+        pDmg += this.dmgBuff;
+        pMagicDmg += this.magicBuff;
+        pItems.splice(pItems.indexOf(this),1);
+    }
+}
+
+function givePlayerItem(itemNum = -1) {
+    if (itemNum === -1) {
+        let itemNum = getRandomInt(0,itemList.length);
+        if (itemNum < 5) {
+            pItems.push(new buffItem(itemList[itemNum].name,itemList[itemNum].hp,itemList[itemNum].def,itemList[itemNum].dmg,itemList[itemNum].magic));
+        }
+        else{
+            pItems.push(new debuffItem(itemList[itemNum].name,itemList[itemNum].hp,itemList[itemNum].def,itemList[itemNum].dmg,itemList[itemNum].targets));
+        }
+    }
+}
 
 function end() {
     document.getElementById(`main`).innerHTML = allMain
@@ -98,7 +147,7 @@ function hannahSelect() {
     pSpells = [`Fireball`, `Healing Spring`, `Stone Bullet`];
     allMain += `<br><br><br><br><section id="hannahDesc" class="visible">The noble yet troublesome apprentice of the Grand Wizard Master Kobain. She has an immense desire to obtain the powers of the world's elements, however she has a long and dangerous road if she wants to achieve this magnitude of power. Her conscience and belief in the Grand Wizard repels her from the most desperate bargains of terrible evils.  <br><br> <button id="hannahSelect">Select this character</button> <button>Paul the Knight</button> <button>Mathew the Tamer</button></section> `
     allMain += `<br><br><br><br><section class="visible">You take the vessel of Hannah, the noble yet troublesome apprentice of the Grand Wizard Master Kobain. She has an immense desire to obtain the powers of the world's elements, however she has a long and dangerous road if she wants to achieve this magnitude of power. Her conscience and belief in the Grand Wizard repels her from the most desperate bargains of terrible evils.  <br><br></section>`;
-    allMain += `<section>Violence was never a rarity in the Eastern Slums, but matters have only further deteriorated from the threat of the Dragon's wrath in this past month.  You remember that night with defining clarity. <br><br><button onclick="han0()">Next.</button></section>`;
+    allMain += `<section>Violence was never a rarity in the Eastern Slums, but matters have only further deteriorated from the threat of the Dragon's wrath in this past month.  You remember that night with defining clarity.<br><br>  <button onclick="han0()">--&gt;</button></section>`;
     end();
 }
 
@@ -106,36 +155,56 @@ function han0() {
     allMain += `<br><br><br><br><section>Night was overtaken by the fury from the monsters beneath the land. Great cracks manifested their way from the ground with unknown creatures seeping out of them. Disturbed from their long slumber, the inherent violence of the tangible beings ran rampant throughout the streets of the town. <br><br><button onclick="han1()">Next.</button></section>`;
     end();
 }
-
 function han1() {
     allMain += `<br><br><br><br><section>You are in the dusty unpaved town square. Before you is a dimly lit alley.<br><br><button onclick="han2()">Go in the alley.</button></section>`;
     end();
 }
-
 function han2() {
     allMain += `<br><br><br><br><section>Large wax candles hang from rusted metal poles that do a terrible job at illuminating the pathway. In the distance of the dark, flickering orange expanse emerges a gruffled shape.<br><br><button onclick="combatSetup(1,0)">Fight Engage.</button></section>`
+    saveState = `han3`
     end();
 }
+function han3() {
+allMain +=`<br><br><br><br><section>Footsteps appear right behind you as there were no one there previously. "That was a fine victory young lass, now just who are you?"<br><br><button onclick="han4()"</button></section>`
+end();
+}
+function han4() {
+    allMain += `<br><br><br><br><section>It is the famous Grand Wizard Kobain, the legendary sorcerer and last defender of the Eastern Slums!<br><br><button onclick="han5()">Share praise enthusiastically</button></section>`
+    end();
+}
+function han5() {
+    allMain += `<br><br><br><br><section>You enthusiatically share your praises, maybe too much. The keen interest Kobain has in your abilities lead him to enlist you as his apprentice, you are eager to learn from him<br><br><button onclick="han6()">--&gt;</button></section>`
+    end();
+}
+function han6() {
+    allMain += `<br><br><br><br><section> Since that night, life was never the same again. You absolutely hated it.<br><br><button onclick="han7()">:/</button></section>`
+    end();
+}
+function han7() {
+    allMain += `<br><br><br><br><section>template<br><br><button onclick="han()">action</button></section>`
+    end();
+}
+
 
 function combatSetup(setCombat = 0, eIndx = 1) {
     if (setCombat === 0) {
         for (let i = 0; i < 4; i++) {
-            if (Math.floor(Math.random * 5) >= 1) {
+            if (Math.round(Math.random * 5) >= 1) {
                 eIndx = getRandomInt[0, enemies.length];
                 enemy1 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
                 currentEs.push(enemy1);
             }
-            if (Math.floor(Math.random * 5) >= 2) {
+            if (Math.round(Math.random * 5) >= 2) {
                 eIndx = getRandomInt[0, enemies.length];
                 enemy2 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
                 currentEs.push(enemy2);
             }
-            if (Math.floor(Math.random * 5) >= 3) {
+            if (Math.round(Math.random * 5) >= 3) {
                 eIndx = getRandomInt[0, enemies.length];
                 enemy3 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
                 currentEs.push(enemy3);
             }
-            if (Math.floor(Math.random * 5) === 4) {
+            if (Math.round(Math.random * 5) === 4) {
                 eIndx = getRandomInt[0, enemies.length];
                 enemy4 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
                 currentEs.push(enemy4);
@@ -174,8 +243,26 @@ function combatSetup(setCombat = 0, eIndx = 1) {
     end();
 }
 
+function items(){
+    allMain+=`<br><br><br><br><section>`
+    if(pItems.length > 1){
+    for(item of pItems){
+        allMain+=`<button onclick='useItems(${pItems.indexOf[item]})'>${item.itemName}</button>`
+    }
+    allMain+=`<button onclick="combatContinue()">Cancel</button>`
+}
+    else{
+        allMain+=`You have no items<br><br><button onclick="combatContinue()">Cancel</button>`
+    }
+    allMain+=`</section>`
+    end();
+}
+
+
+
 function blockE() {
     pBlockDef += pBlockBuff;
+    allMain+=`<br><br><br><br><section>You blocked</section>`
     enemyTurn();
 }
 
@@ -250,7 +337,6 @@ function run() {
     end();
 }
 
-
 function magicAttkNames() {
     allMain += `<br><br><br><br><section>Your current spells :<br><br>`;
     for (item of pSpells) {
@@ -281,13 +367,13 @@ function magicAttkAction(spell) {
     }
     else if (`water` === allPSpellType[castSpellIndx]) {
         dmgToE *= pMagicDmg;
-        dmgToE = Math.ceil(dmgToE);
+        dmgToE = Math.round(dmgToE);
         pHp += dmgToE;
 
         return undefined;
     }
     dmgToE *= pMagicDmg;
-    dmgToE = Math.ceil(dmgToE);
+    dmgToE = Math.round(dmgToE);
     if (pSpellAttkNum[castSpellIndx] > 1) {
         for (item of currentEs) {
             if (`fire` === allPSpellType[castSpellIndx]) {
@@ -296,12 +382,13 @@ function magicAttkAction(spell) {
                 }
                 item.dotLength += allFireDotLength[castSpellIndx];
             }
-            item.eHp -= dmgToE;
+            item.eHp -= Math.round(dmgToE * (1- (item.eDef/100)));
             console.log(`run`)
         }
         allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemies.</section>`
     }
     else {
+        dmgToE = Math.round(dmgToE * (1 - (currentEs[0].eDef/100)));
         currentEs[0].eHp -= dmgToE;
         allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemy.</section>`
     }
@@ -333,6 +420,9 @@ function combatContinue() {
 }
 
 function enemyTurn() {
+    if(pBlockDef > 100){
+        pBlockDef = 100;
+    }
     let dmgToP = 0;
     let randomDmg = 0;
     for (item of currentEs) {
@@ -342,6 +432,7 @@ function enemyTurn() {
         dmgToP += Math.round(item.eDmg * randomDmg);
         randomDmg = 0;
     }
+    dmgToP = Math.round(dmgToP * (1- (pBlockDef/100)));
     pHp -= dmgToP;
     allMain += `<br><br><br><br> <section>The ${currentEs[0].e}`
     if (currentEs.length == 4) {
@@ -377,6 +468,7 @@ function enemyTurn() {
 
 function combatEnd() {
     allMain += `<br><br><br><br><section>You win(The demo)</section>`;
+    allMain+=`<br><br><br><br><section><button onclick='${saveState}()'>Continue</button></section>`
     end();
 }
 
