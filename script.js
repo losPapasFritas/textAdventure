@@ -245,7 +245,7 @@ function combatSetup(setCombat = 0, eIndx = 1) {
 
 function items(){
     allMain+=`<br><br><br><br><section>`
-    if(pItems.length > 1){
+    if(pItems.length > 0){
     for(item of pItems){
         allMain+=`<button onclick='useItems(${pItems.indexOf[item]})'>${item.itemName}</button>`
     }
