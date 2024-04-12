@@ -1,4 +1,4 @@
-    let allMain = `<section>Choose a character! <br><br> <button class="paul">Paul the Knight</button> <button class="hannah">Hannah the Magician</button> <button class="mathew">Mathew the Tamer</button></section>`
+let allMain = `<section>Choose a character! <br><br> <button class="paul">Paul the Knight</button> <button class="hannah">Hannah the Magician</button> <button class="mathew">Mathew the Tamer</button></section>`
 let char = `none`,
     saveState = `none`,
     currentEs = [],
@@ -6,35 +6,22 @@ let char = `none`,
     enemy2,
     enemy3,
     enemy4,
-    pMagicDmg = 1,
+    pMagicDmg = 1.25,
     pDmg = 1,
+    pBaseDef = 10,
     pBlockDef = 10,
     pBlockBuff = 10,
     pLvl = 1,
     pSpells = [],
     pHp = 100;
-class enemy {
-    constructor(e, eHp, eDmg, eLvl, eDef, magicDmg = 0) {
-        this.e = e;
-        this.eHp = eHp;
-        this.maxEHp = eHp;
-        this.eDmg = eDmg;
-        this.eLvl = eLvl;
-        this.eDef = eDef;
-        this.dotLength = 0;
-        this.dot = 0;
-        this.magicDmg = magicDmg;
-    }
-    get hpPercent() {
-        return this.eHp / this.maxEHp
-    }
-}
-let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `mud man`, `walking fish`, `stone golem`, `cyclopes`];
-let eHpAll = [25, 1000, 40];
-let eDmgAll = [10, 1, 15];
-let eLvlAll = [1, 50, 7];
-let eDefAll = [10, 99.99999999, 10];
-let itemList = [{name:`Enchanted Golden Apple`, hp:10000, def:10000, dmg: 100, magic:19}]
+pMaxHp = 100;
+//mudman is first dungeon boss
+let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`];
+let eHpAll = [70, 10000, 100, 85, 30, 1200, 1200, 1300, 5460];
+let eDmgAll = [10, 1, 15, 13, 20, 40, 45, 50, 70];
+let eLvlAll = [1, 500, 7, 5, 6, 10, 12, 10, 24];
+let eDefAll = [10, 99.99999999, 10, 10, 3, 0, 10, 5, 50];
+let itemList = [{ name: `Enchanted Golden Apple`, hp: 10000, def: 10000, dmg: 100, magic: 19 }]
 let pItems = [];
 let allPSpellType = [
     `fire`,
@@ -63,6 +50,22 @@ let pSpellAttkNum = [
     1,
     2]
 
+class enemy {
+    constructor(e, eHp, eDmg, eLvl, eDef) {
+        this.e = e;
+        this.eHp = eHp;
+        this.maxEHp = eHp;
+        this.eDmg = eDmg;
+        this.eLvl = eLvl;
+        this.eDef = eDef;
+        this.dotLength = 0;
+        this.dot = 0;
+    }
+    get hpPercent() {
+        return this.eHp / this.maxEHp
+    }
+}
+
 class buffItem {
     constructor(itemName, hpBuff, defBuff, dmgBuff, magicBuff) {
         this.itemName = itemName;
@@ -72,11 +75,25 @@ class buffItem {
         this.magicBuff = magicBuff;
     }
     use() {
-        pHp+= this.hpBuff;
-        pBlockDef+=this.defBuff;
+        pHp += this.hpBuff;
+        pBlockDef += this.defBuff;
         pDmg += this.dmgBuff;
         pMagicDmg += this.magicBuff;
-        pItems.splice(pItems.indexOf(this),1);
+        allMain+=`<br><br><br><br><section>`
+        if(this.hpBuff > 0){
+            allMain+=`The ${this.itemName} healed you by ${this.hpBuff} dammage!<br> `
+        }
+        if(this.defBuff > 0){
+            allMain+=`The ${this.itemName} increased your defense by ${this.defBuff}%!<br> `
+        }
+        if(this.dmgBuff > 0){
+            allMain+=`The ${this.itemName} increased your physical damage by ${this.dmgBuff} times!<br> `
+        }
+        if(this.magicBuff > 0){
+            allMain+=`The ${this.itemName} increased your magic damage by ${this.magicBuff} times! `
+        }
+        allMain+=`</section>`
+        pItems.splice(pItems.indexOf(this), 1);
     }
 }
 
@@ -89,24 +106,46 @@ class debuffItem {
         this.targetNum = targetNum;
     }
     use() {
-        pHp+= this.hpBuff;
-        pBlockDef+=this.defBuff;
-        pDmg += this.dmgBuff;
-        pMagicDmg += this.magicBuff;
-        pItems.splice(pItems.indexOf(this),1);
+        currentEs[0].eHp -= this.hpDebuff;
+        currentEs[0].eDef -= this.defDebuff;
+        currentEs[0].eDmg -= this.dmgDebuff;
+        allMain+=`<br><br><br><br><section>`
+        if(currentEs[0].eHp <= 0){
+            allMain+=`The ${this.itemName} killed ${currentEs[0].e}!<br> `
+        }
+        else if(this.hpDebuff > 0){
+            allMain+=`The ${this.itemName} damaged ${currentEs[0].e} by ${this.hpDebuff} dammage!<br> `
+        }
+        if(this.defDebuff > 0){
+            allMain+=`The ${this.itemName} reduced ${currentEs[0].e}'s defense by ${this.defDebuff}%!<br> `
+        }
+        if(this.dmgDebuff > 0){
+            allMain+=`The ${this.itemName} reduced ${currentEs[0].e}'s damage by ${this.dmgDebuff}! `
+        }
+        allMain+=`</section>`
+        pItems.splice(pItems.indexOf(this), 1);
     }
 }
 
 function givePlayerItem(itemNum = -1) {
     if (itemNum === -1) {
-        let itemNum = getRandomInt(0,itemList.length);
+        let itemNum = getRandomInt(0, itemList.length);
         if (itemNum < 5) {
-            pItems.push(new buffItem(itemList[itemNum].name,itemList[itemNum].hp,itemList[itemNum].def,itemList[itemNum].dmg,itemList[itemNum].magic));
+            pItems.push(new buffItem(itemList[itemNum].name, itemList[itemNum].hp, itemList[itemNum].def, itemList[itemNum].dmg, itemList[itemNum].magic));
         }
-        else{
-            pItems.push(new debuffItem(itemList[itemNum].name,itemList[itemNum].hp,itemList[itemNum].def,itemList[itemNum].dmg,itemList[itemNum].targets));
+        else {
+            pItems.push(new debuffItem(itemList[itemNum].name, itemList[itemNum].hp, itemList[itemNum].def, itemList[itemNum].dmg, itemList[itemNum].targets));
         }
     }
+    else {
+        if (itemNum < 5) {
+            pItems.push(new buffItem(itemList[itemNum].name, itemList[itemNum].hp, itemList[itemNum].def, itemList[itemNum].dmg, itemList[itemNum].magic));
+        }
+        else {
+            pItems.push(new debuffItem(itemList[itemNum].name, itemList[itemNum].hp, itemList[itemNum].def, itemList[itemNum].dmg, itemList[itemNum].targets));
+        }
+    }
+    allMain += `<br><br><section>You recieved a(n) ${pItems[0].itemName}!`
 }
 
 function end() {
@@ -116,7 +155,11 @@ function end() {
 function getRandomInt(min, max) {
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
-    return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+    let temp = Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
+    if (temp === max) {
+        temp--;
+    }
+    return temp// The maximum is exclusive and the minimum is inclusive
 }
 function aOrAn(firstLetter) {
     let firstAlpha = firstLetter[0];
@@ -139,6 +182,15 @@ function aOrAn(firstLetter) {
             break;
     }
     return phrase;
+}
+
+function paulSelect() {
+    char = `p`;
+    pDmg = 1.5;
+    pBlockDef += 10;
+    pBaseDef += 10;
+    pHp += 15;
+    pMaxHp += 15
 }
 
 function hannahSelect() {
@@ -165,8 +217,8 @@ function han2() {
     end();
 }
 function han3() {
-allMain +=`<br><br><br><br><section>Footsteps appear right behind you as there were no one there previously. "That was a fine victory young lass, now just who are you?"<br><br><button onclick="han4()"</button></section>`
-end();
+    allMain += `<br><br><br><br><section>Footsteps appear right behind you as there were no one there previously. "That was a fine victory young lass, now just who are you?"<br><br><button onclick="han4()"</button></section>`
+    end();
 }
 function han4() {
     allMain += `<br><br><br><br><section>It is the famous Grand Wizard Kobain, the legendary sorcerer and last defender of the Eastern Slums!<br><br><button onclick="han5()">Share praise enthusiastically</button></section>`
@@ -187,31 +239,36 @@ function han7() {
 
 
 function combatSetup(setCombat = 0, eIndx = 1) {
+    if (pHp > pMaxHp) {
+        pHp = pMaxHp;
+    }
+    currentEs = []
     if (setCombat === 0) {
-        for (let i = 0; i < 4; i++) {
-            if (Math.round(Math.random * 5) >= 1) {
-                eIndx = getRandomInt[0, enemies.length];
-                enemy1 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
-                currentEs.push(enemy1);
-            }
-            if (Math.round(Math.random * 5) >= 2) {
-                eIndx = getRandomInt[0, enemies.length];
-                enemy2 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
-                currentEs.push(enemy2);
-            }
-            if (Math.round(Math.random * 5) >= 3) {
-                eIndx = getRandomInt[0, enemies.length];
-                enemy3 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
-                currentEs.push(enemy3);
-            }
-            if (Math.round(Math.random * 5) === 4) {
-                eIndx = getRandomInt[0, enemies.length];
-                enemy4 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
-                currentEs.push(enemy4);
-            }
+        let randomNum = getRandomInt(1, 5)
+        //for (let i = 0; i < 4; i++) {
+        if (randomNum >= 1) {
+            eIndx = getRandomInt(0, 5);
+            enemy1 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
+            currentEs.push(enemy1);
         }
+        if (randomNum >= 2) {
+            eIndx = getRandomInt(0, 5);
+            enemy2 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
+            currentEs.push(enemy2);
+        }
+        if (randomNum >= 3) {
+            eIndx = getRandomInt(0, 5);
+            enemy3 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
+            currentEs.push(enemy3);
+        }
+        if (randomNum === 4) {
+            eIndx = getRandomInt(0, 5);
+            enemy4 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
+            currentEs.push(enemy4);
+        }
+        //}
         if (currentEs.length == 0) {
-            eIndx = getRandomInt[0, enemies.length];
+            eIndx = getRandomInt(0, 5);
             currentEs.push(new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx]));
         }
     }
@@ -243,26 +300,32 @@ function combatSetup(setCombat = 0, eIndx = 1) {
     end();
 }
 
-function items(){
-    allMain+=`<br><br><br><br><section>`
-    if(pItems.length > 0){
-    for(item of pItems){
-        allMain+=`<button onclick='useItems(${pItems.indexOf[item]})'>${item.itemName}</button> `
+function items() {
+    allMain += `<br><br><br><br><section>`
+    if (pItems.length > 0) {
+        for (let i = 0; i < pItems.length; i++) {
+            allMain += `<button onclick='useItems(${i})'>${pItems[i].itemName}</button> `
+        }
+        allMain += `<button onclick="combatContinue()">Cancel</button>`
     }
-    allMain+=`<button onclick="combatContinue()">Cancel</button>`
-}
-    else{
-        allMain+=`You have no items<br><br><button onclick="combatContinue()">Cancel</button>`
+    else {
+        allMain += `You have no items<br><br><button onclick="combatContinue()">Cancel</button>`
     }
-    allMain+=`</section>`
+    allMain += `</section>`
     end();
 }
 
+function useItems(itemIndx) {
+    allMain += `<br><br><br><br><section>You used ${pItems[itemIndx].itemName}!`;
+    pItems[itemIndx].use();
+    end();
+    enemyTurn();
+}
 
 
 function blockE() {
     pBlockDef += pBlockBuff;
-    allMain+=`<br><br><br><br><section>You blocked</section>`
+    allMain += `<br><br><br><br><section>You blocked</section>`
     enemyTurn();
 }
 
@@ -369,7 +432,8 @@ function magicAttkAction(spell) {
         dmgToE *= pMagicDmg;
         dmgToE = Math.round(dmgToE);
         pHp += dmgToE;
-
+        allMain += `<br><br><br><br><section>You healed ${dmgToE} health.</section>`
+        enemyTurn();
         return undefined;
     }
     dmgToE *= pMagicDmg;
@@ -382,13 +446,13 @@ function magicAttkAction(spell) {
                 }
                 item.dotLength += allFireDotLength[castSpellIndx];
             }
-            item.eHp -= Math.round(dmgToE * (1- (item.eDef/100)));
+            item.eHp -= Math.round(dmgToE * (1 - (item.eDef / 100)));
             console.log(`run`)
         }
         allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemies.</section>`
     }
     else {
-        dmgToE = Math.round(dmgToE * (1 - (currentEs[0].eDef/100)));
+        dmgToE = Math.round(dmgToE * (1 - (currentEs[0].eDef / 100)));
         currentEs[0].eHp -= dmgToE;
         allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemy.</section>`
     }
@@ -407,6 +471,9 @@ function magicAttkAction(spell) {
 }
 
 function combatContinue() {
+    if (pHp > pMaxHp) {
+        pHp = pMaxHp;
+    }
     end();
     allMain += `<br><br><br><br> <section>Select an action<br><br>`
     if (char = `h`) {
@@ -420,7 +487,10 @@ function combatContinue() {
 }
 
 function enemyTurn() {
-    if(pBlockDef > 100){
+    if (pHp > pMaxHp) {
+        pHp = pMaxHp;
+    }
+    if (pBlockDef > 100) {
         pBlockDef = 100;
     }
     let dmgToP = 0;
@@ -432,7 +502,7 @@ function enemyTurn() {
         dmgToP += Math.round(item.eDmg * randomDmg);
         randomDmg = 0;
     }
-    dmgToP = Math.round(dmgToP * (1- (pBlockDef/100)));
+    dmgToP = Math.round(dmgToP * (1 - (pBlockDef / 100)));
     pHp -= dmgToP;
     allMain += `<br><br><br><br> <section>The ${currentEs[0].e}`
     if (currentEs.length == 4) {
@@ -444,7 +514,7 @@ function enemyTurn() {
     if (currentEs.length >= 2) {
         allMain += ` and ${currentEs[currentEs.length - 1].e}`
     }
-    allMain += ` dealt ${dmgToP} damage to you.`
+    allMain += ` dealt ${dmgToP} damage to you. You have ${pHp} health remaining. `
     for (item of currentEs) {
         if (item.dotLength > 0) {
             item.eHp -= item.dot;
@@ -462,13 +532,15 @@ function enemyTurn() {
         combatEnd();
     }
     allMain += `</section>`
+    pBlockDef = pBaseDef;
     end();
     combatContinue();
 }
 
 function combatEnd() {
-    allMain += `<br><br><br><br><section>You win(The demo)</section>`;
-    allMain+=`<br><br><br><br><section><button onclick='${saveState}()'>Continue</button></section>`
+    allMain += `<br><br><br><br><section>You win</section>`;
+    givePlayerItem();
+    allMain += `<br><br><br><br><section><button onclick='${saveState}()'>Continue</button></section>`
     end();
 }
 
@@ -476,6 +548,7 @@ function combatEnd() {
 function pleaseRun() {
     currentEs = [];
     allMain += `<br><br><br><br><section>You literally ran from the only enemy. I have no words.</section>`
+    allMain += `<br><br><br><br><section><button onclick='${saveState}()'>Continue</button></section>`
     end();
 }
 
