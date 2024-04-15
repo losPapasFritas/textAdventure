@@ -7,14 +7,26 @@ let char = `none`,
     enemy3,
     enemy4,
     pMagicDmg = 1.25,
+    pBaseMagicDmg = 1.25,
     pDmg = 1,
+    pBaseDmg = 1,
     pBaseDef = 10,
     pBlockDef = 10,
     pBlockBuff = 10,
+    pIsBlocking = false,
     pLvl = 1,
     pSpells = [],
-    pHp = 100;
-pMaxHp = 100;
+    pSpellType = `none`,
+    pHp = 100,
+    pMaxHp = 100,
+    statA = 0,
+    statB = 0,
+    statC = 0,
+    statD = 0,
+    waterBuff = 0,
+    earthBuff = 0,
+    fireDotBuff = 0;
+    pAbilities = [];
 //mudman is first dungeon boss
 let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`];
 let eHpAll = [70, 10000, 100, 85, 30, 1200, 1200, 1300, 5460];
@@ -185,7 +197,7 @@ function aOrAn(firstLetter) {
 }
 
 function paulSelect() {
-    char = `p`;
+    char = `paul`;
     pDmg = 1.5;
     pBlockDef += 10;
     pBaseDef += 10;
@@ -194,8 +206,9 @@ function paulSelect() {
 }
 
 function hannahSelect() {
-    char = `h`
+    char = `han`
     pMagicDmg = 1.5;
+    pSpellType = `all`;
     pSpells = [`Fireball`, `Healing Spring`, `Stone Bullet`];
     allMain += `<br><br><br><br><section id="hannahDesc" class="visible">The noble yet troublesome apprentice of the Grand Wizard Master Kobain. She has an immense desire to obtain the powers of the world's elements, however she has a long and dangerous road if she wants to achieve this magnitude of power. Her conscience and belief in the Grand Wizard repels her from the most desperate bargains of terrible evils.  <br><br> <button id="hannahSelect">Select this character</button> <button>Paul the Knight</button> <button>Mathew the Tamer</button></section> `
     allMain += `<br><br><br><br><section class="visible">You take the vessel of Hannah, the noble yet troublesome apprentice of the Grand Wizard Master Kobain. She has an immense desire to obtain the powers of the world's elements, however she has a long and dangerous road if she wants to achieve this magnitude of power. Her conscience and belief in the Grand Wizard repels her from the most desperate bargains of terrible evils.  <br><br></section>`;
@@ -233,15 +246,95 @@ function han6() {
     end();
 }
 function han7() {
+    allMain += `<br><br><br><br><section> Learning new magic skills has been completely nonexistent and the mediocrity of the tower's tight walls have only generated complete and utter boredom.<br><br><button onclick="han8()">--&gt;</button></section>`
+    end();
+}
+function han8() {
+    allMain += `<br><br><br><br><section> You have completed notes on the latest scroll shipment from South Polend and took no happiness in scribing out each situation. Even amateurs could transcribe these “magical” occurrences and crimes throughout the kingdom.<br><br><button onclick='han9()'>--&gt;</button></section>`
+    end();
+}
+function han9() {
+    allMain += `<br><br><br><br><section> You notice a pattern in the recent scrolls, all in relation to ancient relics described by old fairy tales. Polend has been dramatically more fanatic since dragons have been proven to be real and creatures of bygone eras rising from extinction. <br><br><button onclick="han10()"></button></section>`
+    end();
+}
+function han10() {
+    allMain += `<br><br><br><br><section> Regardless of your trust in Kobain's decision in putting you here, you could no longer sit here and scrawl footnotes on meaningless reports. You are in your living quarters.<br><br><button onclick="han11()">[Inspect desk.]</button> <button onclick="han13()">[Go Downstairs.]</button> <button onclick="han12()">[Inspect the bookshelf.]</button></section>`
+    end();
+}
+function han11() {
+    allMain += `<br><br><br><br><section>Your desk is a sleek, wooden table, unorganized with messy parchments and a feather quill carelessly placed off to the side. A dribble of ink slowly moves its way to the edge of the desk. In other words, nothing important. <br><br><button onclick="han13()">[Go Downstairs.]</button> <button onclick="han12()">[Inspect the bookshelf.]</button></section>`
+    end();
+}
+function han12() {
+    allMain += `<br><br><br><br><section>A shelf containing many books of the histories, legends, and culture of  the world. You pertain no interest in any of these topics.<br><br><button onclick="han11()">[Inspect desk.]</button> <button onclick="han13()">[Go downstairs.]</button></section>`
+    end();
+}
+function han13() {
+    allMain += `<br><br><br><br><section> You descend down the aged wooden steps cylindrically built to wrap around the area of the tower. As you walk, a faintly growing scent of pipe-smoke and the crackle of an active fireplace becomes clearer as you enter the main quarters.<br><br><button onclick="han14()">--&gt;</button></section>`
+    end();
+}
+function han14() {
+    allMain += `<br><br><br><br><section>Grand Wizard Kobain sits leisurely in his study with an indistinctly amorphous orb generating a cascade of colors, humanoid shapes can be seen within it's shapeless center. Hugging the corner of the wall between the stairway and the main quarters sits a lone display table, pristinely detailed as it is delicate. The table is used by an expensive vial collection of moaning toad souls, each one dreadfully muted by the confines of their vial.<br><br><button onclick="han15()">[Make your presence known.]</button> <button onclick="han17()">[Ask Kobain to finally teach a new spell.]</button></section>  `
+    end();
+}
+function han15() {
+    allMain += `<br><br><br><br><section> As you exit the stairway, you trip and stumble into the foot of the pristine table. The legs bend and snap as they collapse, generating a castrophany of an auditorily vivid smash of split wood, broken glass, staining ectoplasm, and moaning toad souls rampantly flying around. Kobain takes notice without looking back.<br><br><button onclick="han16()">--&gt;</button></section>`
+    end();
+}
+function han16() {
+    allMain += `<br><br><br><br><section>“Good morning Hannah, I see you have a keen interest in learning new and fantastic ways to destroy the furniture here.”<br><br><button onclick="han17()">[Ask Kobain to finally teach a spell.]</button></section>`
+    end();
+}
+function han17() {
+    allMain += `<br><br><br><br><section> As you exit the hallway, you approach Kobain with a proposition to end your boredom. The orb's shape fades as you close in to get a better look at the shapes.<br><br><button onclick="han18()">--&gt;</button></section>`
+    end();
+}
+function han18() {
+    allMain += `<br><br><br><br><section> “Hm, it seems this orb is particularly shy to reveal its contents. Ah, hello Hannah. Have you finished today's scroll shipment?” The curiously inquisitive wizard turns his attention towards you. <br><br><button onclick="han19()">--&gt;</button></section>`
+    end();
+}
+function han19() {
+    allMain += `<br><br><br><br><section> Full of enthusiasm, you tell Kobain about a distinct oddity from the scroll shipments of the past week. Constant robberies and crimes linking to a connected ulterior motive. Many have heard the legend of the Dragon's relics, so there is no need to repeat such redundant stories.<br><br><button onclick="han20()">--&gt;</button></section>`
+    end();
+}
+function han20() {
+    allMain += `<br><br><br><br><section>The legend has motivated citizens and monsters alike to search for these safeguarded relics. You tell Kobain that if you could retrieve these relics before any other adventurers then the King would favor Kobain's endeavors of helping the Eastern Slums become safer and more habitable.<br><br><button onclick="han21()">--&gt;</button></section>`
+    end();
+}
+function han21() {
+    allMain += `<br><br><br><br><section>“Thank you for bringing this to my attention. But Hannah, you are no near strong enough to take on a quest like this. It is a treacherous journey and it isn't worth the risk of losing a generation of magical knowledge. As you may know, it is a complete rarity for anyone to be capable of using magic let alone dedicating time to the upkeep of our knowledge”<br><br><button onclick="han22()">[I totally didn't know any of that.]</button></section>`
+    end();
+}
+function han22() {
+    allMain += `<br><br><br><br><section>“You are a dying breed, we simply cannot risk the importance of your life for rumors.”<br><br><button onclick="han23()">--&gt;</button></section>`
+    end();
+}
+                                                                                                                                                         //hanx() is skilltree 
+function han23() {                                                                                                                                  
+    allMain += `<br><br><br><br><section> You return to your living quarters hours later with a book binding under your arm. <br><br><button onclick="hanx()">[Read its contents.] </button> <button onclick="han24()">[Don't do anything like that at all.]</button></section>`
+    end();
+}
+function han24() {
+    allMain += `<br><br><br><br><section>You forgot you really, really hate reading, so you toss it into your sack of wielding as a way to procrastinate.<br><br><button onclick="han25()">--&gt;</button></section>`
+    end();
+}
+function han25() {
     allMain += `<br><br><br><br><section>template<br><br><button onclick="han()">action</button></section>`
     end();
 }
-
-
+function han26() {
+    allMain += `<br><br><br><br><section>template<br><br><button onclick="han()">action</button></section>`
+    end();
+}
+function han27() {
+    allMain += `<br><br><br><br><section>template<br><br><button onclick="han()">action</button></section>`
+    end();
+}
 function combatSetup(setCombat = 0, eIndx = 1) {
     if (pHp > pMaxHp) {
         pHp = pMaxHp;
     }
+    pIsBlocking = false;
     currentEs = []
     if (setCombat === 0) {
         let randomNum = getRandomInt(1, 5)
@@ -290,7 +383,7 @@ function combatSetup(setCombat = 0, eIndx = 1) {
         allMain += ` and ${aOrAn2} ${currentEs[currentEs.length - 1].e}`
     }
     allMain += `.<br><br>`
-    if (char = `h`) {
+    if (char == `han`) {
         allMain += `<button onclick="magicAttkNames()">Magic</button> `
     }
     else {
@@ -325,6 +418,10 @@ function useItems(itemIndx) {
 
 function blockE() {
     pBlockDef += pBlockBuff;
+    if(pAbilities.indexOf(`blockDmgUp`) > -1){
+        pDmg += (pDmg*0.02)
+    }
+    pIsBlocking = true;
     allMain += `<br><br><br><br><section>You blocked</section>`
     enemyTurn();
 }
@@ -426,10 +523,10 @@ function magicAttkAction(spell) {
         }
     }
     if (`earth` === allPSpellType[castSpellIndx]) {
-        pMagicDmg += 0.25
+        pMagicDmg += (0.25 + earthBuff)
     }
     else if (`water` === allPSpellType[castSpellIndx]) {
-        dmgToE *= pMagicDmg;
+        dmgToE *= (pMagicDmg + waterBuff);
         dmgToE = Math.round(dmgToE);
         pHp += dmgToE;
         allMain += `<br><br><br><br><section>You healed ${dmgToE} health.</section>`
@@ -444,7 +541,7 @@ function magicAttkAction(spell) {
                 if (item.dot < allFireDot[castSpellIndx]) {
                     item.dot = allFireDot[castSpellIndx];
                 }
-                item.dotLength += allFireDotLength[castSpellIndx];
+                item.dotLength += (allFireDotLength[castSpellIndx] + fireDotBuff);
             }
             item.eHp -= Math.round(dmgToE * (1 - (item.eDef / 100)));
             console.log(`run`)
@@ -468,15 +565,18 @@ function magicAttkAction(spell) {
     else {
         enemyTurn();
     }
+    pMagicDmg = pBaseMagicDmg;
+    pDmg = pBaseDmg;
 }
 
 function combatContinue() {
     if (pHp > pMaxHp) {
         pHp = pMaxHp;
     }
+    pIsBlocking = false;
     end();
     allMain += `<br><br><br><br> <section>Select an action<br><br>`
-    if (char = `h`) {
+    if (char == `han`) {
         allMain += `<button onclick="magicAttkNames()">Magic</button> `
     }
     else {
@@ -503,6 +603,12 @@ function enemyTurn() {
         randomDmg = 0;
     }
     dmgToP = Math.round(dmgToP * (1 - (pBlockDef / 100)));
+    if(pIsBlocking && pAbilities.indexOf(`blockImmunity`) > -1){
+        let hitChance = getRandomInt(0,4);
+        if (hitChance == 0){
+            dmgToP = 0;
+        }
+    }
     pHp -= dmgToP;
     allMain += `<br><br><br><br> <section>The ${currentEs[0].e}`
     if (currentEs.length == 4) {
@@ -552,6 +658,68 @@ function pleaseRun() {
     end();
 }
 
+function lvlUp(){
+    allMain =`<br><br><br><br><section>Select an Upgrade!<br><br><section class='skillColumn'>`
+    if(statA == 0){
+        allMain+=`<button onevent='buffStat("def",${5})'>Block Def Up</button>`
+    }
+    else if(statA == 1){
+        allMain+=`<button>Block Def Up</button> <button onevent='addAbility(blockDmgUp)'>Blocking increses dmg by a small percent for the next turn</button>`
+    }
+    else if(statA == 2){
+        allMain+=`<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onevent='buffStat("def",${5})'>Block Def Up</button>`
+    }
+    else if(statA == 3){
+        allMain+=`<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button onevent='addAbility(blockImmunity)'>While blocking, have a 25% chance to not take dmg</button>`
+    }
+    else if(statA == 4){
+        allMain+=`<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button onevent='buffStat("def",${5})'>Block Def Up</button>`
+    }
+    else if(statA == 5){
+        allMain+=`<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button>Block Def Up</button> <button onevent='addAbility(parry)'>You no longer take damage while blocking</button>`
+    }
+    else if(statA == 6){
+        allMain+=`<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button>Block Def Up</button> <button>You no longer take damage while blocking</button>`
+    }
+    allMain+=`</section>`
+    switch (pSpellType){
+        case `all`:
+            break;
+        default:
+            break;
+    }
+}
+function addAbility(abilityName){
+    pAbilities.push(abilityName);
+    stat++;
+}
+
+function buffStat(stat, amount){
+    switch(stat){
+        case `def`:
+            pBaseDef += amount;
+            pBlockDef += amount;
+            break;
+        case `fireDotBuff`:
+            fireDotBuff+=amount;
+            break;
+        case `waterBuff`:
+            waterBuff+=amount;
+            break;
+        case `earthBuff`:
+            earthBuff+=amount;
+            break;
+        case `pDmg`:
+            pDmg+= amount;
+            pBaseDmg +=amount;
+            break;
+        case `pMagicDmg`:
+            pMagicDmg += amount;
+            pBaseMagicDmg +=amount;
+            break;
+    }
+    stat++;
+}
 document.addEventListener("DOMContentLoaded", function () {
     let paulAll = document.getElementsByClassName(`paul`);
     let hannahAll = document.getElementsByClassName(`hannah`);
