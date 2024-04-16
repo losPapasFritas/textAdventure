@@ -25,8 +25,11 @@ let char = `none`,
     statD = 0,
     waterBuff = 0,
     earthBuff = 0,
-    fireDotBuff = 0;
-    pAbilities = [];
+    fireDotBuff = 0,
+    pAbilities = [],
+    turnCounter = 5,
+    phoenixUsed = false,
+    quadHitActivated = false;
 //mudman is first dungeon boss
 let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`];
 let eHpAll = [70, 10000, 100, 85, 30, 1200, 1200, 1300, 5460];
@@ -60,8 +63,7 @@ let pSpellAttkMax = [
 let pSpellAttkNum = [
     1,
     1,
-    2]
-
+    2];
 class enemy {
     constructor(e, eHp, eDmg, eLvl, eDef) {
         this.e = e;
@@ -389,11 +391,11 @@ function combatSetup(setCombat = 0, eIndx = 1) {
     else {
         allMain += `<button onclick="generalAttk()">Fight</button> `
     }
-    allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="items()">Inventory</button> <button onclick="run()">Run</section>`
+    allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="listItems()">Inventory</button> <button onclick="run()">Run</section>`
     end();
 }
 
-function items() {
+function listItems() {
     allMain += `<br><br><br><br><section>`
     if (pItems.length > 0) {
         for (let i = 0; i < pItems.length; i++) {
@@ -534,8 +536,13 @@ function magicAttkAction(spell) {
         return undefined;
     }
     dmgToE *= pMagicDmg;
+    if(pAbilities.indexOf(`quadHit`) > -1){
+        if(Math.random() < (pLvl-1)/25){
+            dmgToE*=4
+        }
+    }
     dmgToE = Math.round(dmgToE);
-    if (pSpellAttkNum[castSpellIndx] > 1) {
+    if (pSpellAttkNum[castSpellIndx] < 1) {
         for (item of currentEs) {
             if (`fire` === allPSpellType[castSpellIndx]) {
                 if (item.dot < allFireDot[castSpellIndx]) {
@@ -546,12 +553,18 @@ function magicAttkAction(spell) {
             item.eHp -= Math.round(dmgToE * (1 - (item.eDef / 100)));
             console.log(`run`)
         }
-        allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemies.</section>`
+        allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemies.`
     }
     else {
         dmgToE = Math.round(dmgToE * (1 - (currentEs[0].eDef / 100)));
         currentEs[0].eHp -= dmgToE;
-        allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemy.</section>`
+        allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemy.`
+    }
+    if(quadHitActivated){
+        allMain+=` Your earth ability also increased this damage by 4x!</section>`
+    }
+    else{
+        allMain+=`</section>`
     }
     for (let i = 0; i < currentEs.length; i++) {
         if (currentEs[i].eHp <= 0) {
@@ -582,11 +595,20 @@ function combatContinue() {
     else {
         allMain += `<button onclick="generalAttk()">Fight</button> `
     }
-    allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="items()">Inventory</button> <button onclick="run()">Run</section>`
+    allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="listItems()">Inventory</button> <button onclick="run()">Run</section>`
     end();
 }
 
 function enemyTurn() {
+    if(pAbilities.indexOf(`firebomb`) != -1 && turnCounter >= 5){
+        if(Math.random() < (pLvl-1)/25){
+            allMain+=`<br><br><br><section>Your firebomb activated and dealt ${40} damage</section>`
+            turnCounter = -1;
+            for(item of currentEs){
+                item.eHp -= 40;
+            }
+        }
+    }
     if (pHp > pMaxHp) {
         pHp = pMaxHp;
     }
@@ -607,6 +629,15 @@ function enemyTurn() {
         let hitChance = getRandomInt(0,4);
         if (hitChance == 0){
             dmgToP = 0;
+        }
+        if(pAbilities.indexOf(`parry`) > -1){
+            dmgToP = 0;
+        }
+        if(pAbilities.indexOf(`fireBlock`) > -1){
+            if (item.dot < 3) {
+                item.dot = 3;
+            }
+            item.dotLength += (2 + fireDotBuff);
         }
     }
     pHp -= dmgToP;
@@ -638,6 +669,12 @@ function enemyTurn() {
         combatEnd();
     }
     allMain += `</section>`
+    if((pAbilities.indexOf(`phoenix`) != -1) && (pHp <= 0)){
+        if(!phoenixUsed){
+            pHp = pMaxHp/2;
+            phoenixUsed = true;
+        }
+    }
     pBlockDef = pBaseDef;
     end();
     combatContinue();
@@ -664,28 +701,100 @@ function lvlUp(){
         allMain+=`<button onevent='buffStat("def",${5})'>Block Def Up</button>`
     }
     else if(statA == 1){
-        allMain+=`<button>Block Def Up</button> <button onevent='addAbility(blockDmgUp)'>Blocking increses dmg by a small percent for the next turn</button>`
+        allMain+=`<button>Block Def Up</button> <button onevent='addAbility("blockDmgUp")'>Blocking increses dmg by a small percent for the next turn</button>`
     }
     else if(statA == 2){
         allMain+=`<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onevent='buffStat("def",${5})'>Block Def Up</button>`
     }
     else if(statA == 3){
-        allMain+=`<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button onevent='addAbility(blockImmunity)'>While blocking, have a 25% chance to not take dmg</button>`
+        allMain+=`<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button onevent='addAbility("blockImmunity")'>While blocking, have a 25% chance to not take dmg</button>`
     }
     else if(statA == 4){
         allMain+=`<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button onevent='buffStat("def",${5})'>Block Def Up</button>`
     }
     else if(statA == 5){
-        allMain+=`<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button>Block Def Up</button> <button onevent='addAbility(parry)'>You no longer take damage while blocking</button>`
+        allMain+=`<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button>Block Def Up</button> <button onevent='addAbility("parry")'>You no longer take damage while blocking</button>`
     }
     else if(statA == 6){
         allMain+=`<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button>Block Def Up</button> <button>You no longer take damage while blocking</button>`
     }
-    allMain+=`</section>`
+    allMain+=`</section><section class='skillColumn'>`
+
     switch (pSpellType){
         case `all`:
             break;
         default:
+            switch(pSpellType){
+                case `fire`:
+                    if(statB == 0){
+                        allMain+=`<button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                    }
+                    else if(statB == 1){
+                        allMain+=`<button>Fire DOT Length Up</button> <button onevent='addAbility("fireBlock")'>Blocking deals fire damage to enemy</button>`
+                    }
+                    else if(statB == 2){
+                        allMain+=`<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                    }
+                    else if(statB == 3){
+                        allMain+=`<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button onevent='addAbility("firebomb")'>Every turn has ${(pLvl-1)/25*100}% chance to cast a firebomb, cooldown is 5 turns</button>`
+                    }
+                    else if(statB == 4){
+                        allMain+=`<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl-1)/25*100}% chance to cast a firebomb, cooldown is 5 turns</button> <button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                    }
+                    else if(statB == 5){
+                        allMain+=`<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl-1)/25*100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button onevent='addAbility("phoenix")'>If your Hp drops to 0, regain half hp</button>`
+                    }
+                    else if(statB == 6){
+                        allMain+=`<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl-1)/25*100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button>If your Hp drops to 0, regain half hp</button>`
+                    }
+                    break;
+                case `water`:
+                    if(statB == 0){
+                        allMain+=`<button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                    }
+                    else if(statB == 1){
+                        allMain+=`<button>Healing Power Up</button> <button onevent='addAbility("coolDown")'>You can remove DOT afflictions using an ability</button>`
+                    }
+                    else if(statB == 2){
+                        allMain+=`<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                    }
+                    else if(statB == 3){
+                        allMain+=`<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button onevent='addAbility("waterShield")'>Healing increases defense by a moderate amount for a turn</button>`
+                    }
+                    else if(statB == 4){
+                        allMain+=`<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                    }
+                    else if(statB == 5){
+                        allMain+=`<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button onevent='addAbility("quickHeal")'>You can attack and heal in the same turn</button>`
+                    }
+                    else if(statB == 6){
+                        allMain+=`<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button>You can attack and heal in the same turn</button>`
+                    }
+                    break;
+                case `earth`:
+                    if(statB == 0){
+                        allMain+=`<button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                    }
+                    else if(statB == 1){
+                        allMain+=`<button>Earth Dmg Up</button> <button onevent='addAbility("doubleEarth")'>Earth attacks can hit twice</button>`
+                    }
+                    else if(statB == 2){
+                        allMain+=`<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                    }
+                    else if(statB == 3){
+                        allMain+=`<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button onevent='addAbility("instaKill")'>Adds ability to defeat any enemy whose hp is under 10%</button>`
+                    }
+                    else if(statB == 4){
+                        allMain+=`<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                    }
+                    else if(statB == 5){
+                        allMain+=`<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button onevent='addAbility("quadHit")'>All attacks have a ${(pLvl-1)/25*100}% chance to hit 4 times</button>`
+                    }
+                    else if(statB == 6){
+                        allMain+=`<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button>All attacks have a ${(pLvl-1)/25*100}% chance to hit 4 times</button>`
+                    }
+                    break;
+            }
             break;
     }
 }
