@@ -29,6 +29,7 @@ let char = `none`,
     pAbilities = [],
     turnCounter = 5,
     phoenixUsed = false,
+    quickHealUsed = false,
     quadHitActivated = false;
 //mudman is first dungeon boss
 let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`];
@@ -417,7 +418,6 @@ function useItems(itemIndx) {
     enemyTurn();
 }
 
-
 function blockE() {
     pBlockDef += pBlockBuff;
     if(pAbilities.indexOf(`blockDmgUp`) > -1){
@@ -502,7 +502,17 @@ function run() {
 function magicAttkNames() {
     allMain += `<br><br><br><br><section>Your current spells :<br><br>`;
     for (item of pSpells) {
-        allMain += `<button onclick='magicAttkAction("${item}")'>${item}</button> `
+        if(pAbilities.indexOf(`quickHeal`) != -1){
+            if(quickHealUsed && (allPSpellType[allPSpells.indexOf(item)] == `water`)){
+                allMain+=``
+            }
+            else{
+                allMain += `<button onclick='magicAttkAction("${item}")'>${item}</button> `
+            }
+        }
+        else{
+            allMain += `<button onclick='magicAttkAction("${item}")'>${item}</button> `
+        }
     }
     allMain += `<button onclick="combatContinue()">Cancel</button></section>`
     end();
@@ -532,7 +542,13 @@ function magicAttkAction(spell) {
         dmgToE = Math.round(dmgToE);
         pHp += dmgToE;
         allMain += `<br><br><br><br><section>You healed ${dmgToE} health.</section>`
-        enemyTurn();
+        if(!quickHealUsed && pAbilities.indexOf(`quickHeal`) != -1) {
+            quickHealUsed = true;
+            combatContinue();
+        }
+        else{
+            enemyTurn();
+        }
         return undefined;
     }
     dmgToE *= pMagicDmg;
@@ -549,6 +565,14 @@ function magicAttkAction(spell) {
                     item.dot = allFireDot[castSpellIndx];
                 }
                 item.dotLength += (allFireDotLength[castSpellIndx] + fireDotBuff);
+            }
+            else{
+                if(pAbilities.indexOf(`doubleEarth`) != -1){
+                    if(Math.random() < (pLvl-1)/25){
+                        allMain+=`<section>Your Earth Attack dealt double damage!</section>`
+                        dmgToE*=2;
+                    }
+                }
             }
             item.eHp -= Math.round(dmgToE * (1 - (item.eDef / 100)));
             console.log(`run`)
@@ -676,6 +700,7 @@ function enemyTurn() {
         }
     }
     pBlockDef = pBaseDef;
+    quickHealUsed = false
     end();
     combatContinue();
 }
