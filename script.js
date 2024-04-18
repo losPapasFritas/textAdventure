@@ -26,12 +26,15 @@ let char = `none`,
     waterBuff = 0,
     earthBuff = 0,
     fireDotBuff = 0,
+    dotLengthOnP = 0,
+    dotOnP = 0,
     pAbilities = [],
     pActiveAbilities = [],
     turnCounter = 5,
     phoenixUsed = false,
     quickHealUsed = false,
-    quadHitActivated = false;
+    quadHitActivated = false,
+    totalDmgDealt = 0;
 //mudman is first dungeon boss
 let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`];
 let eHpAll = [70, 10000, 100, 85, 30, 1200, 1200, 1300, 5460];
@@ -140,6 +143,34 @@ class debuffItem {
         }
         allMain += `</section>`
         pItems.splice(pItems.indexOf(this), 1);
+    }
+}
+
+function instaKill () {
+    for(item of currentEs){
+        if(item.hpPercent < 0.1){
+            item.eHp = 0;
+            allMain+=`<br><br><br><section>Your ability defeated the ${item.e}!</section>`
+        }
+    }
+    end();
+    enemyTurn();
+}
+
+function eDefReduction(){
+    for(item of currentEs){
+        item.eDef -= 2.5;
+        if(item.eDef < 0){
+            item.eDef = 0;
+        }
+    }
+}
+
+function coolDown(){
+    if(dotLengthOnP != 0){
+        dotLengthOnP = 0;
+        dotOnP = 0;
+        allMain+=`<br><br><br><section>You removed the thing dealing damage to you!</section>`
     }
 }
 
@@ -363,23 +394,23 @@ function han1B() {
     end();
 }
 function han33() {
-    allmain += `<br><br><br><br><section>You stray from the suspiciously placed dust trail, instead walking through the stress inducing hall to the left. The entryway whispers an unintelligible {sound} as you make your first steps beyond it.</section><br><br><button onclick="han34()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>You stray from the suspiciously placed dust trail, instead walking through the stress inducing hall to the left. The entryway whispers an unintelligible {sound} as you make your first steps beyond it.</section><br><br><button onclick="han34()">[--&gt;]</button>`
 }
 function han34() {
-    allmain += `<br><br><br><br><section>Light leaves your surroundings gradually, with each echoing step as you cross it. Light. Dim. Dark. Black. </section><br><br><button onclick="han35()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>Light leaves your surroundings gradually, with each echoing step as you cross it. Light. Dim. Dark. Black. </section><br><br><button onclick="han35()">[--&gt;]</button>`
 }
 function han35() {
-    allmain += `<br><br><br><br><section>You try to hug the walls of the walkway, nothing is within your grasp, as if there were no walls in the first place.
+    allMain += `<br><br><br><br><section>You try to hug the walls of the walkway, nothing is within your grasp, as if there were no walls in the first place.
     </section><br><br><button onclick="han36()">[Blink in the darkness.]</button><button onclick="han36()">[Cry because you are screwed.]</button>`
 }
 function han36() {
-    allmain += `<br><br><br><br><section>You blink in the blinding void. As soon as you do, the illusion ends and you are on the other side of the hallway, now looking as mundane as the other. The dander trail picks up and leads to the Eastern Dungeon Memorial.</section><br><br><button onclick="han37()">[Follow trail inside.]</button>`
+    allMain += `<br><br><br><br><section>You blink in the blinding void. As soon as you do, the illusion ends and you are on the other side of the hallway, now looking as mundane as the other. The dander trail picks up and leads to the Eastern Dungeon Memorial.</section><br><br><button onclick="han37()">[Follow trail inside.]</button>`
 }
 function han37() {
-    allmain += `<br><br><br><br><section>You try to open the entrance door for the Eastern Dungeon Memorial, to no avail. The door is locked. </section><br><br><button onclick="han38()">[Find a way inside.]</button>`
+    allMain += `<br><br><br><br><section>You try to open the entrance door for the Eastern Dungeon Memorial, to no avail. The door is locked. </section><br><br><button onclick="han38()">[Find a way inside.]</button>`
 }
 function han38() {
-    allmain += `<br><br><br><br><section>You pace along the memorial’s perimeter, finding an opening to the roof shaping into a ramp-esque ledge.</section><br><br><button onclick="han39()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>You pace along the memorial’s perimeter, finding an opening to the roof shaping into a ramp-esque ledge.</section><br><br><button onclick="han39()">[--&gt;]</button>`
 }
 function combatSetup(setCombat = 0, eIndx = 1) {
     if (pHp > pMaxHp) {
@@ -587,6 +618,11 @@ function magicAttkAction(spell) {
     let attkMiss = false;
     let attkChance = 0.8;
     let hitNum = 0;
+    
+    if(pAbilities.indexOf(`highMelee`)){
+        for(let i = 0; i < Math.floor(totalDmgDealt/50); i++)
+        pMagicDmg+=(pLvl*5/24).toFixed(2);
+    }
     while (!attkMiss && hitNum < pSpellAttkNum[castSpellIndx]) {
         if (Math.random() < attkChance) {
             dmgToE += pSpellDmg[castSpellIndx];
@@ -643,11 +679,14 @@ function magicAttkAction(spell) {
                     }
                 }
             }
-            item.eHp -= Math.round(dmgToE * (1 - (item.eDef / 100)));
+            dmgToE = Math.round(dmgToE * (1 - (item.eDef / 100)))
+            item.eHp -= dmgToE;
             console.log(`run`)
+            totalDmgDealt += dmgToE;
         }
         allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemies.`
     }
+    
     else {
         if (pAbilities.indexOf(`doubleEarth`) != -1) {
             if (Math.random() < (pLvl - 1) / 25) {
@@ -663,8 +702,10 @@ function magicAttkAction(spell) {
         }
         dmgToE = Math.round(dmgToE * (1 - (currentEs[0].eDef / 100)));
         currentEs[0].eHp -= dmgToE;
+        totalDmgDealt += dmgToE;
         allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemy.`
     }
+    
     if (quadHitActivated) {
         allMain += ` Your earth ability also increased this damage by 4x!</section>`
     }
@@ -705,6 +746,16 @@ function combatContinue() {
 }
 
 function enemyTurn() {
+    for (let i = 0; i < currentEs.length; i++) {
+        if (currentEs[i].eHp <= 0) {
+            currentEs.splice(i, 1);
+            i--;
+        }
+    }
+    if (currentEs.length == 0) {
+        combatEnd();
+        return undefined;
+    }
     if (pAbilities.indexOf(`firebomb`) != -1 && turnCounter >= 5) {
         if (Math.random() < (pLvl - 1) / 25) {
             allMain += `<br><br><br><section>Your firebomb activated and dealt ${40} damage</section>`
@@ -785,6 +836,16 @@ function enemyTurn() {
             phoenixUsed = true;
         }
     }
+    for (let i = 0; i < currentEs.length; i++) {
+        if (currentEs[i].eHp <= 0) {
+            currentEs.splice(i, 1);
+            i--;
+        }
+    }
+    if (currentEs.length == 0) {
+        combatEnd();
+        return undefined;
+    }
     pBlockDef = pBaseDef;
     quickHealUsed = false
     end();
@@ -833,6 +894,73 @@ function lvlUp() {
 
     switch (pSpellType) {
         case `all`:
+            if (statB == 0) {
+                allMain += `<button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+            }
+            else if (statB == 1) {
+                allMain += `<button>Fire DOT Length Up</button> <button onevent='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
+            }
+            else if (statB == 2) {
+                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+            }
+            else if (statB == 3) {
+                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button onevent='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
+            }
+            else if (statB == 4) {
+                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+            }
+            else if (statB == 5) {
+                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button onevent='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
+            }
+            else if (statB == 6) {
+                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button>If your Hp drops to 0, regain half hp</button>`
+            }
+            allMain+=`</section><section class='skillColumn'>`
+            if (statC == 0) {
+                allMain += `<button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+            }
+            else if (statC == 1) {
+                allMain += `<button>Healing Power Up</button> <button onevent='addAbility("coolDown","water",coolDown)'>You can remove DOT afflictions using an ability</button>`
+            }
+            else if (statC == 2) {
+                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+            }
+            else if (statC == 3) {
+                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button onevent='addAbility("waterShield","water")'>Healing increases defense by a moderate amount for a turn</button>`
+            }
+            else if (statC == 4) {
+                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+            }
+            else if (statC == 5) {
+                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button onevent='addAbility("quickHeal","water")'>You can attack and heal in the same turn</button>`
+            }
+            else if (statC == 6) {
+                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button>You can attack and heal in the same turn</button>`
+            }
+            allMain+=`</section><section class='skillColumn'>`
+            if (statD == 0) {
+                allMain += `<button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+            }
+            else if (statD == 1) {
+                allMain += `<button>Earth Dmg Up</button> <button onevent='addAbility("doubleEarth","earth")'>Earth attacks can hit twice</button>`
+            }
+            else if (statD == 2) {
+                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+            }
+            else if (statD == 3) {
+                allMain += (`<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button>
+                <button onevent='addAbility("InstaKill","earth", instaKill'>Adds ability to defeat any enemy whose hp is under 10%</button>`)
+            }
+            else if (statD == 4) {
+                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+            }
+            else if (statD == 5) {
+                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button onevent='addAbility("quadHit","earth")'>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
+            }
+            else if (statD == 6) {
+                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
+            }
+            allMain+=`</section>`
             break;
         default:
             switch (pSpellType) {
@@ -841,19 +969,19 @@ function lvlUp() {
                         allMain += `<button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
                     }
                     else if (statB == 1) {
-                        allMain += `<button>Fire DOT Length Up</button> <button onevent='addAbility("fireBlock")'>Blocking deals fire damage to enemy</button>`
+                        allMain += `<button>Fire DOT Length Up</button> <button onevent='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
                     }
                     else if (statB == 2) {
                         allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
                     }
                     else if (statB == 3) {
-                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button onevent='addAbility("firebomb")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
+                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button onevent='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
                     }
                     else if (statB == 4) {
                         allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
                     }
                     else if (statB == 5) {
-                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button onevent='addAbility("phoenix")'>If your Hp drops to 0, regain half hp</button>`
+                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button onevent='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
                     }
                     else if (statB == 6) {
                         allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button>If your Hp drops to 0, regain half hp</button>`
@@ -864,19 +992,19 @@ function lvlUp() {
                         allMain += `<button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
                     }
                     else if (statB == 1) {
-                        allMain += `<button>Healing Power Up</button> <button onevent='addAbility("coolDown")'>You can remove DOT afflictions using an ability</button>`
+                        allMain += `<button>Healing Power Up</button> <button onevent='addAbility("coolDown","water",coolDown)'>You can remove DOT afflictions using an ability</button>`
                     }
                     else if (statB == 2) {
                         allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
                     }
                     else if (statB == 3) {
-                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button onevent='addAbility("waterShield")'>Healing increases defense by a moderate amount for a turn</button>`
+                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button onevent='addAbility("waterShield","water")'>Healing increases defense by a moderate amount for a turn</button>`
                     }
                     else if (statB == 4) {
                         allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
                     }
                     else if (statB == 5) {
-                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button onevent='addAbility("quickHeal")'>You can attack and heal in the same turn</button>`
+                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button onevent='addAbility("quickHeal","water")'>You can attack and heal in the same turn</button>`
                     }
                     else if (statB == 6) {
                         allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button>You can attack and heal in the same turn</button>`
@@ -887,41 +1015,120 @@ function lvlUp() {
                         allMain += `<button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
                     }
                     else if (statB == 1) {
-                        allMain += `<button>Earth Dmg Up</button> <button onevent='addAbility("doubleEarth")'>Earth attacks can hit twice</button>`
+                        allMain += `<button>Earth Dmg Up</button> <button onevent='addAbility("doubleEarth","earth")'>Earth attacks can hit twice</button>`
                     }
                     else if (statB == 2) {
                         allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
                     }
                     else if (statB == 3) {
-                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button>
-                        <button onevent='addAbility("InstaKill", () => {for(item of currentEs){if(item.hpPercent < 0.1){item.eHp = 0;` + 'allMain+=`<br><br><br><section>Your ability defeated the ${item.e}!</section>`' + `}}end();enemyTurn();})'>Adds ability to defeat any enemy whose hp is under 10%</button>`
+                        allMain += (`<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button>
+                        <button onevent='addAbility("InstaKill","earth", instaKill)'>Adds ability to defeat any enemy whose hp is under 10%</button>`)
                     }
                     else if (statB == 4) {
                         allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
                     }
                     else if (statB == 5) {
-                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button onevent='addAbility("quadHit")'>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
+                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button onevent='addAbility("quadHit","earth")'>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
                     }
                     else if (statB == 6) {
                         allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
                     }
                     break;
             }
+            switch(char){
+                case `paul`:
+                    if (statC == 0) {
+                        allMain += `<button onevent='buffStat("pDmg",${0.25})'>Sword dmg up</button>`
+                    }
+                    else if (statC == 1) {
+                        allMain += `<button>Sword dmg up</button> <button onevent='addAbility("defReduction","p1", eDefReduction)'>Adds ability which reduces enemy defense</button>`
+                    }
+                    else if (statC == 2) {
+                        allMain += `<button>Sword dmg up</button> <button>Adds ability which reduces enemy</button> <button onevent='buffStat("pDmg",${0.25})'>Sword dmg up</button>`
+                    }
+                    else if (statC == 3) {
+                        allMain += (`<button>Sword dmg up</button> <button>Adds ability which reduces enemy</button> <button>Sword dmg up</button>
+                        <button onevent='addAbility("multiHit","p1")'>A non-magic infused attack has a chance to hit ${(level*5/24)} times</button>`)
+                    }
+                    else if (statC == 4) {
+                        allMain += `<button>Sword dmg up</button> <button>Adds ability which reduces enemy</button> <button>Sword dmg up</button> <button>A non-magic infused attack has a chance to hit ${(level*5/24)} times</button> <button onevent='buffStat("pDmg",${0.25})'>Sword dmg up</button>`
+                    }
+                    else if (statC == 5) {
+                        allMain += `<button>Sword dmg up</button> <button>Adds ability which reduces enemy</button> <button>Sword dmg up</button> <button>A non-magic infused attack has a chance to hit ${(level*5/24)} times</button> <button>Sword dmg up</button> <button onevent='addAbility("highMelee","p1")'>For every 50 damage you deal, your damage increases by ${level*10/24}%</button>`
+                    }
+                    else if (statC == 6) {
+                        allMain += `<button>Sword dmg up</button> <button>Adds ability which reduces enemy</button> <button>Sword dmg up</button> <button>A non-magic infused attack has a chance to hit ${(level*5/24)} times</button> <button>Sword dmg up</button> <button>For every 50 damage you deal, your damage increases by ${level*10/24}%</button>`
+                    }
+
+                    if (statD == 0) {
+                        allMain += `<button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                    }
+                    else if (statD == 1) {
+                        allMain += `<button>Earth Dmg Up</button> <button onevent='addAbility("doubleEarth","earth")'>Earth attacks can hit twice</button>`
+                    }
+                    else if (statD == 2) {
+                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                    }
+                    else if (statD == 3) {
+                        allMain += (`<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button>
+                        <button onevent='addAbility("InstaKill","earth", instaKill'>Adds ability to defeat any enemy whose hp is under 10%</button>`)
+                    }
+                    else if (statD == 4) {
+                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                    }
+                    else if (statD == 5) {
+                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button onevent='addAbility("quadHit","earth")'>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
+                    }
+                    else if (statD == 6) {
+                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
+                    }
+                    break;
+            }
             break;
     }
+    end();
 }
-`${item.e}`
-'${item.e}'
-"${item.e}"
-addAbility("InstaKill", () => {for(item of currentEs){if(item.hpPercent < 0.1){item.eHp = 0; allMain+='<br><br><br><secion>Your ability defeated the ${0.25}${item.e}!</section>'}}end();enemyTurn();})
-function addAbility(abilityName, active = false) {
+
+
+function addAbility(abilityName, path ,active = false) {
     pAbilities.push(abilityName);
     if(active){
-        pActiveAbilities.push({name:abilityName, effect:active});
+        pActiveAbilities.push({name:abilityName});
+        pActiveAbilities[pActiveAbilities.length-1].effect = active
+    }
+    switch (path){
+        case `fire`:
+            statB ++;
+            break;
+        case `water`:
+            if(pSpellType == `water`){
+                statB++
+            }
+            else{
+                statC++;
+            }
+            break;
+        case `earth`:
+            if(pSpellType == `earth`){
+                statB++
+            }
+            else{
+                statD++;
+            }
+            break;
+        case `p1`:
+            statC++;
+            break;
     }
     //stat++;
 }
-
+`
+function functionName (){
+    'stuff'
+}
+array.push({name:variable});
+array[array.length-1].arrayFunction = functionName
+`
 function buffStat(stat, amount) {
     switch (stat) {
         case `def`:
@@ -930,12 +1137,25 @@ function buffStat(stat, amount) {
             break;
         case `fireDotBuff`:
             fireDotBuff += amount;
+            statB ++;
             break;
         case `waterBuff`:
             waterBuff += amount;
+            if(pSpellType == `water`){
+                statB++
+            }
+            else{
+                statC++;
+            }
             break;
         case `earthBuff`:
             earthBuff += amount;
+            if(pSpellType == `earth`){
+                statB++
+            }
+            else{
+                statD++;
+            }
             break;
         case `pDmg`:
             pDmg += amount;
