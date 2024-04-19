@@ -495,6 +495,20 @@ function combatSetup(setCombat = 0, eIndx = 1) {
     end();
 }
 
+function generalAttk(){
+    if(char == `paul`){
+        allMain+=`<br><br><br><section><button onclick='magicAttkNames()'>Magic Attack</button> <button onclick='meleeAttk()'>Melee Attack</button> <button onclick='combatContinue()'>Cancel</button></section>`
+    }
+    else{
+        allMain+=`<br><br><br><section><button onclick='magicAttkNames()'>Magic Attack</button> <button onclick='familiarAttk()'>Companian Attack</button> <button onclick='combatContinue()'>Cancel</button></section>`
+    }
+    end();
+}
+
+function meleeAttk(){
+    end();
+}
+
 function abilityList() {
     allMain += `<br><br><br><br><section>`
     if (pActiveAbilities.length > 0) {
