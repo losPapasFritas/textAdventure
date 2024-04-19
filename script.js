@@ -35,7 +35,8 @@ let char = `none`,
     quickHealUsed = false,
     quadHitActivated = false,
     meleeMagicInfusion = `none`,
-    totalDmgDealt = 0;
+    totalDmgDealt = 0,
+    totalDefReduction = 0;
 //mudman is first dungeon boss
 let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`];
 let eHpAll = [70, 10000, 100, 85, 30, 1200, 1200, 1300, 5460];
@@ -78,6 +79,7 @@ class enemy {
         this.eDmg = eDmg;
         this.eLvl = eLvl;
         this.eDef = eDef;
+        this.baseDef = eDef;
         this.dotLength = 0;
         this.dot = 0;
     }
@@ -158,6 +160,10 @@ function instaKill() {
     enemyTurn();
 }
 
+function removeInfusion(){
+    meleeMagicInfusion = `none`
+}
+//Infuse melee skill unlocked by Paul
 function infuseMelee() {
     if (pAbilities.indexOf(`maxInfustion`) == -1) {
         switch (pSpellType) {
@@ -172,7 +178,7 @@ function infuseMelee() {
                 break;
         }
     }
-    else{
+    else {
         meleeMagicInfusion = `all`
     }
 }
@@ -389,7 +395,7 @@ function han27() {
     end();
 }
 function han28() {
-    allMain += `<br><br><br><br><section>You take the path that the (dust) trail left behind. Beyond a tiled path leads to the exit gate surrounding the tower’s perimeter. A short stairwell going up, the steps in the shape of smooth, hollowed stone from the center of large boulders. 
+    allMain += `<br><br><br><br><section>You take the path that the (dust) trail left behind. Beyond a tiled path leads to the exit gate surrounding the tower's perimeter. A short stairwell going up, the steps in the shape of smooth, hollowed stone from the center of large boulders. 
     <br><br><button onclick="han29()">[--&gt;]</button></section>`
     end();
 }
@@ -415,27 +421,212 @@ function han1B() {
 }
 function han33() {
     allMain += `<br><br><br><br><section>You stray from the suspiciously placed dust trail, instead walking through the stress inducing hall to the left. The entryway whispers an unintelligible {sound} as you make your first steps beyond it.</section><br><br><button onclick="han34()">[--&gt;]</button>`
+    end();
 }
 function han34() {
     allMain += `<br><br><br><br><section>Light leaves your surroundings gradually, with each echoing step as you cross it. Light. Dim. Dark. Black. </section><br><br><button onclick="han35()">[--&gt;]</button>`
+    end();
 }
 function han35() {
     allMain += `<br><br><br><br><section>You try to hug the walls of the walkway, nothing is within your grasp, as if there were no walls in the first place.
     </section><br><br><button onclick="han36()">[Blink in the darkness.]</button><button onclick="han36()">[Cry because you are screwed.]</button>`
+    end();
 }
 function han36() {
     allMain += `<br><br><br><br><section>You blink in the blinding void. As soon as you do, the illusion ends and you are on the other side of the hallway, now looking as mundane as the other. The dander trail picks up and leads to the Eastern Dungeon Memorial.</section><br><br><button onclick="han37()">[Follow trail inside.]</button>`
+    end();
 }
 function han37() {
     allMain += `<br><br><br><br><section>You try to open the entrance door for the Eastern Dungeon Memorial, to no avail. The door is locked. </section><br><br><button onclick="han38()">[Find a way inside.]</button>`
+    end();
 }
 function han38() {
-    allMain += `<br><br><br><br><section>You pace along the memorial’s perimeter, finding an opening to the roof shaping into a ramp-esque ledge.</section><br><br><button onclick="han39()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>You pace along the memorial's perimeter, finding an opening to the roof shaping into a ramp-esque ledge.</section><br><br><button onclick="han39()">[--&gt;]</button>`
+    end();
+}
+function han39() {
+    allMain += `<br><br><br><br><section>A ladder leans on another building adjacent to the Memorial. In order to grab it, you have to push it off from the other building's roof. An unlocked gate is between you and the other building.</section><br><br><button onclick="han40()">[Open the gate, enter the building.]</button>`
+    end();
+}
+function han40() {
+    allMain += `<br><br><br><br><section>You enter the building, it appears to be an abandoned smithy. Graffiti is painted along the walls of the forgotten forge, old rusted metal and unfinished armors lay sprawled around the chambers.</section><br><br><button onclick="han41()">[--&gt;]</button>`
+    end();
+}
+function han41() {
+    allMain += `<br><br><br><br><section>The furnace, now unused and neglected, proven by the visible layer of dust blanketing it. On a nearby countertop, the shape of a large hammer imprints itself against the dust layer. 
+    </section><br><br><button onclick="han42()">[Locate the rooftop stairway.]</button>`
+    end();
+}
+function han43() {
+    allMain += `<br><br><br><br><section>You explore the structure of the forge, looking for a pathway to reach the rooftop. You hear a crackle in the far left corner of the forge, a thimble of burning light flickers in the distance.</section><br><br><button onclick="han44()">[You <em>encounter</em> a stranger.]</button>`
+    end();
+}
+function han44() {
+    allMain += `<br><br><br><br><section>Behind the smithing enthusiast is a stairway leading to the rooftop.</section><br><br><button onclick="han45()">[--&gt;]</button>`
+    end();
+}
+function han45() {
+    allMain += `<br><br><br><br><section>You exit the forge and spot the ladder, pushing it off the wall and dropping it against the opening in the memorial's roof opening. </section><br><br><button onclick="han46()">[Enter the Eastern Dungeon Memorial.]</button>`
+    end();
+}
+function han46() {
+    allMain += `<br><br><br><br><section>You go inside the Memorial building from the rooftop door, you appear to be inside the attic.</section><br><br><button onclick="han47()">[Leave the attic.]</button> <button onclick="han47B()">[Look around.]</button>`
+    end();
+}
+function han46B() {
+    allMain += `<br><br><br><br><section>Stale dust and old parchments litter around the shelves and tables. The scent is a cross of an eons-old library and a mausoleum, you sneeze in response.</section><br><br><button onclick="han39()">[Cool.]</button>`
+    end();
+}
+function han47() {
+    allMain += `<br><br><br><br><section>The interior of the Memorial building is anciently beautiful. You begin on the second floor, looking down from the protective railing. The hall along the way showcases various arrangements of armor suits through the eras of Polend's history.</section><br><br><button onclick="han48()">[--&gt;]</button>`
+    end();
+}
+function han48() {
+    allMain += `<br><br><br><br><section>The display begins with a highly advanced armor designed for mobility dubbed the &quot;Blitzkreig&quot; proudly poses at the end of the arrangement, with the opposite end showing a modestly proportioned plate armor, primitive in nature yet still striking awe and dominance. It was dubbed, &quot;The Cypress&quot;</section><br><br><button onclick="han49()">[Go down the stairs.]</button>`
+    end();
+}
+function han49() {
+    allMain += `<br><br><br><br><section>Descending the elegant stairway leads into the atrium, the expansive room is filled by the light coming down from the glass ceiling. You hear a murmur of speech in one of the nearby rooms. </section><br><br><button onclick="han50()">[--&gt;]</button> <button onclick="han50B">[Look around.]</button>`
+    end();
+}
+function han50B() {
+    allMain += `<br><br><br><br><section>You see a large linen material covering a doorway, you feel that it's best to give it it's privacy.</section><br><br><button onclick="han50()">[--&gt;]</button> <button onclick="han50B2()">[Er, no.]</button>`
+    end();
+}
+function han50B2() {
+    allMain += `<br><br><br><br><section>You uncover the linen. Behind it is a humanoid figure, wrapped up in a tied, woven sack. They seem to be unconcious.</section><br><br><button class="red" onclick="han50()">[You really shouldn't have done that, a fella like this needs his privacy.]</button>`
+    end();
+}
+function han50() {
+    allMain += `<br><br><br><br><section>You enter what looks like an exhibit room, dedicated to a myth about an ancient ice-deity of some kind. You don't really care about that, ice is a particularly stupid thing to think about. Hannah finds a jolly Grand Wizard Kobain speaking to a friendly stranger.</section><br><br><button onclick="han51()">[--&gt;]</button>`
+    end();
+}
+function han51() {
+    allMain += `<br><br><br><br><section>“Ah, Hannah, good to finally see you. I was hoping you would show up here eventually!”</section><br><br><button onclick="han52()">[Grand Wizard! Where have you been?]</button>`
+    end();
+}
+function han52() {
+    allMain += `<br><br><br><br><section>“There has been a, complication since we last spoke. I had to leave very urgently due to.. Well, you're here now, and I require your assistance!”
+    </section><br><br><button onclick="han53B()">[Who's the mummy?]</button> <button onclick="han53()">[ok &colon; &rpar;]</button>`
+    end();
+}
+function han53B() {
+    allMain += `<br><br><br><br><section>You size up the oddly cloth-covered man. All facial details are omitted by the wrap around his head, he wears a traveler's apparel save for the oddly patterned fabric hanging from around his neck and worn messenger's bag around his right shoulder. </section><br><br><button onclick="han53B2()">[--&gt;]</button>`
+    end();
+}
+function han53B2() {
+    allMain += `<br><br><br><br><section>“This is the messenger of course, he comes directly from King Geedorah!” The messenger stares blankly at a fireplace on the opposite wall of the room. “Hm.”
+    </section><br><br><button onclick="han53()">[I can help you now.]</button>`
+    end();
+}
+function han53() {
+    allMain += `<br><br><br><br><section>“Fantastic! Over here, over here.”</section><br><br><button onclick="han54()">[--&gt;]</button>`
+    end();
+}
+function han54() {
+    allMain += `<br><br><br><br><section>Grand Wizard Cobain leads you to a humble corridor near the exhibit room. The messenger follows behind. </section><br><br><button onclick="han55()">[--&gt;]</button>`
+    end();
+}
+function han55() {
+    allMain += `<br><br><br><br><section>Cobain stops at a thin creased line between the smooth marble wall, then makes an unintelligible chant.</section><br><br><button onclick="han56()">[--&gt;]</button>`
+    end();
+}
+function han56() {
+    allMain += `<br><br><br><br><section>The creased line slides open with a rough skidding sound, revealing a torch lit stairway.</section><br><br><button onclick="han57()">[--&gt;]</button>`
+    end();
+}
+function han57() {
+    allMain += `<br><br><br><br><section>“This is the real memorial, Hannah. Within it, lies an ancient relic unbeknownst to most inhabitants of Polend. There are things that wish to obtain it before we, which is why we must retrieve it first. Do you understand?”
+    </section><br><br><button onclick="han58()">[Of course.]</button> <button onclick="han58B">[Er, no.]</button>`
+    end();
+}
+function han58B() {
+    allMain += `<br><br><br><br><section>“Huh? What?”</section><br><br><button onclick="han58B()">[Huh. What?]</button> <button onclick="han58()">[I understand.]</button>`
+    end();
+}
+function han58() {
+    allMain += `<br><br><br><br><section>“Fantastic! The messenger will guide you to the first chamber, he knows it better than I”</section><br><br><button onclick="han59()">[--&gt;]</button>`
+    end();
+}
+function han59() {
+    allMain += `<br><br><br><br><section>You descend the stairway with the messenger, Cobain stays up at the entrance.</section><br><br><button onclick="han60()">[--&gt;]</button>`
+    end();
+}
+function han60() {
+    allMain += `<br><br><br><br><section>The walk is long and silent, the messenger has the resemblance of a lone wanderer, content with the serenity of silence. You find the silence deafening.
+    </section><br><br><button onclick="han61()">[Why were you here with Kobain?]</button>`
+    end();
+}
+function han61() {
+    allMain += `<br><br><br><br><section>“Hm… Kobain. He is up there.”</section><br><br><button onclick="han62()">[He <em>is</em> up there.]</button>`
+    end();
+}
+function han62() {
+    allMain += `<br><br><br><br><section>You arrive at the entrance for the original Eastern Dungeon. “There are things here you are not expecting, Hannah. Things you are subconsciously aware of.”
+    </section><br><br><button onclick="han63B()">[What does that mean?]</button> <button onclick="han63()">Enter the <strong>Dungeon</strong>.</button>`
+    end();
+}
+function han63B() {
+    allMain += `<br><br><br><br><section>“...”</section><br><br><button onclick="han63B()">[--&gt;]</button> <button onclick="han63()">Enter the <strong>Dungeon</strong>.</button>`
+    end();
+}
+function han() {
+    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    end();
+}
+function han() {
+    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    end();
+}
+function han() {
+    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    end();
+}
+function han() {
+    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    end();
+}
+function han() {
+    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    end();
+}
+function han() {
+    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    end();
+}
+function han() {
+    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    end();
+}
+function han() {
+    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    end();
+}
+function han() {
+    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    end();
+}
+function han() {
+    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    end();
+}
+function han() {
+    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    end();
+}
+function han() {
+    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    end();
+}
+function han() {
+    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    end();
 }
 function combatSetup(setCombat = 0, eIndx = 1) {
     if (pHp > pMaxHp) {
         pHp = pMaxHp;
     }
+    totalDefReduction = 0;
     pIsBlocking = false;
     currentEs = []
     if (setCombat === 0) {
@@ -495,18 +686,70 @@ function combatSetup(setCombat = 0, eIndx = 1) {
     end();
 }
 
-function generalAttk(){
-    if(char == `paul`){
-        allMain+=`<br><br><br><section><button onclick='magicAttkNames()'>Magic Attack</button> <button onclick='meleeAttk()'>Melee Attack</button> <button onclick='combatContinue()'>Cancel</button></section>`
+function generalAttk() {
+    allMain += `<br><br><br><section>Select an action:<br><br>`
+    if (char == `paul`) {
+        allMain += `<button onclick='magicAttkNames()'>Magic Attack</button> <button onclick='meleeAttkChoose()'>Melee Attack</button> <button onclick='combatContinue()'>Cancel</button></section>`
     }
-    else{
-        allMain+=`<br><br><br><section><button onclick='magicAttkNames()'>Magic Attack</button> <button onclick='familiarAttk()'>Companian Attack</button> <button onclick='combatContinue()'>Cancel</button></section>`
+    else {
+        allMain += `<button onclick='magicAttkNames()'>Magic Attack</button> <button onclick='familiarAttk()'>Companion Attack</button> <button onclick='combatContinue()'>Cancel</button></section>`
     }
     end();
 }
 
-function meleeAttk(){
+function meleeAttkChoose() {
+    allMain += `<br><br><br><section>Choose a target:<br><br>`
+    for (item of currentEs) {
+        allMain += `<button onevent='meleeAttk(${currentEs.indexOf(item)})'>${item.e}</button> `
+    }
+    allMain += `<button onclick='combatContinue()'>Cancel</button></section>`
     end();
+}
+
+function meleeAttk(enemyIndx) {
+    let dmgToE = Math.round(500 * (pLvl / 25));
+    dmgToE = Math.round(dmgToE * pDmg);
+    if(pAbilities.indexOf(`enemyWeakener`) != -1){
+        if(Math.random()>=0.5){
+            totalDefReduction +=2;
+        }
+    }
+    currentEs[enemyIndx].eDef -= totalDefReduction;
+    if (pAbilities.indexOf(`highMelee`) != -1) {
+        let dmgBuff = Math.floor(totalDmgDealt / 50) * (pLvl * 10 / 25);
+        dmgToE += Math.round(dmgBuff/100*dmgToE)
+    }
+    switch (meleeMagicInfusion) {
+        case `fire`:
+            currentEs[enemyIndx].dot = Math.round(10 * pMagicDmg)
+            currentEs[enemyIndx].dotLength = 3
+            break;
+        case `water`:
+            pHp += dmgToE;
+            break;
+        case `earth`:
+            dmgToE = Math.round(dmgToE * pMagicDmg);
+            break;
+        case `all`:
+            currentEs[enemyIndx].dot = Math.round(10 * pMagicDmg)
+            currentEs[enemyIndx].dotLength = 3
+            waterInfused = true;
+            dmgToE = Math.round(dmgToE * pMagicDmg);
+            break;
+        case `none`:
+            if (pAbilities.indexOf(`multiHit`) != -1) {
+                let hitConst = getRandomInt(0, 25);
+                if (hitConst <= pLvl) {
+                    dmgToE *= 5;
+                }
+            }
+    }
+    currentEs[enemyIndx].eHp -= Math.round(dmgToE * (1 - currentEs[enemyIndx].eDef / 100));
+    totalDmgDealt += dmgToE;
+    allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemy!</section>`
+    currentEs[enemyIndx].eDef = currentEs[enemyIndx].baseDef;
+    end();
+    enemyTurn();
 }
 
 function abilityList() {
@@ -785,6 +1028,9 @@ function enemyTurn() {
             currentEs.splice(i, 1);
             i--;
         }
+        if (currentEs[i].eDef < 0) {
+            currentEs[i].eDef = 0;
+        }
     }
     if (currentEs.length == 0) {
         combatEnd();
@@ -870,6 +1116,10 @@ function enemyTurn() {
             phoenixUsed = true;
         }
     }
+    if(pHp <= 0){
+        playerLost();
+        return undefined;
+    }
     for (let i = 0; i < currentEs.length; i++) {
         if (currentEs[i].eHp <= 0) {
             currentEs.splice(i, 1);
@@ -887,16 +1137,22 @@ function enemyTurn() {
 }
 
 function combatEnd() {
-    allMain += `<br><br><br><br><section>You win</section>`;
+    allMain = `<br><br><br><br><section>You win</section>`;
     givePlayerItem();
+    
     allMain += `<br><br><br><br><section><button onclick='${saveState}()'>Continue</button></section>`
+    end();
+}
+
+function playerLost(){
+    allMain = `You lost<br>Refresh the page to play again`
     end();
 }
 
 //similar to combat end
 function pleaseRun() {
     currentEs = [];
-    allMain += `<br><br><br><br><section>You literally ran from the only enemy. I have no words.</section>`
+    allMain = `<br><br><br><br><section>You literally ran from the only enemy. I have no words.</section>`
     allMain += `<br><br><br><br><section><button onclick='${saveState}()'>Continue</button></section>`
     end();
 }
@@ -1078,27 +1334,27 @@ function lvlUp() {
                         allMain += `<button>Sword Dmg Up</button> <button onevent='addAbility("defReduction","p1", eDefReduction)'>Adds ability which reduces enemy defense</button>`
                     }
                     else if (statC == 2) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy</button> <button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
                     }
                     else if (statC == 3) {
-                        allMain += (`<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy</button> <button>Sword Dmg Up</button>
-                        <button onevent='addAbility("multiHit","p1")'>A non-magic infused attack has a chance to hit ${(level * 5 / 24)} times</button>`)
+                        allMain += (`<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button>
+                        <button onevent='addAbility("multiHit","p1")'>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button>`)
                     }
                     else if (statC == 4) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(level * 5 / 24)} times</button> <button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(plv * 5 / 24)} times</button> <button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
                     }
                     else if (statC == 5) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(level * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button onevent='addAbility("highMelee","p1")'>For every 50 damage you deal, your damage increases by ${level * 10 / 24}%</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button onevent='addAbility("highMelee","p1")'>For every 50 damage you deal, your damage increases by ${pLvl * 10 / 24}%</button>`
                     }
                     else if (statC == 6) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(level * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button>For every 50 damage you deal, your damage increases by ${level * 10 / 24}%</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(plv * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button>For every 50 damage you deal, your damage increases by ${plv * 10 / 24}%</button>`
                     }
 
                     if (statD == 0) {
                         allMain += `<button onevent='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
                     }
                     else if (statD == 1) {
-                        allMain += `<button>Magic Dmg Up</button> <button onevent='addAbility("meleeInfusion","p2",infuseMelee)'>All melee attacks can be infused with selected magic attribute</button>`
+                        allMain += `<button>Magic Dmg Up</button> <button onevent='addAbility("Melee Infusion","p2",infuseMelee)'>All melee attacks can be infused with selected magic attribute</button>`
                     }
                     else if (statD == 2) {
                         allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button onevent='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
@@ -1108,14 +1364,16 @@ function lvlUp() {
                         <button onevent='addAbility("enemyWeakener,"p2")'>Repeated melee attacks weakens the enemy</button>`
                     }
                     else if (statD == 4) {
-                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button onevent='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button onevent='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
                     }
                     else if (statD == 5) {
-                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Magic Dmg Up</button> <button onevent='addAbility("maxInfusion","p2")'>Melee attacks can be infused with all elements</button>`
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button>Magic Dmg Up</button> <button onevent='addAbility("maxInfusion","p2")'>Melee attacks can be infused with all elements</button>`
                     }
                     else if (statD == 6) {
-                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Magic Dmg Up</button> <button>Melee attacks can be infused with all elements</button>`
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button>Magic Dmg Up</button> <button>Melee attacks can be infused with all elements</button>`
                     }
+                    break;
+                case `mat`:
                     break;
             }
             break;
@@ -1126,6 +1384,9 @@ function lvlUp() {
 
 function addAbility(abilityName, path, active = false) {
     pAbilities.push(abilityName);
+    if(abilityName == `Melee Infusion`){
+        pActiveAbilities.push({name:`Remove Infusion`,effect:removeInfusion})
+    }
     if (active) {
         pActiveAbilities.push({ name: abilityName });
         pActiveAbilities[pActiveAbilities.length - 1].effect = active
