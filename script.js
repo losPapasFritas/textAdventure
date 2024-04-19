@@ -34,6 +34,7 @@ let char = `none`,
     phoenixUsed = false,
     quickHealUsed = false,
     quadHitActivated = false,
+    meleeMagicInfusion = `none`,
     totalDmgDealt = 0;
 //mudman is first dungeon boss
 let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`];
@@ -146,31 +147,50 @@ class debuffItem {
     }
 }
 
-function instaKill () {
-    for(item of currentEs){
-        if(item.hpPercent < 0.1){
+function instaKill() {
+    for (item of currentEs) {
+        if (item.hpPercent < 0.1) {
             item.eHp = 0;
-            allMain+=`<br><br><br><section>Your ability defeated the ${item.e}!</section>`
+            allMain += `<br><br><br><section>Your ability defeated the ${item.e}!</section>`
         }
     }
     end();
     enemyTurn();
 }
 
-function eDefReduction(){
-    for(item of currentEs){
+function infuseMelee() {
+    if (pAbilities.indexOf(`maxInfustion`) == -1) {
+        switch (pSpellType) {
+            case `fire`:
+                meleeMagicInfusion = `fire`
+                break;
+            case `earth`:
+                meleeMagicInfusion = `earth`
+                break;
+            case `water`:
+                meleeMagicInfusion = `water`
+                break;
+        }
+    }
+    else{
+        meleeMagicInfusion = `all`
+    }
+}
+
+function eDefReduction() {
+    for (item of currentEs) {
         item.eDef -= 2.5;
-        if(item.eDef < 0){
+        if (item.eDef < 0) {
             item.eDef = 0;
         }
     }
 }
 
-function coolDown(){
-    if(dotLengthOnP != 0){
+function coolDown() {
+    if (dotLengthOnP != 0) {
         dotLengthOnP = 0;
         dotOnP = 0;
-        allMain+=`<br><br><br><section>You removed the thing dealing damage to you!</section>`
+        allMain += `<br><br><br><section>You removed the thing dealing damage to you!</section>`
     }
 }
 
@@ -475,7 +495,7 @@ function combatSetup(setCombat = 0, eIndx = 1) {
     end();
 }
 
-function abilityList(){
+function abilityList() {
     allMain += `<br><br><br><br><section>`
     if (pActiveAbilities.length > 0) {
         for (item of pActiveAbilities) {
@@ -486,7 +506,7 @@ function abilityList(){
     else {
         allMain += `You have no active abilities<br><br><button onclick="combatContinue()">Cancel</button>`
     }
-    allMain+=`</section>`
+    allMain += `</section>`
     end();
 }
 
@@ -618,10 +638,10 @@ function magicAttkAction(spell) {
     let attkMiss = false;
     let attkChance = 0.8;
     let hitNum = 0;
-    
-    if(pAbilities.indexOf(`highMelee`)){
-        for(let i = 0; i < Math.floor(totalDmgDealt/50); i++)
-        pMagicDmg+=(pLvl*5/24).toFixed(2);
+
+    if (pAbilities.indexOf(`highMelee`)) {
+        for (let i = 0; i < Math.floor(totalDmgDealt / 50); i++)
+            pMagicDmg += (pLvl * 5 / 24).toFixed(2);
     }
     while (!attkMiss && hitNum < pSpellAttkNum[castSpellIndx]) {
         if (Math.random() < attkChance) {
@@ -632,7 +652,7 @@ function magicAttkAction(spell) {
         else {
             attkMiss = true;
         }
-        if(hitNum == 0 && attkMiss){
+        if (hitNum == 0 && attkMiss) {
             dmgToE += pSpellDmg[castSpellIndx];
         }
     }
@@ -644,7 +664,7 @@ function magicAttkAction(spell) {
         dmgToE = Math.round(dmgToE);
         pHp += dmgToE;
         allMain += `<br><br><br><br><section>You healed ${dmgToE} health.</section>`
-        if(pAbilities.indexOf(`waterShield`) != -1){
+        if (pAbilities.indexOf(`waterShield`) != -1) {
             pBlockDef += 10;
         }
         if (!quickHealUsed && pAbilities.indexOf(`quickHeal`) != -1) {
@@ -686,7 +706,7 @@ function magicAttkAction(spell) {
         }
         allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemies.`
     }
-    
+
     else {
         if (pAbilities.indexOf(`doubleEarth`) != -1) {
             if (Math.random() < (pLvl - 1) / 25) {
@@ -705,7 +725,7 @@ function magicAttkAction(spell) {
         totalDmgDealt += dmgToE;
         allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemy.`
     }
-    
+
     if (quadHitActivated) {
         allMain += ` Your earth ability also increased this damage by 4x!</section>`
     }
@@ -915,7 +935,7 @@ function lvlUp() {
             else if (statB == 6) {
                 allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button>If your Hp drops to 0, regain half hp</button>`
             }
-            allMain+=`</section><section class='skillColumn'>`
+            allMain += `</section><section class='skillColumn'>`
             if (statC == 0) {
                 allMain += `<button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
             }
@@ -937,7 +957,7 @@ function lvlUp() {
             else if (statC == 6) {
                 allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button>You can attack and heal in the same turn</button>`
             }
-            allMain+=`</section><section class='skillColumn'>`
+            allMain += `</section><section class='skillColumn'>`
             if (statD == 0) {
                 allMain += `<button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
             }
@@ -960,7 +980,7 @@ function lvlUp() {
             else if (statD == 6) {
                 allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
             }
-            allMain+=`</section>`
+            allMain += `</section>`
             break;
         default:
             switch (pSpellType) {
@@ -1035,52 +1055,52 @@ function lvlUp() {
                     }
                     break;
             }
-            switch(char){
+            switch (char) {
                 case `paul`:
                     if (statC == 0) {
-                        allMain += `<button onevent='buffStat("pDmg",${0.25})'>Sword dmg up</button>`
+                        allMain += `<button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
                     }
                     else if (statC == 1) {
-                        allMain += `<button>Sword dmg up</button> <button onevent='addAbility("defReduction","p1", eDefReduction)'>Adds ability which reduces enemy defense</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button onevent='addAbility("defReduction","p1", eDefReduction)'>Adds ability which reduces enemy defense</button>`
                     }
                     else if (statC == 2) {
-                        allMain += `<button>Sword dmg up</button> <button>Adds ability which reduces enemy</button> <button onevent='buffStat("pDmg",${0.25})'>Sword dmg up</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy</button> <button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
                     }
                     else if (statC == 3) {
-                        allMain += (`<button>Sword dmg up</button> <button>Adds ability which reduces enemy</button> <button>Sword dmg up</button>
-                        <button onevent='addAbility("multiHit","p1")'>A non-magic infused attack has a chance to hit ${(level*5/24)} times</button>`)
+                        allMain += (`<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy</button> <button>Sword Dmg Up</button>
+                        <button onevent='addAbility("multiHit","p1")'>A non-magic infused attack has a chance to hit ${(level * 5 / 24)} times</button>`)
                     }
                     else if (statC == 4) {
-                        allMain += `<button>Sword dmg up</button> <button>Adds ability which reduces enemy</button> <button>Sword dmg up</button> <button>A non-magic infused attack has a chance to hit ${(level*5/24)} times</button> <button onevent='buffStat("pDmg",${0.25})'>Sword dmg up</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(level * 5 / 24)} times</button> <button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
                     }
                     else if (statC == 5) {
-                        allMain += `<button>Sword dmg up</button> <button>Adds ability which reduces enemy</button> <button>Sword dmg up</button> <button>A non-magic infused attack has a chance to hit ${(level*5/24)} times</button> <button>Sword dmg up</button> <button onevent='addAbility("highMelee","p1")'>For every 50 damage you deal, your damage increases by ${level*10/24}%</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(level * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button onevent='addAbility("highMelee","p1")'>For every 50 damage you deal, your damage increases by ${level * 10 / 24}%</button>`
                     }
                     else if (statC == 6) {
-                        allMain += `<button>Sword dmg up</button> <button>Adds ability which reduces enemy</button> <button>Sword dmg up</button> <button>A non-magic infused attack has a chance to hit ${(level*5/24)} times</button> <button>Sword dmg up</button> <button>For every 50 damage you deal, your damage increases by ${level*10/24}%</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(level * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button>For every 50 damage you deal, your damage increases by ${level * 10 / 24}%</button>`
                     }
 
                     if (statD == 0) {
-                        allMain += `<button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                        allMain += `<button onevent='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
                     }
                     else if (statD == 1) {
-                        allMain += `<button>Earth Dmg Up</button> <button onevent='addAbility("doubleEarth","earth")'>Earth attacks can hit twice</button>`
+                        allMain += `<button>Magic Dmg Up</button> <button onevent='addAbility("meleeInfusion","p2",infuseMelee)'>All melee attacks can be infused with selected magic attribute</button>`
                     }
                     else if (statD == 2) {
-                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button onevent='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
                     }
                     else if (statD == 3) {
-                        allMain += (`<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button>
-                        <button onevent='addAbility("InstaKill","earth", instaKill'>Adds ability to defeat any enemy whose hp is under 10%</button>`)
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button>
+                        <button onevent='addAbility("enemyWeakener,"p2")'>Repeated melee attacks weakens the enemy</button>`
                     }
                     else if (statD == 4) {
-                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button onevent='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
                     }
                     else if (statD == 5) {
-                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button onevent='addAbility("quadHit","earth")'>Melee attacks can be infused with all elements</button>`
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Magic Dmg Up</button> <button onevent='addAbility("maxInfusion","p2")'>Melee attacks can be infused with all elements</button>`
                     }
                     else if (statD == 6) {
-                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button>Melee attacks can be infused with all elements</button>`
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Magic Dmg Up</button> <button>Melee attacks can be infused with all elements</button>`
                     }
                     break;
             }
@@ -1090,29 +1110,29 @@ function lvlUp() {
 }
 
 
-function addAbility(abilityName, path ,active = false) {
+function addAbility(abilityName, path, active = false) {
     pAbilities.push(abilityName);
-    if(active){
-        pActiveAbilities.push({name:abilityName});
-        pActiveAbilities[pActiveAbilities.length-1].effect = active
+    if (active) {
+        pActiveAbilities.push({ name: abilityName });
+        pActiveAbilities[pActiveAbilities.length - 1].effect = active
     }
-    switch (path){
+    switch (path) {
         case `fire`:
-            statB ++;
+            statB++;
             break;
         case `water`:
-            if(pSpellType == `water`){
+            if (pSpellType == `water`) {
                 statB++
             }
-            else{
+            else {
                 statC++;
             }
             break;
         case `earth`:
-            if(pSpellType == `earth`){
+            if (pSpellType == `earth`) {
                 statB++
             }
-            else{
+            else {
                 statD++;
             }
             break;
@@ -1131,23 +1151,23 @@ function buffStat(stat, amount) {
             break;
         case `fireDotBuff`:
             fireDotBuff += amount;
-            statB ++;
+            statB++;
             break;
         case `waterBuff`:
             waterBuff += amount;
-            if(pSpellType == `water`){
+            if (pSpellType == `water`) {
                 statB++
             }
-            else{
+            else {
                 statC++;
             }
             break;
         case `earthBuff`:
             earthBuff += amount;
-            if(pSpellType == `earth`){
+            if (pSpellType == `earth`) {
                 statB++
             }
-            else{
+            else {
                 statD++;
             }
             break;
