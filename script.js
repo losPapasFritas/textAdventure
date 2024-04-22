@@ -16,6 +16,8 @@ let char = `none`,
     pIsBlocking = false,
     pLvl = 1,
     pSpells = [],
+    pAllies = [],
+    allyDmgBuff = 1,
     pSpellType = `none`,
     pHp = 100,
     pMaxHp = 100,
@@ -35,6 +37,7 @@ let char = `none`,
     quickHealUsed = false,
     quadHitActivated = false,
     meleeMagicInfusion = `none`,
+    bonusActionUsed = false,
     totalDmgDealt = 0,
     totalDefReduction = 0;
 //mudman is first dungeon boss
@@ -158,6 +161,13 @@ function instaKill() {
     }
     end();
     enemyTurn();
+}
+
+function allyHeal(){
+    for(item of pAllies){
+        item.eHp += (1 - (pLvl / 25 * 35) / 100);
+    }
+    allMain+=`<br><br><br><br><section>You healed your allies ${pLvl / 24 * 35}% of their health</section>`
 }
 
 function removeInfusion(){
@@ -692,9 +702,59 @@ function generalAttk() {
         allMain += `<button onclick='magicAttkNames()'>Magic Attack</button> <button onclick='meleeAttkChoose()'>Melee Attack</button> <button onclick='combatContinue()'>Cancel</button></section>`
     }
     else {
-        allMain += `<button onclick='magicAttkNames()'>Magic Attack</button> <button onclick='familiarAttk()'>Companion Attack</button> <button onclick='combatContinue()'>Cancel</button></section>`
+        allMain += `<button onclick='magicAttkNames()'>Magic Attack</button> `
+        if(!bonusActionUsed){
+            allMain+=`<button onclick='familiarAttk()'>Companion Attack</button> <button onclick='combatContinue()'>Cancel</button>`
+        }
+        allMain+=`</section>`
     }
     end();
+}
+
+function familiarAttk(){
+    allMain+=`<br><br><br><section>Select an ally to attack:<br><br>`
+    for(item of pAllies){
+        allMain+=`<button onevent='allySelect(${item})'>${item.name}</button> `
+    }
+    allMain += `<button onclick='combatContinue()'>Cancel</button></section>`
+    end();
+}
+
+function allySelect(allyObj){
+    allMain += `<br><br><br><section>Choose a target:<br><br>`
+    for (item of currentEs) {
+        allMain += `<button onevent='allyAttk(${allyObj},${currentEs.indexOf(item)})'>${item.e}</button> `
+    }
+    allMain += `<button onclick='combatContinue()'>Cancel</button></section>`
+    end();
+}
+
+function allyAttk(allyObj, enemyIndx){
+    let dmgToE = Math.round(allyObj.eDmg * (pDmg + allyDmgBuff));
+    switch (meleeMagicInfusion) {
+        case `fire`:
+            currentEs[enemyIndx].dot = Math.round(10 * pMagicDmg)
+            currentEs[enemyIndx].dotLength = 3
+            break;
+        case `water`:
+            pHp += dmgToE;
+            break;
+        case `earth`:
+            dmgToE = Math.round(dmgToE * pMagicDmg);
+            break;
+    }
+    dmgToE = Math.round(dmgToE * (1 - currentEs[enemyIndx].eDef / 100));
+    currentEs[enemyIndx].eHp -= dmgToE;
+    allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemy!</section>`
+    currentEs[enemyIndx].eDef = currentEs[enemyIndx].baseDef;
+    end();
+    if(!bonusActionUsed && pAbilities.indexOf(`allyBonusAction`) != -1){
+        allMain+=`<br><br><section>You can do an extra action!</section>`
+        combatContinue();
+    }
+    else{
+        enemyTurn();
+    }
 }
 
 function meleeAttkChoose() {
@@ -744,7 +804,8 @@ function meleeAttk(enemyIndx) {
                 }
             }
     }
-    currentEs[enemyIndx].eHp -= Math.round(dmgToE * (1 - currentEs[enemyIndx].eDef / 100));
+    dmgToE = Math.round(dmgToE * (1 - currentEs[enemyIndx].eDef / 100));
+    currentEs[enemyIndx].eHp -= dmgToE;
     totalDmgDealt += dmgToE;
     allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemy!</section>`
     currentEs[enemyIndx].eDef = currentEs[enemyIndx].baseDef;
@@ -1338,16 +1399,16 @@ function lvlUp() {
                     }
                     else if (statC == 3) {
                         allMain += (`<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button>
-                        <button onevent='addAbility("multiHit","p1")'>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button>`)
+                        <button onevent='addAbility("multiHit","p1")'>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 25)} times</button>`)
                     }
                     else if (statC == 4) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(plv * 5 / 24)} times</button> <button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
                     }
                     else if (statC == 5) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button onevent='addAbility("highMelee","p1")'>For every 50 damage you deal, your damage increases by ${pLvl * 10 / 24}%</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button onevent='addAbility("highMelee","p1")'>For every 50 damage you deal, your damage increases by ${pLvl * 10 / 25}%</button>`
                     }
                     else if (statC == 6) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(plv * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button>For every 50 damage you deal, your damage increases by ${plv * 10 / 24}%</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button>For every 50 damage you deal, your damage increases by ${pLvl * 10 / 24}%</button>`
                     }
 
                     if (statD == 0) {
@@ -1374,6 +1435,51 @@ function lvlUp() {
                     }
                     break;
                 case `mat`:
+                    if (statC == 0) {
+                        allMain += `<button onevent='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
+                    }
+                    else if (statC == 1) {
+                        allMain += `<button>Ally Dmg Up</button> <button onevent='addAbility("Ally Infusion","m1",infuseMelee)'>You can infuse  infuse allies with your elemental attribute</button>`
+                    }
+                    else if (statC == 2) {
+                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button onevent='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
+                    }
+                    else if (statC == 3) {
+                        allMain += (`<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button>
+                        <button onevent='addAbility("allyHeal","m1", allyHeal())'>You can heal all allies ${pLvl/25*35}% of their health</button>`)
+                    }
+                    else if (statC == 4) {
+                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl/25*35}% of their health</button> <button onevent='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
+                    }
+                    else if (statC == 5) {
+                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl/25*35}% of their health</button> <button>Ally Dmg Up</button> <button onevent='addAbility("allyBonusAction","m1")'>You can do an extra action while your ally attacks</button>`
+                    }
+                    else if (statC == 6) {
+                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl/25*35}% of their health</button> <button>Ally Dmg Up</button> <button>You can do an extra action while your ally attacks</button>`
+                    }
+
+                    if (statD == 0) {
+                        allMain += `<button onevent='buffStat("allyNum",${0.25})'>Magic Dmg Up</button>`
+                    }
+                    else if (statD == 1) {
+                        allMain += `<button>Magic Dmg Up</button> <button onevent='addAbility("Melee Infusion","p2",infuseMelee)'>All melee attacks can be infused with selected magic attribute</button>`
+                    }
+                    else if (statD == 2) {
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button onevent='buffStat("allyNum",${0.25})'>Magic Dmg Up</button>`
+                    }
+                    else if (statD == 3) {
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button>
+                        <button onevent='addAbility("enemyWeakener,"p2")'>Repeated melee attacks weakens the enemy</button>`
+                    }
+                    else if (statD == 4) {
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button onevent='buffStat("allyNum",${0.25})'>Magic Dmg Up</button>`
+                    }
+                    else if (statD == 5) {
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button>Magic Dmg Up</button> <button onevent='addAbility("maxInfusion","p2")'>Melee attacks can be infused with all elements</button>`
+                    }
+                    else if (statD == 6) {
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button>Magic Dmg Up</button> <button>Melee attacks can be infused with all elements</button>`
+                    }
                     break;
             }
             break;
@@ -1449,10 +1555,18 @@ function buffStat(stat, amount) {
         case `pDmg`:
             pDmg += amount;
             pBaseDmg += amount;
+            statC++;
             break;
         case `pMagicDmg`:
             pMagicDmg += amount;
             pBaseMagicDmg += amount;
+            statD++
+            break;
+        case `allyDmg`:
+            allyDmgBuff += amount;
+            statC++;
+        case `allyNum`:
+            statD++;
             break;
     }
     stat++;
