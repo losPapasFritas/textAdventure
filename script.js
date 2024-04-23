@@ -1016,9 +1016,6 @@ function magicAttkAction(spell) {
         else {
             attkMiss = true;
         }
-        if (hitNum == 0 && attkMiss) {
-            dmgToE += pSpellDmg[castSpellIndx];
-        }
     }
     if (`earth` === allPSpellType[castSpellIndx]) {
         pMagicDmg += (0.25 + earthBuff)
@@ -1065,7 +1062,6 @@ function magicAttkAction(spell) {
             }
             dmgToE = Math.round(dmgToE * (1 - (item.eDef / 100)))
             item.eHp -= dmgToE;
-            console.log(`run`)
             totalDmgDealt += dmgToE;
         }
         allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemies.`
