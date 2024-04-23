@@ -16,6 +16,8 @@ let char = `none`,
     pIsBlocking = false,
     pLvl = 1,
     pSpells = [],
+    pAllies = [],
+    allyDmgBuff = 1,
     pSpellType = `none`,
     pHp = 100,
     pMaxHp = 100,
@@ -35,6 +37,7 @@ let char = `none`,
     quickHealUsed = false,
     quadHitActivated = false,
     meleeMagicInfusion = `none`,
+    bonusActionUsed = false,
     totalDmgDealt = 0,
     totalDefReduction = 0;
 //mudman is first dungeon boss
@@ -43,7 +46,9 @@ let eHpAll = [70, 10000, 100, 85, 30, 1200, 1200, 1300, 5460];
 let eDmgAll = [10, 1, 15, 13, 20, 40, 45, 50, 70];
 let eLvlAll = [1, 500, 7, 5, 6, 10, 12, 10, 24];
 let eDefAll = [10, 99.99999999, 10, 10, 3, 0, 10, 5, 50];
-let itemList = [{ name: `Enchanted Golden Apple`, hp: 10000, def: 10000, dmg: 100, magic: 19 }]
+let itemList = [{ name: `Enchanted Golden Apple`, hp: 10000, def: 10000, dmg: 100, magic: 19 }, { name: `Potion of Minor Healing`, hp: 40, def: 0, dmg: 0, magic: 0 }, { name: `Pot of Healing`, hp: 70, def: 0, dmg: 0, magic: 0 },
+                { name: `Cauldron of Major Healing`, hp: 100, def: 0, dmg: 0, magic: 0 }, { name: `Coffee`, hp: 25, def: 0, dmg: 0.25, magic: 0.5 }, { name: `Hornet Honey`, hp: 30, def: 5 / 8, dmg: 0, magic: 0.5 },
+                { name: `Magic Metal Stick`, hp: 50, def: 20, dmg: 0 }, { name: `Fish`, hp: 9999999, def: 99, dmg: 0 }, { name: `Fire Whip`, hp: 69, def: 0.69, dmg: 0 }, { name: `Twig`, hp: 1, def: 1, dmg: 1 }]
 let pItems = [];
 let allPSpellType = [
     `fire`,
@@ -160,7 +165,14 @@ function instaKill() {
     enemyTurn();
 }
 
-function removeInfusion(){
+function allyHeal() {
+    for (item of pAllies) {
+        item.eHp += (1 - (pLvl / 25 * 35) / 100);
+    }
+    allMain += `<br><br><br><br><section>You healed your allies ${pLvl / 24 * 35}% of their health</section>`
+}
+
+function removeInfusion() {
     meleeMagicInfusion = `none`
 }
 //Infuse melee skill unlocked by Paul
@@ -200,6 +212,42 @@ function coolDown() {
     }
 }
 
+function recruitAlly() {
+    allMain += `<br><br><br><section>Select an enemy to recruit :<br><br>`
+    for (let i = 0; i < currentEs.length; i++) {
+        allMain += `<button onclick='recruitAllyEnd(currentEs[${i}])'>${currentEs[i].e}</button> `
+    }
+    allMain += `<button onclick="combatContinue()">Cancel</button>`
+    end();
+}
+
+function recruitAllyEnd(selectedE) {
+    let recruitChance = 1 - selectedE.hpPercent;
+    if (pAbilities.indexOf(`allyChanceUp`) != -1) {
+        recruitChance += 0.2
+    }
+    if (recruitChance > 1) {
+        recruitChance = 1;
+    }
+    if (Math.random() <= recruitChance) {
+        pAllies.push(selectedE);
+        currentEs.splice(currentEs.indexOf(selectedE), 1);
+        if (pAbilities.indexOf(`allyStrengthen`) != -1) {
+            pAllies[pAllies.length - 1].eHp = Math.round(1.5 * pAllies[pAllies.length - 1].eHp);
+            pAllies[pAllies.length - 1].maxEHp = Math.round(1.5 * pAllies[pAllies.length - 1].maxEHp);
+            pAllies[pAllies.length - 1].eDmg = Math.round(1.5 * pAllies[pAllies.length - 1].eDmg);
+            pAllies[pAllies.length - 1].eDef = Math.round(1.5 * pAllies[pAllies.length - 1].eDef);
+            pAllies[pAllies.length - 1].baseDef = Math.round(1.5 * pAllies[pAllies.length - 1].baseDef);
+        }
+
+    }
+    else {
+        allMain += `<br><br><br><section>You failed to gain the ${selectedE.e} as an ally!</section>`
+    }
+    end();
+    enemyTurn();
+}
+
 function givePlayerItem(itemNum = -1) {
     if (itemNum === -1) {
         let itemNum = getRandomInt(0, itemList.length);
@@ -211,7 +259,7 @@ function givePlayerItem(itemNum = -1) {
         }
     }
     else {
-        if (itemNum < 5) {
+        if (itemNum < 1) {
             pItems.push(new buffItem(itemList[itemNum].name, itemList[itemNum].hp, itemList[itemNum].def, itemList[itemNum].dmg, itemList[itemNum].magic));
         }
         else {
@@ -257,6 +305,11 @@ function aOrAn(firstLetter) {
     return phrase;
 }
 
+function mathewSelect() {
+    char = `mat`;
+    addAbility(`Recruit Ally`, `none`, recruitAlly);
+}
+
 function paulSelect() {
     char = `paul`;
     pDmg = 1.5;
@@ -291,7 +344,7 @@ function han2() {
     end();
 }
 function han3() {
-    allMain += `<br><br><br><br><section>Footsteps appear right behind you as there were no one there previously. "That was a fine victory young lass, now just who are you?"<br><br><button onclick="han4()"</button></section>`
+    allMain += `<br><br><br><br><section>Footsteps appear right behind you as there were no one there previously. "That was a fine victory young lass, now just who are you?"<br><br><button onclick="han4()">--&gt;</button></section>`
     end();
 }
 function han4() {
@@ -408,7 +461,7 @@ function han30() {
     end();
 }
 function han31() {
-    allMain += `<br><br><br><br><section>On the right, the hall is seemingly mundane apart from its natural stillness. The right hall seems to be naturally tranquil, even beckoning you to step through its’ entryway<br><br><button onclick="han32()">[--&gt;]</button></section>`
+    allMain += `<br><br><br><br><section>On the right, the hall is seemingly mundane apart from its natural stillness. The right hall seems to be naturally tranquil, even beckoning you to step through its' entryway<br><br><button onclick="han32()">[--&gt;]</button></section>`
     end();
 }
 function han32() {
@@ -694,9 +747,62 @@ function generalAttk() {
         allMain += `<button onclick='magicAttkNames()'>Magic Attack</button> <button onclick='meleeAttkChoose()'>Melee Attack</button> <button onclick='combatContinue()'>Cancel</button></section>`
     }
     else {
-        allMain += `<button onclick='magicAttkNames()'>Magic Attack</button> <button onclick='familiarAttk()'>Companion Attack</button> <button onclick='combatContinue()'>Cancel</button></section>`
+        allMain += `<button onclick='magicAttkNames()'>Magic Attack</button> `
+        if (!bonusActionUsed) {
+            allMain += `<button onclick='familiarAttk()'>Companion Attack</button> <button onclick='combatContinue()'>Cancel</button>`
+        }
+        allMain += `</section>`
     }
     end();
+}
+
+function familiarAttk() {
+    allMain += `<br><br><br><section>Select an ally to attack:<br><br>`
+    for (item of pAllies) {
+        allMain += `<button onevent='allySelect(${item})'>${item.name}</button> `
+    }
+    allMain += `<button onclick='combatContinue()'>Cancel</button></section>`
+    end();
+}
+
+function allySelect(allyObj) {
+    allMain += `<br><br><br><section>Choose a target:<br><br>`
+    for (item of currentEs) {
+        allMain += `<button onevent='allyAttk(${allyObj},${currentEs.indexOf(item)})'>${item.e}</button> `
+    }
+    allMain += `<button onclick='combatContinue()'>Cancel</button></section>`
+    end();
+}
+
+function allyAttk(allyObj, enemyIndx) {
+    let dmgToE = Math.round(allyObj.eDmg * (pDmg + allyDmgBuff));
+    switch (meleeMagicInfusion) {
+        case `fire`:
+            currentEs[enemyIndx].dot = Math.round(10 * pMagicDmg)
+            currentEs[enemyIndx].dotLength = 3
+            break;
+        case `water`:
+            pHp += dmgToE;
+            break;
+        case `earth`:
+            dmgToE = Math.round(dmgToE * pMagicDmg);
+            break;
+    }
+    dmgToE = Math.round(dmgToE * (1 - currentEs[enemyIndx].eDef / 100));
+    if (pAllies.length == maxAllyNum && pAbilities.indexOf(stInNumbers) != -1) {
+        dmgToE = Math.round(dmgToE * 1.5);
+    }
+    currentEs[enemyIndx].eHp -= dmgToE;
+    allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemy!</section>`
+    currentEs[enemyIndx].eDef = currentEs[enemyIndx].baseDef;
+    end();
+    if (!bonusActionUsed && pAbilities.indexOf(`allyBonusAction`) != -1) {
+        allMain += `<br><br><section>You can do an extra action!</section>`
+        combatContinue();
+    }
+    else {
+        enemyTurn();
+    }
 }
 
 function meleeAttkChoose() {
@@ -711,15 +817,15 @@ function meleeAttkChoose() {
 function meleeAttk(enemyIndx) {
     let dmgToE = Math.round(500 * (pLvl / 25));
     dmgToE = Math.round(dmgToE * pDmg);
-    if(pAbilities.indexOf(`enemyWeakener`) != -1){
-        if(Math.random()>=0.5){
-            totalDefReduction +=2;
+    if (pAbilities.indexOf(`enemyWeakener`) != -1) {
+        if (Math.random() >= 0.5) {
+            totalDefReduction += 2;
         }
     }
     currentEs[enemyIndx].eDef -= totalDefReduction;
     if (pAbilities.indexOf(`highMelee`) != -1) {
         let dmgBuff = Math.floor(totalDmgDealt / 50) * (pLvl * 10 / 25);
-        dmgToE += Math.round(dmgBuff/100*dmgToE)
+        dmgToE += Math.round(dmgBuff / 100 * dmgToE)
     }
     switch (meleeMagicInfusion) {
         case `fire`:
@@ -746,7 +852,8 @@ function meleeAttk(enemyIndx) {
                 }
             }
     }
-    currentEs[enemyIndx].eHp -= Math.round(dmgToE * (1 - currentEs[enemyIndx].eDef / 100));
+    dmgToE = Math.round(dmgToE * (1 - currentEs[enemyIndx].eDef / 100));
+    currentEs[enemyIndx].eHp -= dmgToE;
     totalDmgDealt += dmgToE;
     allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemy!</section>`
     currentEs[enemyIndx].eDef = currentEs[enemyIndx].baseDef;
@@ -911,9 +1018,6 @@ function magicAttkAction(spell) {
         else {
             attkMiss = true;
         }
-        if (hitNum == 0 && attkMiss) {
-            dmgToE += pSpellDmg[castSpellIndx];
-        }
     }
     if (`earth` === allPSpellType[castSpellIndx]) {
         pMagicDmg += (0.25 + earthBuff)
@@ -960,7 +1064,6 @@ function magicAttkAction(spell) {
             }
             dmgToE = Math.round(dmgToE * (1 - (item.eDef / 100)))
             item.eHp -= dmgToE;
-            console.log(`run`)
             totalDmgDealt += dmgToE;
         }
         allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemies.`
@@ -992,7 +1095,7 @@ function magicAttkAction(spell) {
         allMain += `</section>`
     }
     for (let i = 0; i < currentEs.length; i++) {
-        if (currentEs[i].eHp <= 0) {
+        if (!(currentEs[i].eHp > 0)) {
             currentEs.splice(i, 1);
             i--;
         }
@@ -1026,7 +1129,7 @@ function combatContinue() {
 
 function enemyTurn() {
     for (let i = 0; i < currentEs.length; i++) {
-        if (currentEs[i].eHp <= 0) {
+        if (!(currentEs[i].eHp > 0)) {
             currentEs.splice(i, 1);
             i--;
         }
@@ -1062,7 +1165,7 @@ function enemyTurn() {
         dmgToP += Math.round(item.eDmg * randomDmg);
         randomDmg = 0;
     }
-    dmgToP = Math.round(dmgToP * (1 - (pBlockDef / 100)));
+
     if (pIsBlocking) {
         if (pAbilities.indexOf(`blockImmunity`) > -1) {
             let hitChance = getRandomInt(0, 4);
@@ -1083,7 +1186,20 @@ function enemyTurn() {
             }
         }
     }
-    pHp -= dmgToP;
+    let hitAlly = getRandomInt(0, pAllies.length + 1);
+    if (hitAlly == pAllies.length) {
+        dmgToP = Math.round(dmgToP * (1 - (pBlockDef / 100)));
+        pHp -= dmgToP;
+    }
+    else {
+        dmgToP = Math.round(dmgToP * (1 - (pAllies[hitAlly].eDef / 100)));
+        pAllies[hitAlly].eHp -= dmgToP;
+        for (item of hitAlly) {
+            if (!(item.eHp > 0)) {
+                pAllies.splice(pAllies.indexOf(item), 1);
+            }
+        }
+    }
     allMain += `<br><br><br><br> <section>The ${currentEs[0].e}`
     if (currentEs.length == 4) {
         allMain += `, ${currentEs[1].e}, ${currentEs[2].e},`;
@@ -1094,7 +1210,12 @@ function enemyTurn() {
     if (currentEs.length >= 2) {
         allMain += ` and ${currentEs[currentEs.length - 1].e}`
     }
-    allMain += ` dealt ${dmgToP} damage to you. You have ${pHp} health remaining. `
+    if (hitAlly == pAllies.length) {
+        allMain += ` dealt ${dmgToP} damage to you. You have ${pHp} health remaining.`
+    }
+    else {
+        allMain += ` dealt ${dmgToP} damage to your ${pAllies[hitAlly].e}. Your ally has ${pAllies[hitAlly].eHp} health remaining.`
+    }
     for (item of currentEs) {
         if (item.dotLength > 0) {
             item.eHp -= item.dot;
@@ -1103,7 +1224,7 @@ function enemyTurn() {
         }
     }
     for (let i = 0; i < currentEs.length; i++) {
-        if (currentEs[i].eHp <= 0) {
+        if (!(currentEs[i].eHp > 0)) {
             currentEs.splice(i, 1);
             i--;
         }
@@ -1118,7 +1239,7 @@ function enemyTurn() {
             phoenixUsed = true;
         }
     }
-    if(pHp <= 0){
+    if (pHp <= 0) {
         playerLost();
         return undefined;
     }
@@ -1141,12 +1262,12 @@ function enemyTurn() {
 function combatEnd() {
     allMain = `<br><br><br><br><section>You win</section>`;
     givePlayerItem();
-    
+
     allMain += `<br><br><br><br><section><button onclick='${saveState}()'>Continue</button></section>`
     end();
 }
 
-function playerLost(){
+function playerLost() {
     allMain = `You lost<br>Refresh the page to play again`
     end();
 }
@@ -1340,16 +1461,16 @@ function lvlUp() {
                     }
                     else if (statC == 3) {
                         allMain += (`<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button>
-                        <button onevent='addAbility("multiHit","p1")'>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button>`)
+                        <button onevent='addAbility("multiHit","p1")'>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 25)} times</button>`)
                     }
                     else if (statC == 4) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(plv * 5 / 24)} times</button> <button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
                     }
                     else if (statC == 5) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button onevent='addAbility("highMelee","p1")'>For every 50 damage you deal, your damage increases by ${pLvl * 10 / 24}%</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button onevent='addAbility("highMelee","p1")'>For every 50 damage you deal, your damage increases by ${pLvl * 10 / 25}%</button>`
                     }
                     else if (statC == 6) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(plv * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button>For every 50 damage you deal, your damage increases by ${plv * 10 / 24}%</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button>For every 50 damage you deal, your damage increases by ${pLvl * 10 / 24}%</button>`
                     }
 
                     if (statD == 0) {
@@ -1376,6 +1497,51 @@ function lvlUp() {
                     }
                     break;
                 case `mat`:
+                    if (statC == 0) {
+                        allMain += `<button onevent='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
+                    }
+                    else if (statC == 1) {
+                        allMain += `<button>Ally Dmg Up</button> <button onevent='addAbility("Ally Infusion","m1",infuseMelee)'>You can infuse  infuse allies with your elemental attribute</button>`
+                    }
+                    else if (statC == 2) {
+                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button onevent='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
+                    }
+                    else if (statC == 3) {
+                        allMain += (`<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button>
+                        <button onevent='addAbility("allyHeal","m1", allyHeal())'>You can heal all allies ${pLvl / 25 * 35}% of their health</button>`)
+                    }
+                    else if (statC == 4) {
+                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button onevent='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
+                    }
+                    else if (statC == 5) {
+                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button>Ally Dmg Up</button> <button onevent='addAbility("allyBonusAction","m1")'>You can do an extra action while your ally attacks</button>`
+                    }
+                    else if (statC == 6) {
+                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button>Ally Dmg Up</button> <button>You can do an extra action while your ally attacks</button>`
+                    }
+
+                    if (statD == 0) {
+                        allMain += `<button onevent='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
+                    }
+                    else if (statD == 1) {
+                        allMain += `<button>Max Ally Num Up</button> <button onevent='addAbility("allyChanceUp","m2")'>Recruiting an ally is more successful</button>`
+                    }
+                    else if (statD == 2) {
+                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button onevent='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
+                    }
+                    else if (statD == 3) {
+                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button>
+                        <button onevent='addAbility("allyStrengthen,"m2")'>Allies have higher stats when recruited</button>`
+                    }
+                    else if (statD == 4) {
+                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button> <button>Allies have higher stats when recruited</button> <button onevent='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
+                    }
+                    else if (statD == 5) {
+                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button> <button>Allies have higher stats when recruited</button> <button>Max Ally Num Up</button> <button onevent='addAbility("stInNumbers","m2")'>If player has the max number of allies, all allies deal increased damage</button>`
+                    }
+                    else if (statD == 6) {
+                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button> <button>Allies have higher stats when recruited</button> <button>Max Ally Num Up</button> <button>If player has the max number of allies, all allies deal increased damage</button>`
+                    }
                     break;
             }
             break;
@@ -1386,8 +1552,8 @@ function lvlUp() {
 
 function addAbility(abilityName, path, active = false) {
     pAbilities.push(abilityName);
-    if(abilityName == `Melee Infusion`){
-        pActiveAbilities.push({name:`Remove Infusion`,effect:removeInfusion})
+    if (abilityName == `Melee Infusion`) {
+        pActiveAbilities.push({ name: `Remove Infusion`, effect: removeInfusion })
     }
     if (active) {
         pActiveAbilities.push({ name: abilityName });
@@ -1415,6 +1581,15 @@ function addAbility(abilityName, path, active = false) {
             break;
         case `p1`:
             statC++;
+            break;
+        case `p2`:
+            statD++;
+            break;
+        case `m1`:
+            statC++;
+            break;
+        case `m2`:
+            statD++;
             break;
     }
     //stat++;
@@ -1451,10 +1626,19 @@ function buffStat(stat, amount) {
         case `pDmg`:
             pDmg += amount;
             pBaseDmg += amount;
+            statC++;
             break;
         case `pMagicDmg`:
             pMagicDmg += amount;
             pBaseMagicDmg += amount;
+            statD++
+            break;
+        case `allyDmg`:
+            allyDmgBuff += amount;
+            statC++;
+        case `allyNum`:
+            maxAllyNum += amount;
+            statD++;
             break;
     }
     stat++;
