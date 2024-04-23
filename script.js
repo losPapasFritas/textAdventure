@@ -570,24 +570,26 @@ function han63B() {
     allMain += `<br><br><br><br><section>“...”</section><br><br><button onclick="han63B()">[--&gt;]</button> <button onclick="han63()">Enter the <strong>Dungeon</strong>.</button>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+function han63() {
+    allMain += `<br><br><br><br><section>You find yourself inside a cubelike room. Simple in nature, with clear details.</section><br><br><button onclick="han64()">[--&gt;]</button>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+function han64() {
+    allMain += `<br><br><br><br><section>The walls are made of aged mausoleum stone, in a state of cracks and crumbles along its once perfect smoothness. Vines grow out through the larger cracks, slumping their large extremities on the corner of the floor. Across from you is a stone wall of a door, a plaque carved next to it. 
+    </section><br><br><button onclick="han65B()">[Inspect vines.]</button> <button onclick="han65()"></button>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+function han65B() {
+    allMain += `<br><br><br><br><section>The ends of the vines all collect into this corner, they seem to be blocking something.</section><br><br><button onclick="han65()">[Inspect stone door.]</button>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+function han65() {
+    allMain += `<br><br><br><br><section>The plaque says, “A stone unturned is a chance forgotten.”</section><br><br><button onclick="han67()">[Deeply inspect the walls.]</button> <button onclick="han65B()">Inspect vines.</button>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+function han67() {
+    allMain += `<br><br><br><br><section>Upon deeper inspection, there is an unfastened stone sticking out from the wall's crevice. Pushing it in causes a deep click to resonate through the room, making the stone door slowly rise, opening the hallway. The hallway branches into three paths.
+    </section><br><br><button onclick="han()">[--&gt;]</button>`
     end();
 }
 function han() {
