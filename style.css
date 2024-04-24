@@ -13,6 +13,8 @@ section{
 .map{
     padding: 10px;
     background-color: black;
+    max-width: 1860px;
+    white-space: pre;
 }
 p{
     font-size: 15.4px;
