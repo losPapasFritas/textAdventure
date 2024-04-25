@@ -39,6 +39,9 @@ let char = `none`,
     meleeMagicInfusion = `none`,
     bonusActionUsed = false,
     totalDmgDealt = 0,
+    money = 0,
+    givenMoney = 0,
+    currentDungeon = 0,
     totalDefReduction = 0;
 let playerY = 0;
 let playerX = 0;
@@ -100,11 +103,12 @@ let pMap = ``;
 // let mapSplice = map.split(`/n`);
 // let mapBroken = mapSplice.map(mapSplice => mapSplice + '<br>');
 // map = mapBroken.join(``);
-
+let allDungeonInfo = [
+    {numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5}]
 //mudman is first dungeon boss
 let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`];
-let eHpAll = [70, 10000, 100, 85, 30, 1200, 1200, 1300, 5460];
-let eDmgAll = [10, 1, 15, 13, 20, 40, 45, 50, 70];
+let eHpAll = [70, 10000, 100, 85, 30, 120, 120, 130, 546];
+let eDmgAll = [5, 1, 13, 11, 15, 20, 21, 25, 30];
 let eLvlAll = [1, 500, 7, 5, 6, 10, 12, 10, 24];
 let eDefAll = [10, 99.99999999, 10, 10, 3, 0, 10, 5, 50];
 let buffItemList = [{ name: `Enchanted Golden Apple`, hp: 10000, def: 10000, dmg: 100, magic: 19 }, { name: `Potion of Minor Healing`, hp: 40, def: 0, dmg: 0, magic: 0 }, { name: `Pot of Healing`, hp: 70, def: 0, dmg: 0, magic: 0 }, { name: `Cauldron of Major Healing`, hp: 100, def: 0, dmg: 0, magic: 0 }, { name: `Coffee`, hp: 25, def: 0, dmg: 0.25, magic: 0.5 }, { name: `Hornet Honey`, hp: 30, def: 5 / 8, dmg: 0, magic: 0.5 }]
@@ -501,7 +505,7 @@ function han24() {
     end();
 }
 function han25() {
-    allMain += `<br><br><br><br><section>A new scroll is delivered to your window by a dove-hawk, this message directly from the king.<br><br><button onclick="han26()">action</button></section>`
+    allMain += `<br><br><br><br><section>A new scroll is delivered to your window by a dove-hawk, this message directly from the king.<br><br><button onclick="han26()">Open the scroll</button></section>`
     end();
 }
 function han26() {
@@ -573,7 +577,7 @@ function han40() {
     end();
 }
 function han41() {
-    allMain += `<br><br><br><br><section>The furnace, now unused and neglected, proven by the visible layer of dust blanketing it. On a nearby countertop, the shape of a large hammer imprints itself against the dust layer. <br><br><button onclick="han42()">[Locate the rooftop stairway.]</button>
+    allMain += `<br><br><br><br><section>The furnace, now unused and neglected, proven by the visible layer of dust blanketing it. On a nearby countertop, the shape of a large hammer imprints itself against the dust layer. <br><br><button onclick="han43()">[Locate the rooftop stairway.]</button>
     </section>`
     end();
 }
@@ -702,9 +706,11 @@ function han65() {
     end();
 }
 function han67() {
-    allMain += `<br><br><br><br><section>Upon deeper inspection, there is an unfastened stone sticking out from the wall's crevice. Pushing it in causes a deep click to resonate through the room, making the stone door slowly rise, opening the hallway. The hallway branches into three paths.<br><br><button onclick="han68B()">[Left.]</button> <button onclick="han68()">[Right.]</button> <button onclick="han68C">[Straight.]</button></section>`
+    allMain += `<br><br><br><br><section>Upon deeper inspection, there is an unfastened stone sticking out from the wall's crevice. Pushing it in causes a deep click to resonate through the room, making the stone door slowly rise, opening the hallway. The hallway branches into three paths.<br><br> <!--> <button onclick="han68C">[Straight.]</button></section>`
     end();
 }
+// <button onclick="han68B()">[Left.]</button>
+// <button onclick="han68()">[Right.]</button>
 function han68B() {
     allMain += `<br><br><br><br><section>Amidst a patch of long dead shrubbery, lies a perfectly shaped stick.<br><br><button onclick="han69B()">[Inspect the stick.]</button></section>`
     end();
@@ -738,61 +744,72 @@ function han72C() {
     end();
 }
 function han73C() {
-    allMain += `<br><br><br><br><section>You backtrack and find original hallway branches.<br><br><button onclick="han()">[--&gt;]</button></section>`
+    allMain += `<br><br><br><br><section>You backtrack and find original hallway branches.<br><br><button onclick="han74()">[Magically find your way through the dungeon via funny music montage.]</button></section>`
     end();
 }
-function han68() {
-    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
+function han74() {
+    allMain += `<br><br><br><br><section>The funny music montage sends you through the harrowing venture through the dungeon's trials and you are now staring down the precipice of a cool, slanted hallway.<br><br><button onclick="han75()">[Shiver in response]</button></section>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
+function han75() {
+    allMain += `<br><br><br><br><section>You shiver as you walk down the hallway, there is an obvious pressure plate trap in the middle of the path.<br><br><button onclick="han76()">[Accidentally step on the only obstacle in your way.]</button></section>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
+function han76() {
+    allMain += `<br><br><br><br><section>The hall eminates a large click and a boulder from the entry of the precipice drops a large boulder, rolling faster and faster in your direction.<br><br><button onclick="han77()">[Haha, no good.]</button></section>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
+function han77() {
+    allMain += `<br><br><br><br><section>With the gooberish tomfoolery of this situation fresh in your mind, you run down the slanted hallway as fast as you can. You see light at the end of the passage.<br><br><button onclick="han()">[Jump through the door.]</button></section>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
+function han78() {
+    allMain += `<br><br><br><br><section>You narrowly miss the boulder. It slams perfectly into your exit, interlocking with its spherical shape.<br><br><button onclick="han79()">[--&gt;]</button></section>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
+function han79() {
+    allMain += `<br><br><br><br><section>You are inside a roughly crafted arena, an aged sycamore tree resides along the perimeter. It looks as though the builder's knew any carvings or detail would be smashed and destroyed in here. In the middle of the arena is a large cube like structure with gridlines in various shapes wrapping across its limestone surface. If this object were personified, you would say its peaceful.<br><br><button onclick="han80()">[Poke it with a stick.]</button></section>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
+function han80() {
+    allMain += `<br><br><br><br><section>You poke the ominous structure with a stick like an absolute dunderhead, the structure immediately responds by glowing orange along its lines and carvings. <br><br><button onclick="han81()">[Uh oh.]</button></section>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
+function han81() {
+    allMain += `<br><br><br><br><section>the structure moves gruffly and sluggishly changes its shape, sliding against its once petrified resting position and morphing into a humanoid shape.<br><br><button onclick="han82()">[--&gt;]</button></section>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
+function han82() {
+    allMain += `<br><br><br><br><section>Out of its growing arm shape forms an aesthetically pleasing fist, its defined edges make sharp points. It's face gains structure, it's eyes red with fury and intent of death.<br><br><button onclick="han()">[Whoops.]</button></section>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
+function han83() {
+    allMain += `<br><br><br><br><section>The golem collapses into itself, collapsing its marbled streaks into themselves. The stone structure becomes a lump of misshapen and destroyed features and joints. A gloriously angelic light jabs itself through the surrounding holes of the stone pile, throwing the stone gibs astray and tossing about rubble. The orbicular source ascends beyond the battered debris.<br><br><button onclick="han84()">[Examine the source.]</button></section>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
+function han84() {
+    allMain += `<br><br><br><br><section>You know what this is. It's a Forgo orb, the power and knowledge of the defeated slump of sediment lie within its visceral center. All one would have to do is touch it and they would gain an equivalent exchange of knowledge.
+    <br><br><button onclick="han85()">[Touch it.]</button> <button>[Poke it with a stick.]</button></section>`
     end();
 }
-function han() {
-    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
+function han84B() {
+    allMain += `<br><br><br><br><section>You use your perfect stick to interact with the perfect shape, a perfect combo for a perfectly cool Warlockian. The pops away from reality, the angelically iridescent light disappears, and you think about how cool your stick is, your brain forms ideas you've never had before. Sticks.<br><br><button onclick="han86()">[Moving on]</button></section>`
+    end();
+}
+function han85() {
+    allMain += `<br><br><br><br><section>You walk up to it like you have seen the love of your life for the first time. This is an experience most magical intellects would only dream of encountering. You put your hand against it and it gently pops away from reality, the angelically vivid light fades, and you feel ideas in your brain, thoughts you've never had before.
+    <br><br><button onclick="han()">[Go to skill tree.]</button> <button onclick="han86()">[Moving on.]</button></section>`
+    end();
+}
+function han86() {
+    allMain += `<br><br><br><br><section> An adjacent doorway reveals itself and opens up, it is an upward stairway.<br><br><button onclick="hangGoToTheMap()">[Leave the dungeon.]</button> <button onclick="han86()">[Moving on.]</button></section>`
     end();
 }
 function combatSetup(setCombat = 0, eIndx = 1) {
     if (pHp > pMaxHp) {
         pHp = pMaxHp;
     }
+    
     totalDefReduction = 0;
     pIsBlocking = false;
     currentEs = []
@@ -1004,7 +1021,7 @@ function listItems() {
 }
 
 function useItems(itemIndx) {
-    allMain += `<br><br><br><br><section>You used ${pItems[itemIndx].itemName}!`;
+    allMain = `<section>You used ${pItems[itemIndx].itemName}!`;
     pItems[itemIndx].use();
     end();
     enemyTurn();
@@ -1016,12 +1033,12 @@ function blockE() {
         pDmg += (pDmg * 0.02)
     }
     pIsBlocking = true;
-    allMain += `<br><br><br><br><section>You blocked</section>`
+    allMain = `<section>You blocked</section>`
     enemyTurn();
 }
 
 function inspect() {
-    allMain += `<br><br><br><br><section>`
+    allMain = `<section>`
     let iteratorNum = 0;
     for (item of currentEs) {
         if (iteratorNum > 0) {
@@ -1064,7 +1081,7 @@ function inspect() {
 }
 
 function deepInspect() {
-    allMain += `<br><br><br><br><section>`
+    allMain = `<br><br><br><br><section>`
     let iteratorNum = 0;
     for (item of currentEs) {
         if (iteratorNum > 0) {
@@ -1160,6 +1177,7 @@ function magicAttkAction(spell) {
     dmgToE = Math.round(dmgToE);
     if (pSpellAttkNum[castSpellIndx] > 1) {
         for (item of currentEs) {
+            let dmgToCurrentE = dmgToE
             if (`fire` === allPSpellType[castSpellIndx]) {
                 if (item.dot < allFireDot[castSpellIndx]) {
                     item.dot = allFireDot[castSpellIndx];
@@ -1174,9 +1192,9 @@ function magicAttkAction(spell) {
                     }
                 }
             }
-            dmgToE = Math.round(dmgToE * (1 - (item.eDef / 100)))
-            item.eHp -= dmgToE;
-            totalDmgDealt += dmgToE;
+            dmgToCurrentE = Math.round(dmgToE * (1 - (item.eDef / 100)))
+            item.eHp -= dmgToCurrentE;
+            totalDmgDealt += dmgToCurrentE;
         }
         allMain += `<br><br><br><br><section>You dealt ${dmgToE} damage to the enemies.`
     }
@@ -1245,13 +1263,15 @@ function enemyTurn() {
             currentEs.splice(i, 1);
             i--;
         }
-        if (currentEs[i].eDef < 0) {
-            currentEs[i].eDef = 0;
-        }
     }
     if (currentEs.length == 0) {
         combatEnd();
         return undefined;
+    }
+    for(item of currentEs){
+        if (item.eDef < 0) {
+            item.eDef = 0;
+        }
     }
     if (pAbilities.indexOf(`firebomb`) != -1 && turnCounter >= 5) {
         if (Math.random() < (pLvl - 1) / 25) {
@@ -1362,6 +1382,10 @@ function enemyTurn() {
         }
     }
     if (currentEs.length == 0) {
+        if(allDungeonInfo[currentDungeon].numberOfRooms == (allDungeonInfo[currentDungeon].currentRoom - 1)){
+            allDungeonInfo[currentDungeon].completed = true;
+            currentDungeon = -1;
+        }
         combatEnd();
         return undefined;
     }
@@ -1386,6 +1410,10 @@ function playerLost() {
 
 //similar to combat end
 function pleaseRun() {
+    if(allDungeonInfo[currentDungeon].numberOfRooms == allDungeonInfo[currentDungeon].currentRoom - 1){
+        allDungeonInfo[currentDungeon].completed = true;
+        currentDungeon = -1;
+    }
     currentEs = [];
     allMain = `<br><br><br><br><section>You literally ran from the only enemy. I have no words.</section>`
     allMain += `<br><br><br><br><section><button onclick='${saveState}()'>Continue</button></section>`
@@ -1420,25 +1448,25 @@ function lvlUp() {
     switch (pSpellType) {
         case `all`:
             if (statB == 0) {
-                allMain += `<button onclick='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                allMain += `<button onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
             }
             else if (statB == 1) {
-                allMain += `<button>Fire DOT Length Up</button> <button onclick='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
+                allMain += `<button>Fire Damage Over Time Length Up</button> <button onclick='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
             }
             else if (statB == 2) {
-                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
             }
             else if (statB == 3) {
-                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button onclick='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
+                allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button onclick='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
             }
             else if (statB == 4) {
-                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
             }
             else if (statB == 5) {
-                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button onclick='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
+                allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire Damage Over Time Length Up</button> <button onclick='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
             }
             else if (statB == 6) {
-                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button>If your Hp drops to 0, regain half hp</button>`
+                allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire Damage Over Time Length Up</button> <button>If your Hp drops to 0, regain half hp</button>`
             }
             allMain += `</section><section class='skillColumn'>`
             if (statC == 0) {
@@ -1491,25 +1519,25 @@ function lvlUp() {
             switch (pSpellType) {
                 case `fire`:
                     if (statB == 0) {
-                        allMain += `<button onclick='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                        allMain += `<button onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
                     }
                     else if (statB == 1) {
-                        allMain += `<button>Fire DOT Length Up</button> <button onclick='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
+                        allMain += `<button>Fire Damage Over Time Length Up</button> <button onclick='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
                     }
                     else if (statB == 2) {
-                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                        allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
                     }
                     else if (statB == 3) {
-                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button onclick='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
+                        allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button onclick='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
                     }
                     else if (statB == 4) {
-                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                        allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
                     }
                     else if (statB == 5) {
-                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button onclick='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
+                        allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire Damage Over Time Length Up</button> <button onclick='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
                     }
                     else if (statB == 6) {
-                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button>If your Hp drops to 0, regain half hp</button>`
+                        allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire Damage Over Time Length Up</button> <button>If your Hp drops to 0, regain half hp</button>`
                     }
                     break;
                 case `water`:
@@ -1790,6 +1818,11 @@ function checkForThings() {
         displayPlayerPos()
         switch(dungeonCheck()){
             case `dungeon1`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 0;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
                 break;
             case `dungeon2`:
                 break;
@@ -1867,6 +1900,7 @@ function moveWest() {
 }
 function displayMovementOptions() {
     pMap = map.split(``);
+    saveState = `displayPlayerPos`
     allMain += `<br><br><section>`
     if (pMap[playerX + (playerY - 1) * 202] != `@`) {
         allMain += `<button onclick='moveNorth()'>Move North</button> `
@@ -1888,6 +1922,19 @@ function printMap() {
     allMain = `<section class='map'><p>` + pMap + `</p></section>`;
     displayMovementOptions();
     end();
+}
+
+function dungeonContinue(){
+    if(allDungeonInfo[currentDungeon].numberOfRooms == allDungeonInfo[currentDungeon].currentRoom){
+        combatSetup(1,allDungeonInfo[currentDungeon].bossIndx);
+        allDungeonInfo[currentDungeon].currentRoom++
+        saveState = `displayPlayerPos`;
+    }
+    else{
+        saveState= `dungeonContinue`;
+        allDungeonInfo[currentDungeon].currentRoom++
+        combatSetup();
+    }
 }
 
 function cityCheck(){
