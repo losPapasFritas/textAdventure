@@ -185,6 +185,12 @@ function displayMovementOptions(){
     allMain+=`</section>`
     end();
 }
+
+function printMap(){
+    allMain = `<section class='map'><p>` + pMap + `</p></section>`;
+    displayMovementOptions();
+    end();
+}
 class enemy {
     constructor(e, eHp, eDmg, eLvl, eDef) {
         this.e = e;
@@ -263,11 +269,7 @@ class debuffItem {
     }
 }
 
-function printMap(){
-    allMain = `<section class='map'><p>` + pMap + `</p></section>`;
-    displayMovementOptions();
-    end();
-}
+
 
 function instaKill() {
     for (item of currentEs) {
