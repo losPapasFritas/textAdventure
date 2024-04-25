@@ -21,3 +21,13 @@ p{
     color: white;
     font-family: 'Courier New', Courier, monospace;
 }
+.allSkills{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+.skillColumn{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}

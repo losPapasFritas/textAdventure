@@ -40,8 +40,8 @@ let char = `none`,
     bonusActionUsed = false,
     totalDmgDealt = 0,
     totalDefReduction = 0;
-    let playerY = 0;
-    let playerX = 0;
+let playerY = 0;
+let playerX = 0;
 let map = `@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @.............................................................@##################################################################################@((((((((((((((((((((((((((((((((((((((((((((((((((((((@
 @...............................................DDD........@@@##################################################################################@(((((((((((((((((((((((((((((((((((((((((((((((((((((((@
@@ -80,14 +80,14 @@ let map = `@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @#######################/(((((((((((((,. ..........................................@@@@@@@**************************************@@@@.................................. ################################*@
 @####( .,,,, (##########((((((((((((( , ..................................................@@@@@*******************@@@@@@@@@@@@@@ ((((. ............................ %##################################*@
 @### ,,,,,,,,, ###########(((((((((((((( ......................................................@@@@@@@@@@@@@@@@@@@######*##### (((((((( ....................... .######################################*@
-@## ,,,,,,,,, ############((((((((((((((( ................................CCCC.................... DDDDD########################DDDD## (((((((((((* .................. %###############################*@
-@#########################(((((((((((((((/ ...............................CCCC,.,.................. DDDDD############################### ((((((DD((((((( ............. %###############################*@
+@## ,,,,,,,,, ############((((((((((((((( ................................CCCC.................... DDDDDD#######################DDDD## (((((((((((* .................. %###############################*@
+@#########################(((((((((((((((/ ...............................CCCC,.,..................DDDDDD############################### ((((((DD((((((( ............. %###############################*@
 @########################((((((((((((((((((. ...................................................... *#################################### (((((((((((((((((( ........ #################################*@
 @#######################,(((((((((((((((((((( ..................................................... *####################################% ((((((((((((((((((((((. ,###################################*@
-@######################(((((((((((((((((((((((((((....,.................................. *#####################################*.((((((((((((((((((((((((((( %##########%,###########CCCCCC###########*@
+@######################(((((((((((((((((((((((((((....,.................................. *#####################################*.((((((((((((((((((((((((((( %##########%,########CCCCCCCCCC##########*@
 @####################((((((((((((((((((((((((((((((((((((((((((((( . .............................. (###################################### (((((((((((((((((((((DD(((((( #########CCCCCCCCCC##########*@
-@##############(%(((((((((((((((((((((((((((((((((((((((((((((((((((,* ............................. ######################################,*((((((((((((((((((((((((((((( %#########CCCCCCC###########*@
-@#########((((((((((((((((((((((((((((((((((((((((((((((((((((((((((( ............................ %##############CCCCCC####(#############% ((((((((((((((((((((((((((((((..%##########################*@
+@##############(%(((((((((((((((((((((((((((((((((((((((((((((((((((,* ............................. ######################################,*((((((((((((((((((((((((((((( %#######CCCCCCCCCC##########*@
+@#########((((((((((((((((((((((((((((((((((((((((((((((((((((((((((( ............................ %##############CCCCCCCC##(#############% ((((((((((((((((((((((((((((((..%##########################*@
 @*(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((( ............................ %#############CCCCCCCC################## (((((((((((((((((((((((((((((((( ,########################*@
 @((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((( ............................. #############CCCCCCCC################### /(((((((((((((((((((((((((((((((((/ #####################*@
 @(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((( ............................. ########################################,*((((((((((((((((((((((((((((((((((((/ (##################*@
@@ -96,7 +96,7 @@ let map = `@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @((((((((((((((((((((((((((((((CC((((((((((((DDDD(((((((((((((((( . ..........DDD..........DDD....... ######################################### ((((((((((((((((((((((((((((((((((((((((((((( .########*@
 @(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((% .................................. %######################################## (((DDD(((((((((((((((((((((((((((((((DD((((((((( .######*@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`
-let pMap = ``
+let pMap = ``;
 // let mapSplice = map.split(`/n`);
 // let mapBroken = mapSplice.map(mapSplice => mapSplice + '<br>');
 // map = mapBroken.join(``);
@@ -107,8 +107,8 @@ let eHpAll = [70, 10000, 100, 85, 30, 1200, 1200, 1300, 5460];
 let eDmgAll = [10, 1, 15, 13, 20, 40, 45, 50, 70];
 let eLvlAll = [1, 500, 7, 5, 6, 10, 12, 10, 24];
 let eDefAll = [10, 99.99999999, 10, 10, 3, 0, 10, 5, 50];
-let buffItemList = [{ name: `Enchanted Golden Apple`, hp: 10000, def: 10000, dmg: 100, magic: 19 }, { name: `Potion of Minor Healing`, hp: 40, def: 0, dmg: 0, magic: 0 }, { name: `Pot of Healing`, hp: 70,    def: 0, dmg: 0, magic: 0 },{ name: `Cauldron of Major Healing`, hp: 100, def: 0, dmg: 0, magic: 0 }, { name: `Coffee`, hp: 25, def: 0, dmg: 0.25, magic: 0.5 }, { name: `Hornet Honey`, hp: 30, def: 5 / 8, dmg: 0, magic: 0.5 }]
-let offenseItemList = [{ name: `Magic Metal Stick`, hp: 50, def: 20, dmg: 0 }, { name: `Fish`, hp: 9999999, def: 99, dmg: 0 }, { name: `Fire Whip`, hp: 69, def: 0.69, dmg: 0 }, { name: `Twig`, hp: 1, def: 1, dmg: 1 }, {name: `Perfectly shaped stick`, hp: 0, def: 0, dmg: 0}]
+let buffItemList = [{ name: `Enchanted Golden Apple`, hp: 10000, def: 10000, dmg: 100, magic: 19 }, { name: `Potion of Minor Healing`, hp: 40, def: 0, dmg: 0, magic: 0 }, { name: `Pot of Healing`, hp: 70, def: 0, dmg: 0, magic: 0 }, { name: `Cauldron of Major Healing`, hp: 100, def: 0, dmg: 0, magic: 0 }, { name: `Coffee`, hp: 25, def: 0, dmg: 0.25, magic: 0.5 }, { name: `Hornet Honey`, hp: 30, def: 5 / 8, dmg: 0, magic: 0.5 }]
+let offenseItemList = [{ name: `Magic Metal Stick`, hp: 50, def: 20, dmg: 0 }, { name: `Fish`, hp: 9999999, def: 99, dmg: 0 }, { name: `Fire Whip`, hp: 69, def: 0.69, dmg: 0 }, { name: `Twig`, hp: 1, def: 1, dmg: 1 }, { name: `Perfectly shaped stick`, hp: 0, def: 0, dmg: 0 }]
 let pItems = [];
 let allPSpellType = [
     `fire`,
@@ -136,61 +136,7 @@ let pSpellAttkNum = [
     1,
     1,
     2];
-function displayPlayerPos(){
-    pMap = map.split(``);
-    pMap[playerX + playerY*202] = `P`;
-    pMap = pMap.join(``);
-    printMap();
-}
-function randomCombat(){
-    if(Math.random() <= 0.15){
-        combatSetup();
-    }
-    else{
-        displayPlayerPos()    
-    }
-}
-function moveNorth(){
-    playerY--;
-    randomCombat()
-}
-function moveSouth(){
-    playerY++;
-    randomCombat()
-}
-function moveEast(){
-    playerX++;
-    randomCombat()
-}
-function moveWest(){
-    playerX--;
-    randomCombat()
-}
-function displayMovementOptions(){
-    pMap = map.split(``);
-    allMain+=`<br><br><section>`
-    if(pMap[playerX + (playerY-1)*202] != `@`){
-        allMain+=`<button onclick='moveNorth()'>Move North</button> `
-    }
-    if(pMap[playerX + (playerY+1)*202] != `@`){
-        allMain+=`<button onclick='moveSouth()'>Move South</button> `
-    }
-    if(pMap[playerX-1 + playerY*202] != `@`){
-        allMain+=`<button onclick='moveWest()'>Move West</button> `
-    }
-    if(pMap[playerX+1 + playerY*202] != `@`){
-        allMain+=`<button onclick='moveEast()'>Move East</button> `
-    }
-    
-    allMain+=`</section>`
-    end();
-}
 
-function printMap(){
-    allMain = `<section class='map'><p>` + pMap + `</p></section>`;
-    displayMovementOptions();
-    end();
-}
 class enemy {
     constructor(e, eHp, eDmg, eLvl, eDef) {
         this.e = e;
@@ -489,7 +435,7 @@ function han8() {
     end();
 }
 function han9() {
-    allMain += `<br><br><br><br><section> You notice a pattern in the recent scrolls, all in relation to ancient relics described by old fairy tales. Polend has been dramatically more fanatic since dragons have been proven to be real and creatures of bygone eras rising from extinction. <br><br><button onclick="han10()"></button></section>`
+    allMain += `<br><br><br><br><section> You notice a pattern in the recent scrolls, all in relation to ancient relics described by old fairy tales. Polend has been dramatically more fanatic since dragons have been proven to be real and creatures of bygone eras rising from extinction. <br><br><button onclick="han10()">--&gt;</button></section>`
     end();
 }
 function han10() {
@@ -546,7 +492,8 @@ function han22() {
 }
 //hanx() is skilltree 
 function han23() {
-    allMain += `<br><br><br><br><section> You return to your living quarters hours later with a book binding under your arm. <br><br><button onclick="hanx()">[Read its contents.] </button> <button onclick="han24()">[Don't do anything like that at all.]</button></section>`
+    allMain += `<br><br><br><br><section> You return to your living quarters hours later with a book binding under your arm. <br><br><button onclick="lvlUp()">[Read its contents.] </button> <button onclick="han24()">[Don't do anything like that at all.]</button></section>`
+    saveState = `han25`;
     end();
 }
 function han24() {
@@ -594,260 +541,252 @@ function han1B() {
     end();
 }
 function han33() {
-    allMain += `<br><br><br><br><section>You stray from the suspiciously placed dust trail, instead walking through the stress inducing hall to the left. The entryway whispers an unintelligible {sound} as you make your first steps beyond it.</section><br><br><button onclick="han34()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>You stray from the suspiciously placed dust trail, instead walking through the stress inducing hall to the left. The entryway whispers an unintelligible {sound} as you make your first steps beyond it.<br><br><button onclick="han34()">[--&gt;]</button></section>`
     end();
 }
 function han34() {
-    allMain += `<br><br><br><br><section>Light leaves your surroundings gradually, with each echoing step as you cross it. Light. Dim. Dark. Black. </section><br><br><button onclick="han35()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>Light leaves your surroundings gradually, with each echoing step as you cross it. Light. Dim. Dark. Black. <br><br><button onclick="han35()">[--&gt;]</button></section>`
     end();
 }
 function han35() {
-    allMain += `<br><br><br><br><section>You try to hug the walls of the walkway, nothing is within your grasp, as if there were no walls in the first place.
-    </section><br><br><button onclick="han36()">[Blink in the darkness.]</button><button onclick="han36()">[Cry because you are screwed.]</button>`
+    allMain += `<br><br><br><br><section>You try to hug the walls of the walkway, nothing is within your grasp, as if there were no walls in the first place.<br><br><button onclick="han36()">[Blink in the darkness.]</button><button onclick="han36()">[Cry because you are screwed.]</button></section>`
     end();
 }
 function han36() {
-    allMain += `<br><br><br><br><section>You blink in the blinding void. As soon as you do, the illusion ends and you are on the other side of the hallway, now looking as mundane as the other. The dander trail picks up and leads to the Eastern Dungeon Memorial.</section><br><br><button onclick="han37()">[Follow trail inside.]</button>`
+    allMain += `<br><br><br><br><section>You blink in the blinding void. As soon as you do, the illusion ends and you are on the other side of the hallway, now looking as mundane as the other. The dander trail picks up and leads to the Eastern Dungeon Memorial.<br><br><button onclick="han37()">[Follow trail inside.]</button></section>`
     end();
 }
 function han37() {
-    allMain += `<br><br><br><br><section>You try to open the entrance door for the Eastern Dungeon Memorial, to no avail. The door is locked. </section><br><br><button onclick="han38()">[Find a way inside.]</button>`
+    allMain += `<br><br><br><br><section>You try to open the entrance door for the Eastern Dungeon Memorial, to no avail. The door is locked.<br><br><button onclick="han38()">[Find a way inside.]</button></section>`
     end();
 }
 function han38() {
-    allMain += `<br><br><br><br><section>You pace along the memorial's perimeter, finding an opening to the roof shaping into a ramp-esque ledge.</section><br><br><button onclick="han39()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>You pace along the memorial's perimeter, finding an opening to the roof shaping into a ramp-esque ledge.<br><br><button onclick="han39()">[--&gt;]</button></section>`
     end();
 }
 function han39() {
-    allMain += `<br><br><br><br><section>A ladder leans on another building adjacent to the Memorial. In order to grab it, you have to push it off from the other building's roof. An unlocked gate is between you and the other building.</section><br><br><button onclick="han40()">[Open the gate, enter the building.]</button>`
+    allMain += `<br><br><br><br><section>A ladder leans on another building adjacent to the Memorial. In order to grab it, you have to push it off from the other building's roof. An unlocked gate is between you and the other building.<br><br><button onclick="han40()">[Open the gate, enter the building.]</button></section>`
     end();
 }
 function han40() {
-    allMain += `<br><br><br><br><section>You enter the building, it appears to be an abandoned smithy. Graffiti is painted along the walls of the forgotten forge, old rusted metal and unfinished armors lay sprawled around the chambers.</section><br><br><button onclick="han41()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>You enter the building, it appears to be an abandoned smithy. Graffiti is painted along the walls of the forgotten forge, old rusted metal and unfinished armors lay sprawled around the chambers.<br><br><button onclick="han41()">[--&gt;]</button></section>`
     end();
 }
 function han41() {
-    allMain += `<br><br><br><br><section>The furnace, now unused and neglected, proven by the visible layer of dust blanketing it. On a nearby countertop, the shape of a large hammer imprints itself against the dust layer. 
-    </section><br><br><button onclick="han42()">[Locate the rooftop stairway.]</button>`
+    allMain += `<br><br><br><br><section>The furnace, now unused and neglected, proven by the visible layer of dust blanketing it. On a nearby countertop, the shape of a large hammer imprints itself against the dust layer. <br><br><button onclick="han42()">[Locate the rooftop stairway.]</button>
+    </section>`
     end();
 }
 function han43() {
-    allMain += `<br><br><br><br><section>You explore the structure of the forge, looking for a pathway to reach the rooftop. You hear a crackle in the far left corner of the forge, a thimble of burning light flickers in the distance.</section><br><br><button onclick="han44()">[You <em>encounter</em> a stranger.]</button>`
+    allMain += `<br><br><br><br><section>You explore the structure of the forge, looking for a pathway to reach the rooftop. You hear a crackle in the far left corner of the forge, a thimble of burning light flickers in the distance.<br><br><button onclick="han44()">[You <em>encounter</em> a stranger.]</button></section>`
     end();
 }
 function han44() {
-    allMain += `<br><br><br><br><section>Behind the smithing enthusiast is a stairway leading to the rooftop.</section><br><br><button onclick="han45()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>Behind the smithing enthusiast is a stairway leading to the rooftop.<br><br><button onclick="han45()">[--&gt;]</button></section>`
     end();
 }
 function han45() {
-    allMain += `<br><br><br><br><section>You exit the forge and spot the ladder, pushing it off the wall and dropping it against the opening in the memorial's roof opening. </section><br><br><button onclick="han46()">[Enter the Eastern Dungeon Memorial.]</button>`
+    allMain += `<br><br><br><br><section>You exit the forge and spot the ladder, pushing it off the wall and dropping it against the opening in the memorial's roof opening.<br><br><button onclick="han46()">[Enter the Eastern Dungeon Memorial.]</button> </section>`
     end();
 }
 function han46() {
-    allMain += `<br><br><br><br><section>You go inside the Memorial building from the rooftop door, you appear to be inside the attic.</section><br><br><button onclick="han47()">[Leave the attic.]</button> <button onclick="han47B()">[Look around.]</button>`
+    allMain += `<br><br><br><br><section>You go inside the Memorial building from the rooftop door, you appear to be inside the attic.<br><br><button onclick="han47()">[Leave the attic.]</button> <button onclick="han47B()">[Look around.]</button></section>`
     end();
 }
 function han46B() {
-    allMain += `<br><br><br><br><section>Stale dust and old parchments litter around the shelves and tables. The scent is a cross of an eons-old library and a mausoleum, you sneeze in response.</section><br><br><button onclick="han39()">[Cool.]</button>`
+    allMain += `<br><br><br><br><section>Stale dust and old parchments litter around the shelves and tables. The scent is a cross of an eons-old library and a mausoleum, you sneeze in response.<br><br><button onclick="han39()">[Cool.]</button></section>`
     end();
 }
 function han47() {
-    allMain += `<br><br><br><br><section>The interior of the Memorial building is anciently beautiful. You begin on the second floor, looking down from the protective railing. The hall along the way showcases various arrangements of armor suits through the eras of Polend's history.</section><br><br><button onclick="han48()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>The interior of the Memorial building is anciently beautiful. You begin on the second floor, looking down from the protective railing. The hall along the way showcases various arrangements of armor suits through the eras of Polend's history.<br><br><button onclick="han48()">[--&gt;]</button></section>`
     end();
 }
 function han48() {
-    allMain += `<br><br><br><br><section>The display begins with a highly advanced armor designed for mobility dubbed the &quot;Blitzkreig&quot; proudly poses at the end of the arrangement, with the opposite end showing a modestly proportioned plate armor, primitive in nature yet still striking awe and dominance. It was dubbed, &quot;The Cypress&quot;</section><br><br><button onclick="han49()">[Go down the stairs.]</button>`
+    allMain += `<br><br><br><br><section>The display begins with a highly advanced armor designed for mobility dubbed the &quot;Blitzkreig&quot; proudly poses at the end of the arrangement, with the opposite end showing a modestly proportioned plate armor, primitive in nature yet still striking awe and dominance. It was dubbed, &quot;The Cypress&quot;<br><br><button onclick="han49()">[Go down the stairs.]</button></section>`
     end();
 }
 function han49() {
-    allMain += `<br><br><br><br><section>Descending the elegant stairway leads into the atrium, the expansive room is filled by the light coming down from the glass ceiling. You hear a murmur of speech in one of the nearby rooms. </section><br><br><button onclick="han50()">[--&gt;]</button> <button onclick="han50B">[Look around.]</button>`
+    allMain += `<br><br><br><br><section>Descending the elegant stairway leads into the atrium, the expansive room is filled by the light coming down from the glass ceiling. You hear a murmur of speech in one of the nearby rooms.<br><br><button onclick="han50()">[--&gt;]</button> <button onclick="han50B">[Look around.]</button></section>`
     end();
 }
 function han50B() {
-    allMain += `<br><br><br><br><section>You see a large linen material covering a doorway, you feel that it's best to give it it's privacy.</section><br><br><button onclick="han50()">[--&gt;]</button> <button onclick="han50B2()">[Er, no.]</button>`
+    allMain += `<br><br><br><br><section>You see a large linen material covering a doorway, you feel that it's best to give it it's privacy.<br><br><button onclick="han50()">[--&gt;]</button> <button onclick="han50B2()">[Er, no.]</button></section>`
     end();
 }
 function han50B2() {
-    allMain += `<br><br><br><br><section>You uncover the linen. Behind it is a humanoid figure, wrapped up in a tied, woven sack. They seem to be unconcious.</section><br><br><button class="red" onclick="han50()">[You really shouldn't have done that, a fella like this needs his privacy.]</button>`
+    allMain += `<br><br><br><br><section>You uncover the linen. Behind it is a humanoid figure, wrapped up in a tied, woven sack. They seem to be unconcious.<br><br><button class="red" onclick="han50()">[You really shouldn't have done that, a fella like this needs his privacy.]</button></section>`
     end();
 }
 function han50() {
-    allMain += `<br><br><br><br><section>You enter what looks like an exhibit room, dedicated to a myth about an ancient ice-deity of some kind. You don't really care about that, ice is a particularly stupid thing to think about. Hannah finds a jolly Grand Wizard Kobain speaking to a friendly stranger.</section><br><br><button onclick="han51()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>You enter what looks like an exhibit room, dedicated to a myth about an ancient ice-deity of some kind. You don't really care about that, ice is a particularly stupid thing to think about. Hannah finds a jolly Grand Wizard Kobain speaking to a friendly stranger.<br><br><button onclick="han51()">[--&gt;]</button></section>`
     end();
 }
 function han51() {
-    allMain += `<br><br><br><br><section>“Ah, Hannah, good to finally see you. I was hoping you would show up here eventually!”</section><br><br><button onclick="han52()">[Grand Wizard! Where have you been?]</button>`
+    allMain += `<br><br><br><br><section>“Ah, Hannah, good to finally see you. I was hoping you would show up here eventually!”<br><br><button onclick="han52()">[Grand Wizard! Where have you been?]</button></section>`
     end();
 }
 function han52() {
-    allMain += `<br><br><br><br><section>“There has been a, complication since we last spoke. I had to leave very urgently due to.. Well, you're here now, and I require your assistance!”
-    </section><br><br><button onclick="han53B()">[Who's the mummy?]</button> <button onclick="han53()">[ok &colon; &rpar;]</button>`
+    allMain += `<br><br><br><br><section>“There has been a, complication since we last spoke. I had to leave very urgently due to.. Well, you're here now, and I require your assistance!”<br><br><button onclick="han53B()">[Who's the mummy?]</button> <button onclick="han53()">[ok &colon; &rpar;]</button></section>`
     end();
 }
 function han53B() {
-    allMain += `<br><br><br><br><section>You size up the oddly cloth-covered man. All facial details are omitted by the wrap around his head, he wears a traveler's apparel save for the oddly patterned fabric hanging from around his neck and worn messenger's bag around his right shoulder. </section><br><br><button onclick="han53B2()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>You size up the oddly cloth-covered man. All facial details are omitted by the wrap around his head, he wears a traveler's apparel save for the oddly patterned fabric hanging from around his neck and worn messenger's bag around his right shoulder. <br><br><button onclick="han53B2()">[--&gt;]</button></section>`
     end();
 }
 function han53B2() {
-    allMain += `<br><br><br><br><section>“This is the messenger of course, he comes directly from King Geedorah!” The messenger stares blankly at a fireplace on the opposite wall of the room. “Hm.”
-    </section><br><br><button onclick="han53()">[I can help you now.]</button>`
+    allMain += `<br><br><br><br><section>“This is the messenger of course, he comes directly from King Geedorah!” The messenger stares blankly at a fireplace on the opposite wall of the room. “Hm.”<br><br><button onclick="han53()">[I can help you now.]</button></section>`
     end();
 }
 function han53() {
-    allMain += `<br><br><br><br><section>“Fantastic! Over here, over here.”</section><br><br><button onclick="han54()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>“Fantastic! Over here, over here.”<br><br><button onclick="han54()">[--&gt;]</button></section>`
     end();
 }
 function han54() {
-    allMain += `<br><br><br><br><section>Grand Wizard Cobain leads you to a humble corridor near the exhibit room. The messenger follows behind. </section><br><br><button onclick="han55()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>Grand Wizard Cobain leads you to a humble corridor near the exhibit room. The messenger follows behind.<br><br><button onclick="han55()">[--&gt;]</button> </section>`
     end();
 }
 function han55() {
-    allMain += `<br><br><br><br><section>Cobain stops at a thin creased line between the smooth marble wall, then makes an unintelligible chant.</section><br><br><button onclick="han56()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>Cobain stops at a thin creased line between the smooth marble wall, then makes an unintelligible chant.<br><br><button onclick="han56()">[--&gt;]</button></section>`
     end();
 }
 function han56() {
-    allMain += `<br><br><br><br><section>The creased line slides open with a rough skidding sound, revealing a torch lit stairway.</section><br><br><button onclick="han57()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>The creased line slides open with a rough skidding sound, revealing a torch lit stairway.<br><br><button onclick="han57()">[--&gt;]</button></section>`
     end();
 }
 function han57() {
-    allMain += `<br><br><br><br><section>“This is the real memorial, Hannah. Within it, lies an ancient relic unbeknownst to most inhabitants of Polend. There are things that wish to obtain it before we, which is why we must retrieve it first. Do you understand?”
-    </section><br><br><button onclick="han58()">[Of course.]</button> <button onclick="han58B">[Er, no.]</button>`
+    allMain += `<br><br><br><br><section>“This is the real memorial, Hannah. Within it, lies an ancient relic unbeknownst to most inhabitants of Polend. There are things that wish to obtain it before we, which is why we must retrieve it first. Do you understand?”<br><br><button onclick="han58()">[Of course.]</button> <button onclick="han58B">[Er, no.]</button></section>`
     end();
 }
 function han58B() {
-    allMain += `<br><br><br><br><section>“Huh? What?”</section><br><br><button onclick="han58B()">[Huh. What?]</button> <button onclick="han58()">[I understand.]</button>`
+    allMain += `<br><br><br><br><section>“Huh? What?”<br><br><button onclick="han58B()">[Huh. What?]</button> <button onclick="han58()">[I understand.]</button></section>`
     end();
 }
 function han58() {
-    allMain += `<br><br><br><br><section>“Fantastic! The messenger will guide you to the first chamber, he knows it better than I”</section><br><br><button onclick="han59()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>“Fantastic! The messenger will guide you to the first chamber, he knows it better than I”<br><br><button onclick="han59()">[--&gt;]</button></section>`
     end();
 }
 function han59() {
-    allMain += `<br><br><br><br><section>You descend the stairway with the messenger, Cobain stays up at the entrance.</section><br><br><button onclick="han60()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>You descend the stairway with the messenger, Cobain stays up at the entrance.<br><br><button onclick="han60()">[--&gt;]</button></section>`
     end();
 }
 function han60() {
-    allMain += `<br><br><br><br><section>The walk is long and silent, the messenger has the resemblance of a lone wanderer, content with the serenity of silence. You find the silence deafening.
-    </section><br><br><button onclick="han61()">[Why were you here with Kobain?]</button>`
+    allMain += `<br><br><br><br><section>The walk is long and silent, the messenger has the resemblance of a lone wanderer, content with the serenity of silence. You find the silence deafening.<br><br><button onclick="han61()">[Why were you here with Kobain?]</button></section>`
     end();
 }
 function han61() {
-    allMain += `<br><br><br><br><section>“Hm… Kobain. He is up there.”</section><br><br><button onclick="han62()">[He <em>is</em> up there.]</button>`
+    allMain += `<br><br><br><br><section>“Hm… Kobain. He is up there.”<br><br><button onclick="han62()">[He <em>is</em> up there.]</button></section>`
     end();
 }
 function han62() {
-    allMain += `<br><br><br><br><section>You arrive at the entrance for the original Eastern Dungeon. “There are things here you are not expecting, Hannah. Things you are subconsciously aware of.”
-    </section><br><br><button onclick="han63B()">[What does that mean?]</button> <button onclick="han63()">Enter the <strong>Dungeon</strong>.</button>`
+    allMain += `<br><br><br><br><section>You arrive at the entrance for the original Eastern Dungeon. “There are things here you are not expecting, Hannah. Things you are subconsciously aware of.”<br><br><button onclick="han63B()">[What does that mean?]</button> <button onclick="han63()">Enter the <strong>Dungeon</strong>.</button></section>`
     end();
 }
 function han63B() {
-    allMain += `<br><br><br><br><section>“...”</section><br><br><button onclick="han63B()">[--&gt;]</button> <button onclick="han63()">Enter the <strong>Dungeon</strong>.</button>`
+    allMain += `<br><br><br><br><section>“...”<br><br><button onclick="han63B()">[--&gt;]</button> <button onclick="han63()">Enter the <strong>Dungeon</strong>.</button></section>`
     end();
 }
 function han63() {
-    allMain += `<br><br><br><br><section>You find yourself inside a cubelike room. Simple in nature, with clear details.</section><br><br><button onclick="han64()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>You find yourself inside a cubelike room. Simple in nature, with clear details.<br><br><button onclick="han64()">[--&gt;]</button></section>`
     end();
 }
 function han64() {
-    allMain += `<br><br><br><br><section>The walls are made of aged mausoleum stone, in a state of cracks and crumbles along its once perfect smoothness. Vines grow out through the larger cracks, slumping their large extremities on the corner of the floor. Across from you is a stone wall of a door, a plaque carved next to it. 
-    </section><br><br><button onclick="han65B()">[Inspect vines.]</button> <button onclick="han65()"></button>`
+    allMain += `<br><br><br><br><section>The walls are made of aged mausoleum stone, in a state of cracks and crumbles along its once perfect smoothness. Vines grow out through the larger cracks, slumping their large extremities on the corner of the floor. Across from you is a stone wall of a door, a plaque carved next to it. <br><br><button onclick="han65B()">[Inspect vines.]</button> <button onclick="han65()"></button></section>`
     end();
 }
 function han65B() {
-    allMain += `<br><br><br><br><section>The ends of the vines all collect into this corner, they seem to be blocking something.</section><br><br><button onclick="han65()">[Inspect stone door.]</button>`
+    allMain += `<br><br><br><br><section>The ends of the vines all collect into this corner, they seem to be blocking something.<br><br><button onclick="han65()">[Inspect stone door.]</button></section>`
     end();
 }
 function han65() {
-    allMain += `<br><br><br><br><section>The plaque says, “A stone unturned is a chance forgotten.”</section><br><br><button onclick="han67()">[Deeply inspect the walls.]</button> <button onclick="han65B()">Inspect vines.</button>`
+    allMain += `<br><br><br><br><section>The plaque says, “A stone unturned is a chance forgotten.”<br><br><button onclick="han67()">[Deeply inspect the walls.]</button> <button onclick="han65B()">Inspect vines.</button></section>`
     end();
 }
 function han67() {
-    allMain += `<br><br><br><br><section>Upon deeper inspection, there is an unfastened stone sticking out from the wall's crevice. Pushing it in causes a deep click to resonate through the room, making the stone door slowly rise, opening the hallway. The hallway branches into three paths.
-    </section><br><br><button onclick="han68B()">[Left.]</button> <button onclick="han68()">[Right.]</button> <button onclick="han68C">[Straight.]</button>`
+    allMain += `<br><br><br><br><section>Upon deeper inspection, there is an unfastened stone sticking out from the wall's crevice. Pushing it in causes a deep click to resonate through the room, making the stone door slowly rise, opening the hallway. The hallway branches into three paths.<br><br><button onclick="han68B()">[Left.]</button> <button onclick="han68()">[Right.]</button> <button onclick="han68C">[Straight.]</button></section>`
     end();
 }
 function han68B() {
-    allMain += `<br><br><br><br><section>Amidst a patch of long dead shrubbery, lies a perfectly shaped stick.</section><br><br><button onclick="han69B()">[Inspect the stick.]</button>`
+    allMain += `<br><br><br><br><section>Amidst a patch of long dead shrubbery, lies a perfectly shaped stick.<br><br><button onclick="han69B()">[Inspect the stick.]</button></section>`
     end();
 }
 function han69B() {
-    allMain += `<br><br><br><br><section>To call this a stick would be an understatement. In it's immaculate beauty and natural shape, it looks more like a well crafted staff, designed in the Heavens and sent down to be picked up by a true hero. Ah yes, this is obviously the greatest stick to ever be discovered. This right here is what you need to be the coolest warlock in Polend</section><br><br><button onclick="han70B()">[The stick is in your inventory.]</button>`
+    allMain += `<br><br><br><br><section>To call this a stick would be an understatement. In it's immaculate beauty and natural shape, it looks more like a well crafted staff, designed in the Heavens and sent down to be picked up by a true hero. Ah yes, this is obviously the greatest stick to ever be discovered. This right here is what you need to be the coolest warlock in Polend<br><br><button onclick="han70B()">[The stick is in your inventory.]</button></section>`
     end();
 }
 function han68C() {
-    allMain += `<br><br><br><br><section>You walk through the the stone esophageal hall. Within the dimly lit section leads into a thin waterfall, the water ran orange from mixing with rust and sediment. It emanates a vile stench that completely repulses you.</section><br><br><button onclick="han69C()">[Drink the water.]</button> <button onclick="han70C">[Continue on.]</button>`
+    allMain += `<br><br><br><br><section>You walk through the the stone esophageal hall. Within the dimly lit section leads into a thin waterfall, the water ran orange from mixing with rust and sediment. It emanates a vile stench that completely repulses you.<br><br><button onclick="han69C()">[Drink the water.]</button> <button onclick="han70C">[Continue on.]</button></section>`
     end();
 }
 function han69C() {
-    allMain += `<br><br><br><br><section>No, you do not want that. </section><br><br><button onclick="han69CC()">[Try to drink more water.]</button>`
+    allMain += `<br><br><br><br><section>No, you do not want that.<br><br><button onclick="han69CC()">[Try to drink more water.]</button></section>`
     end();
 }
 function han69CC() {
-    allMain += `<br><br><br><br><section>NO! You really, really do not want that!</section><br><br><button onclick="han70C()">[Continue on.]</button>`
+    allMain += `<br><br><br><br><section>NO! You really, really do not want that!<br><br><button onclick="han70C()">[Continue on.]</button></section>`
     end();
 }
 function han70C() {
-    allMain += `<br><br><br><br><section>You take a hearty swig out of the gross goopy pool of water. Refreshed and revitalized, you descend deeper through the cavernous chambers.</section><br><br><button onclick="han71C()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>You take a hearty swig out of the gross goopy pool of water. Refreshed and revitalized, you descend deeper through the cavernous chambers.<br><br><button onclick="han71C()">[--&gt;]</button></section>`
     end();
 }
 function han71C() {
-    allMain += `<br><br><br><br><section>The chamber reaches a dead end, in a corner of the sculpted wall is an old magic metal stick. Concentrated magic that fires for one shot.</section><br><br><button onclick="han72C()">[Put it into your inventory.]</button>`
+    allMain += `<br><br><br><br><section>The chamber reaches a dead end, in a corner of the sculpted wall is an old magic metal stick. Concentrated magic that fires for one shot.<br><br><button onclick="han72C()">[Put it into your inventory.]</button></section>`
     end();
 }
 function han72C() {
-    allMain += `<br><br><br><br><section>You recieved the magic metal stick.</section><br><br><button onclick="han73C()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>You recieved the magic metal stick.<br><br><button onclick="han73C()">[--&gt;]</button></section>`
     end();
 }
 function han73C() {
-    allMain += `<br><br><br><br><section>You backtrack and find original hallway branches.</section><br><br><button onclick="han()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>You backtrack and find original hallway branches.<br><br><button onclick="han()">[--&gt;]</button></section>`
     end();
 }
 function han68() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
     end();
 }
 function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
     end();
 }
 function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
     end();
 }
 function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
     end();
 }
 function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
     end();
 }
 function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
     end();
 }
 function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
     end();
 }
 function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
     end();
 }
 function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
     end();
 }
 function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
     end();
 }
 function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
     end();
 }
 function han() {
-    allMain += `<br><br><br><br><section>WhateverZ</section><br><br><button onclick="han()">[--&gt;]</button>`
+    allMain += `<br><br><br><br><section>WhateverZ<br><br><button onclick="han()">[--&gt;]</button></section>`
     end();
 }
 function combatSetup(setCombat = 0, eIndx = 1) {
@@ -932,7 +871,7 @@ function generalAttk() {
 function familiarAttk() {
     allMain += `<br><br><br><section>Select an ally to attack:<br><br>`
     for (item of pAllies) {
-        allMain += `<button onevent='allySelect(${item})'>${item.name}</button> `
+        allMain += `<button onclick='allySelect(${item})'>${item.name}</button> `
     }
     allMain += `<button onclick='combatContinue()'>Cancel</button></section>`
     end();
@@ -941,7 +880,7 @@ function familiarAttk() {
 function allySelect(allyObj) {
     allMain += `<br><br><br><section>Choose a target:<br><br>`
     for (item of currentEs) {
-        allMain += `<button onevent='allyAttk(${allyObj},${currentEs.indexOf(item)})'>${item.e}</button> `
+        allMain += `<button onclick='allyAttk(${allyObj},${currentEs.indexOf(item)})'>${item.e}</button> `
     }
     allMain += `<button onclick='combatContinue()'>Cancel</button></section>`
     end();
@@ -981,7 +920,7 @@ function allyAttk(allyObj, enemyIndx) {
 function meleeAttkChoose() {
     allMain += `<br><br><br><section>Choose a target:<br><br>`
     for (item of currentEs) {
-        allMain += `<button onevent='meleeAttk(${currentEs.indexOf(item)})'>${item.e}</button> `
+        allMain += `<button onclick='meleeAttk(${currentEs.indexOf(item)})'>${item.e}</button> `
     }
     allMain += `<button onclick='combatContinue()'>Cancel</button></section>`
     end();
@@ -1177,7 +1116,7 @@ function magicAttkAction(spell) {
     let attkMiss = false;
     let attkChance = 0.8;
     let hitNum = 0;
-
+    allMain = ``;
     if (pAbilities.indexOf(`highMelee`)) {
         for (let i = 0; i < Math.floor(totalDmgDealt / 50); i++)
             pMagicDmg += (pLvl * 5 / 24).toFixed(2);
@@ -1316,7 +1255,7 @@ function enemyTurn() {
     }
     if (pAbilities.indexOf(`firebomb`) != -1 && turnCounter >= 5) {
         if (Math.random() < (pLvl - 1) / 25) {
-            allMain = `<br><br><br><section>Your firebomb activated and dealt ${40} damage</section>`
+            allMain += `<br><br><br><section>Your firebomb activated and dealt ${40} damage</section>`
             turnCounter = -1;
             for (item of currentEs) {
                 item.eHp -= 40;
@@ -1373,7 +1312,7 @@ function enemyTurn() {
             }
         }
     }
-    allMain = `<br><br><br><br> <section>The ${currentEs[0].e}`
+    allMain += `<br><br><br><br> <section>The ${currentEs[0].e}`
     if (currentEs.length == 4) {
         allMain += `, ${currentEs[1].e}, ${currentEs[2].e},`;
     }
@@ -1454,24 +1393,24 @@ function pleaseRun() {
 }
 
 function lvlUp() {
-    allMain = `<br><br><br><br><section>Select an Upgrade!<br><br><section class='skillColumn'>`
+    allMain = `<section>Select an Upgrade!<br><br><section class='allSkills'><section class='skillColumn'>`
     if (statA == 0) {
-        allMain += `<button onevent='buffStat("def",${5})'>Block Def Up</button>`
+        allMain += `<button onclick='buffStat("def",${5})'>Block Def Up</button>`
     }
     else if (statA == 1) {
-        allMain += `<button>Block Def Up</button> <button onevent='addAbility("blockDmgUp")'>Blocking increses dmg by a small percent for the next turn</button>`
+        allMain += `<button>Block Def Up</button> <button onclick='addAbility("blockDmgUp")'>Blocking increses dmg by a small percent for the next turn</button>`
     }
     else if (statA == 2) {
-        allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onevent='buffStat("def",${5})'>Block Def Up</button>`
+        allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onclick='buffStat("def",${5})'>Block Def Up</button>`
     }
     else if (statA == 3) {
-        allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button onevent='addAbility("blockImmunity")'>While blocking, have a 25% chance to not take dmg</button>`
+        allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button onclick='addAbility("blockImmunity")'>While blocking, have a 25% chance to not take dmg</button>`
     }
     else if (statA == 4) {
-        allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button onevent='buffStat("def",${5})'>Block Def Up</button>`
+        allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button onclick='buffStat("def",${5})'>Block Def Up</button>`
     }
     else if (statA == 5) {
-        allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button>Block Def Up</button> <button onevent='addAbility("parry")'>You no longer take damage while blocking</button>`
+        allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button>Block Def Up</button> <button onclick='addAbility("parry")'>You no longer take damage while blocking</button>`
     }
     else if (statA == 6) {
         allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button>Block Def Up</button> <button>You no longer take damage while blocking</button>`
@@ -1481,67 +1420,67 @@ function lvlUp() {
     switch (pSpellType) {
         case `all`:
             if (statB == 0) {
-                allMain += `<button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                allMain += `<button onclick='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
             }
             else if (statB == 1) {
-                allMain += `<button>Fire DOT Length Up</button> <button onevent='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
+                allMain += `<button>Fire DOT Length Up</button> <button onclick='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
             }
             else if (statB == 2) {
-                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
             }
             else if (statB == 3) {
-                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button onevent='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
+                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button onclick='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
             }
             else if (statB == 4) {
-                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
             }
             else if (statB == 5) {
-                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button onevent='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
+                allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button onclick='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
             }
             else if (statB == 6) {
                 allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button>If your Hp drops to 0, regain half hp</button>`
             }
             allMain += `</section><section class='skillColumn'>`
             if (statC == 0) {
-                allMain += `<button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                allMain += `<button onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
             }
             else if (statC == 1) {
-                allMain += `<button>Healing Power Up</button> <button onevent='addAbility("coolDown","water",coolDown)'>You can remove DOT afflictions using an ability</button>`
+                allMain += `<button>Healing Power Up</button> <button onclick='addAbility("coolDown","water",coolDown)'>You can remove DOT afflictions using an ability</button>`
             }
             else if (statC == 2) {
-                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
             }
             else if (statC == 3) {
-                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button onevent='addAbility("waterShield","water")'>Healing increases defense by a moderate amount for a turn</button>`
+                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button onclick='addAbility("waterShield","water")'>Healing increases defense by a moderate amount for a turn</button>`
             }
             else if (statC == 4) {
-                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
             }
             else if (statC == 5) {
-                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button onevent='addAbility("quickHeal","water")'>You can attack and heal in the same turn</button>`
+                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button onclick='addAbility("quickHeal","water")'>You can attack and heal in the same turn</button>`
             }
             else if (statC == 6) {
                 allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button>You can attack and heal in the same turn</button>`
             }
             allMain += `</section><section class='skillColumn'>`
             if (statD == 0) {
-                allMain += `<button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                allMain += `<button onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
             }
             else if (statD == 1) {
-                allMain += `<button>Earth Dmg Up</button> <button onevent='addAbility("doubleEarth","earth")'>Earth attacks can hit twice</button>`
+                allMain += `<button>Earth Dmg Up</button> <button onclick='addAbility("doubleEarth","earth")'>Earth attacks can hit twice</button>`
             }
             else if (statD == 2) {
-                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
             }
             else if (statD == 3) {
                 allMain += (`<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button>
-                <button onevent='addAbility("InstaKill","earth", instaKill'>Adds ability to defeat any enemy whose hp is under 10%</button>`)
+                <button onclick='addAbility("InstaKill","earth", instaKill'>Adds ability to defeat any enemy whose hp is under 10%</button>`)
             }
             else if (statD == 4) {
-                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
             }
             else if (statD == 5) {
-                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button onevent='addAbility("quadHit","earth")'>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
+                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button onclick='addAbility("quadHit","earth")'>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
             }
             else if (statD == 6) {
                 allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
@@ -1552,22 +1491,22 @@ function lvlUp() {
             switch (pSpellType) {
                 case `fire`:
                     if (statB == 0) {
-                        allMain += `<button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                        allMain += `<button onclick='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
                     }
                     else if (statB == 1) {
-                        allMain += `<button>Fire DOT Length Up</button> <button onevent='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
+                        allMain += `<button>Fire DOT Length Up</button> <button onclick='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
                     }
                     else if (statB == 2) {
-                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
                     }
                     else if (statB == 3) {
-                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button onevent='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
+                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button onclick='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
                     }
                     else if (statB == 4) {
-                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button onevent='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
+                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire DOT Length Up</button>`
                     }
                     else if (statB == 5) {
-                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button onevent='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
+                        allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button onclick='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
                     }
                     else if (statB == 6) {
                         allMain += `<button>Fire DOT Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire DOT Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire DOT Length Up</button> <button>If your Hp drops to 0, regain half hp</button>`
@@ -1575,22 +1514,22 @@ function lvlUp() {
                     break;
                 case `water`:
                     if (statB == 0) {
-                        allMain += `<button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                        allMain += `<button onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
                     }
                     else if (statB == 1) {
-                        allMain += `<button>Healing Power Up</button> <button onevent='addAbility("coolDown","water",coolDown)'>You can remove DOT afflictions using an ability</button>`
+                        allMain += `<button>Healing Power Up</button> <button onclick='addAbility("coolDown","water",coolDown)'>You can remove DOT afflictions using an ability</button>`
                     }
                     else if (statB == 2) {
-                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
                     }
                     else if (statB == 3) {
-                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button onevent='addAbility("waterShield","water")'>Healing increases defense by a moderate amount for a turn</button>`
+                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button onclick='addAbility("waterShield","water")'>Healing increases defense by a moderate amount for a turn</button>`
                     }
                     else if (statB == 4) {
-                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button onevent='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
                     }
                     else if (statB == 5) {
-                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button onevent='addAbility("quickHeal","water")'>You can attack and heal in the same turn</button>`
+                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button onclick='addAbility("quickHeal","water")'>You can attack and heal in the same turn</button>`
                     }
                     else if (statB == 6) {
                         allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button>You can attack and heal in the same turn</button>`
@@ -1598,23 +1537,23 @@ function lvlUp() {
                     break;
                 case `earth`:
                     if (statB == 0) {
-                        allMain += `<button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                        allMain += `<button onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
                     }
                     else if (statB == 1) {
-                        allMain += `<button>Earth Dmg Up</button> <button onevent='addAbility("doubleEarth","earth")'>Earth attacks can hit twice</button>`
+                        allMain += `<button>Earth Dmg Up</button> <button onclick='addAbility("doubleEarth","earth")'>Earth attacks can hit twice</button>`
                     }
                     else if (statB == 2) {
-                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
                     }
                     else if (statB == 3) {
                         allMain += (`<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button>
-                        <button onevent='addAbility("InstaKill","earth", instaKill)'>Adds ability to defeat any enemy whose hp is under 10%</button>`)
+                        <button onclick='addAbility("InstaKill","earth", instaKill)'>Adds ability to defeat any enemy whose hp is under 10%</button>`)
                     }
                     else if (statB == 4) {
-                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button onevent='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
                     }
                     else if (statB == 5) {
-                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button onevent='addAbility("quadHit","earth")'>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
+                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button onclick='addAbility("quadHit","earth")'>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
                     }
                     else if (statB == 6) {
                         allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
@@ -1624,46 +1563,46 @@ function lvlUp() {
             switch (char) {
                 case `paul`:
                     if (statC == 0) {
-                        allMain += `<button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
+                        allMain += `<button onclick='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
                     }
                     else if (statC == 1) {
-                        allMain += `<button>Sword Dmg Up</button> <button onevent='addAbility("defReduction","p1", eDefReduction)'>Adds ability which reduces enemy defense</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button onclick='addAbility("defReduction","p1", eDefReduction)'>Adds ability which reduces enemy defense</button>`
                     }
                     else if (statC == 2) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button onclick='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
                     }
                     else if (statC == 3) {
                         allMain += (`<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button>
-                        <button onevent='addAbility("multiHit","p1")'>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 25)} times</button>`)
+                        <button onclick='addAbility("multiHit","p1")'>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 25)} times</button>`)
                     }
                     else if (statC == 4) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button onevent='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button onclick='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
                     }
                     else if (statC == 5) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button onevent='addAbility("highMelee","p1")'>For every 50 damage you deal, your damage increases by ${pLvl * 10 / 25}%</button>`
+                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button onclick='addAbility("highMelee","p1")'>For every 50 damage you deal, your damage increases by ${pLvl * 10 / 25}%</button>`
                     }
                     else if (statC == 6) {
                         allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button>For every 50 damage you deal, your damage increases by ${pLvl * 10 / 24}%</button>`
                     }
 
                     if (statD == 0) {
-                        allMain += `<button onevent='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
+                        allMain += `<button onclick='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
                     }
                     else if (statD == 1) {
-                        allMain += `<button>Magic Dmg Up</button> <button onevent='addAbility("Melee Infusion","p2",infuseMelee)'>All melee attacks can be infused with selected magic attribute</button>`
+                        allMain += `<button>Magic Dmg Up</button> <button onclick='addAbility("Melee Infusion","p2",infuseMelee)'>All melee attacks can be infused with selected magic attribute</button>`
                     }
                     else if (statD == 2) {
-                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button onevent='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button onclick='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
                     }
                     else if (statD == 3) {
                         allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button>
-                        <button onevent='addAbility("enemyWeakener,"p2")'>Repeated melee attacks weakens the enemy</button>`
+                        <button onclick='addAbility("enemyWeakener,"p2")'>Repeated melee attacks weakens the enemy</button>`
                     }
                     else if (statD == 4) {
-                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button onevent='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button onclick='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
                     }
                     else if (statD == 5) {
-                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button>Magic Dmg Up</button> <button onevent='addAbility("maxInfusion","p2")'>Melee attacks can be infused with all elements</button>`
+                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button>Magic Dmg Up</button> <button onclick='addAbility("maxInfusion","p2")'>Melee attacks can be infused with all elements</button>`
                     }
                     else if (statD == 6) {
                         allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button>Magic Dmg Up</button> <button>Melee attacks can be infused with all elements</button>`
@@ -1671,46 +1610,46 @@ function lvlUp() {
                     break;
                 case `mat`:
                     if (statC == 0) {
-                        allMain += `<button onevent='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
+                        allMain += `<button onclick='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
                     }
                     else if (statC == 1) {
-                        allMain += `<button>Ally Dmg Up</button> <button onevent='addAbility("Ally Infusion","m1",infuseMelee)'>You can infuse  infuse allies with your elemental attribute</button>`
+                        allMain += `<button>Ally Dmg Up</button> <button onclick='addAbility("Ally Infusion","m1",infuseMelee)'>You can infuse  infuse allies with your elemental attribute</button>`
                     }
                     else if (statC == 2) {
-                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button onevent='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
+                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button onclick='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
                     }
                     else if (statC == 3) {
                         allMain += (`<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button>
-                        <button onevent='addAbility("allyHeal","m1", allyHeal())'>You can heal all allies ${pLvl / 25 * 35}% of their health</button>`)
+                        <button onclick='addAbility("allyHeal","m1", allyHeal())'>You can heal all allies ${pLvl / 25 * 35}% of their health</button>`)
                     }
                     else if (statC == 4) {
-                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button onevent='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
+                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button onclick='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
                     }
                     else if (statC == 5) {
-                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button>Ally Dmg Up</button> <button onevent='addAbility("allyBonusAction","m1")'>You can do an extra action while your ally attacks</button>`
+                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button>Ally Dmg Up</button> <button onclick='addAbility("allyBonusAction","m1")'>You can do an extra action while your ally attacks</button>`
                     }
                     else if (statC == 6) {
                         allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button>Ally Dmg Up</button> <button>You can do an extra action while your ally attacks</button>`
                     }
 
                     if (statD == 0) {
-                        allMain += `<button onevent='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
+                        allMain += `<button onclick='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
                     }
                     else if (statD == 1) {
-                        allMain += `<button>Max Ally Num Up</button> <button onevent='addAbility("allyChanceUp","m2")'>Recruiting an ally is more successful</button>`
+                        allMain += `<button>Max Ally Num Up</button> <button onclick='addAbility("allyChanceUp","m2")'>Recruiting an ally is more successful</button>`
                     }
                     else if (statD == 2) {
-                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button onevent='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
+                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button onclick='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
                     }
                     else if (statD == 3) {
                         allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button>
-                        <button onevent='addAbility("allyStrengthen,"m2")'>Allies have higher stats when recruited</button>`
+                        <button onclick='addAbility("allyStrengthen,"m2")'>Allies have higher stats when recruited</button>`
                     }
                     else if (statD == 4) {
-                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button> <button>Allies have higher stats when recruited</button> <button onevent='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
+                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button> <button>Allies have higher stats when recruited</button> <button onclick='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
                     }
                     else if (statD == 5) {
-                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button> <button>Allies have higher stats when recruited</button> <button>Max Ally Num Up</button> <button onevent='addAbility("stInNumbers","m2")'>If player has the max number of allies, all allies deal increased damage</button>`
+                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button> <button>Allies have higher stats when recruited</button> <button>Max Ally Num Up</button> <button onclick='addAbility("stInNumbers","m2")'>If player has the max number of allies, all allies deal increased damage</button>`
                     }
                     else if (statD == 6) {
                         allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button> <button>Allies have higher stats when recruited</button> <button>Max Ally Num Up</button> <button>If player has the max number of allies, all allies deal increased damage</button>`
@@ -1719,9 +1658,10 @@ function lvlUp() {
             }
             break;
     }
+    allMain+=`</section>`
     end();
-}
 
+}
 
 function addAbility(abilityName, path, active = false) {
     pAbilities.push(abilityName);
@@ -1764,6 +1704,9 @@ function addAbility(abilityName, path, active = false) {
         case `m2`:
             statD++;
             break;
+    }
+    if(path != `none`){
+        postLvlUp()
     }
     //stat++;
 }
@@ -1814,8 +1757,252 @@ function buffStat(stat, amount) {
             statD++;
             break;
     }
-    stat++;
+    //stat++;
+    postLvlUp()
+
 }
+
+function postLvlUp(){
+    allMain = `<section>You leveled up! This action cannot be undone<br><br><button onclick='${saveState}()'>Continue</button></section>`
+    end();
+}
+
+function displayPlayerPos() {
+    pMap = map.split(``);
+    pMap[playerX + playerY * 202] = `P`;
+    pMap = pMap.join(``);
+    printMap();
+}
+function randomCombat() {
+    if (Math.random() <= 0.15) {
+        combatSetup();
+    }
+    else {
+        displayPlayerPos()
+    }
+}
+function checkForThings() {
+    if (!dungeonCheck() && !cityCheck()) {
+        randomCombat()
+        // displayPlayerPos()
+    }
+    else if(dungeonCheck()){
+        displayPlayerPos()
+        switch(dungeonCheck()){
+            case `dungeon1`:
+                break;
+            case `dungeon2`:
+                break;
+            case `dungeon3`:
+                break;
+            case `dungeon4`:
+                break;
+            case `dungeon5`:
+                break;
+            case `dungeon6`:
+                break;
+            case `dungeon7`:
+                break;
+            case `dungeon8`:
+                break;
+            case `dungeon9`:
+                break;
+            case `dungeon10`:
+                break;
+            case `dungeon11`:
+                break;
+            case `dungeon12`:
+                break;
+            case `dungeon13`:
+                break;
+            case `dungeon14`:
+                break;
+            case `dungeon15`:
+                break;
+            case `dungeon16`:
+                break;
+            case `dungeon17`:
+                break;
+            case `dungeon18`:
+                break;
+            case `dungeon19`:
+                break;
+            case `dungeon20`:
+                break;
+        }
+    }
+    else if(cityCheck()){
+        switch(cityCheck()){
+            case `city1`:
+                break;
+            case `city2`:
+                break;
+            case `city3`:
+                break;
+            case `city4`:
+                break;
+            case `city5`:
+                break;
+            case `city6`:
+                break;
+        }
+        displayPlayerPos()
+    }
+}
+function moveNorth() {
+    playerY--;
+    checkForThings()
+}
+function moveSouth() {
+    playerY++;
+    checkForThings()
+}
+function moveEast() {
+    playerX++;
+    checkForThings()
+}
+function moveWest() {
+    playerX--;
+    checkForThings()
+}
+function displayMovementOptions() {
+    pMap = map.split(``);
+    allMain += `<br><br><section>`
+    if (pMap[playerX + (playerY - 1) * 202] != `@`) {
+        allMain += `<button onclick='moveNorth()'>Move North</button> `
+    }
+    if (pMap[playerX + (playerY + 1) * 202] != `@`) {
+        allMain += `<button onclick='moveSouth()'>Move South</button> `
+    }
+    if (pMap[playerX - 1 + playerY * 202] != `@`) {
+        allMain += `<button onclick='moveWest()'>Move West</button> `
+    }
+    if (pMap[playerX + 1 + playerY * 202] != `@`) {
+        allMain += `<button onclick='moveEast()'>Move East</button> `
+    }
+
+    allMain += `</section>`
+    end();
+}
+function printMap() {
+    allMain = `<section class='map'><p>` + pMap + `</p></section>`;
+    displayMovementOptions();
+    end();
+}
+
+function cityCheck(){
+    if ((10 <= playerX) && (playerX <= 18) && (3 <= playerY) && (playerY <= 5)) {
+        
+        return `city1`;
+    }
+    else if ((181 <= playerX) && (playerX <= 188) && (4 <= playerY) && (playerY <= 5)) {
+        
+        return `city2`;
+    }
+    else if ((74 <= playerX) && (playerX <= 77) && (38 <= playerY) && (playerY <= 39)) {
+        
+        return `city3`;
+    }
+    else if ((179 <= playerX) && (playerX <= 188) && (42 <= playerY) && (playerY <= 44)) {
+        
+        return `city4`;
+    }
+    else if ((114 <= playerX) && (playerX <= 121) && (45 <= playerY) && (playerY <= 47)) {
+        
+        return `city5`;
+    }
+    else if ((31 <= playerX) && (playerX <= 32) && (51 <= playerY) && (playerY <= 51)) {
+        
+        return `city6`;
+    }
+}
+
+function dungeonCheck() {
+    if ((48 <= playerX) && (playerX <= 50) && (playerY == 2)) {
+        
+        return `dungeon1`;
+    }
+    else if ((186 <= playerX) && (playerX <= 190) && (6 <= playerY) && (playerY <= 7)) {
+        
+        return `dungeon2`;
+    }
+    else if ((24 <= playerX) && (playerX <= 27) && (10 <= playerY) && (playerY <= 11)) {
+        
+        return `dungeon3`;
+    }
+    else if ((122 <= playerX) && (playerX <= 126) && (14 <= playerY) && (playerY <= 15)) {
+        
+        return `dungeon4`;
+    }
+    else if ((54 <= playerX) && (playerX <= 58) && (15 <= playerY) && (playerY <= 16)) {
+        
+        return `dungeon5`;
+    }
+    else if ((22 <= playerX) && (playerX <= 26) && (21 <= playerY) && (playerY <= 22)) {
+        
+        return `dungeon6`;
+    }
+    else if ((28 <= playerX) && (playerX <= 30) && (28 <= playerY) && (playerY <= 28)) {
+        
+        return `dungeon7`;
+    }
+    else if ((47 <= playerX) && (playerX <= 48) && (30 <= playerY) && (playerY <= 30)) {
+        
+        return `dungeon8`;
+    }
+    else if ((171 <= playerX) && (playerX <= 174) && (32 <= playerY) && (playerY <= 32)) {
+        
+        return `dungeon9`;
+    }
+    else if ((73 <= playerX) && (playerX <= 75) && (33 <= playerY) && (playerY <= 33)) {
+        
+        return `dungeon10`;
+    }
+    else if ((99 <= playerX) && (playerX <= 104) && (38 <= playerY) && (playerY <= 39)) {
+        
+        return `dungeon11`;
+    }
+    else if ((128 <= playerX) && (playerX <= 131) && (38 <= playerY) && (playerY <= 38)) {
+        
+        return `dungeon12`;
+    }
+    else if ((143 <= playerX) && (playerX <= 144) && (39 <= playerY) && (playerY <= 39)) {
+        
+        return `dungeon13`;
+    }
+    else if ((161 <= playerX) && (playerX <= 162) && (43 <= playerY) && (playerY <= 43)) {
+        
+        return `dungeon14`;
+    }
+    else if ((21 <= playerX) && (playerX <= 23) && (50 <= playerY) && (playerY <= 50)) {
+        
+        return `dungeon15`;
+    }
+    else if ((45 <= playerX) && (playerX <= 48) && (51 <= playerY) && (playerY <= 51)) {
+        
+        return `dungeon16`;
+    }
+    else if ((78 <= playerX) && (playerX <= 80) && (51 <= playerY) && (playerY <= 51)) {
+        
+        return `dungeon17`;
+    }
+    else if ((91 <= playerX) && (playerX <= 93) && (51 <= playerY) && (playerY <= 51)) {
+        
+        return `dungeon18`;
+    }
+    else if ((146 <= playerX) && (playerX <= 148) && (52 <= playerY) && (playerY <= 52)) {
+        
+        return `dungeon19`;
+    }
+    else if ((180 <= playerX) && (playerX <= 181) && (52 <= playerY) && (playerY <= 52)) {
+        
+        return `dungeon20`;
+    }
+    else{
+        return false
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     let paulAll = document.getElementsByClassName(`paul`);
     let hannahAll = document.getElementsByClassName(`hannah`);
