@@ -1815,7 +1815,6 @@ function checkForThings() {
         // displayPlayerPos()
     }
     else if(dungeonCheck()){
-        displayPlayerPos()
         switch(dungeonCheck()){
             case `dungeon1`:
                 if(!allDungeonInfo[currentDungeon].completed){
@@ -1823,44 +1822,199 @@ function checkForThings() {
                     saveState = `displayPlayerPos`
                     dungeonContinue()
                 }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon2`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 1;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon3`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 2;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon4`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 3;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon5`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 4;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon6`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 5;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon7`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 6;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon8`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 7;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon9`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 8;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon10`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 9;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon11`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 10;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon12`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 11;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon13`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 12;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon14`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 13;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon15`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 14;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon16`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 15;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon17`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 16;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon18`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 17;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon19`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 18;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
             case `dungeon20`:
+                if(!allDungeonInfo[currentDungeon].completed){
+                    currentDungeon = 19;
+                    saveState = `displayPlayerPos`
+                    dungeonContinue()
+                }
+                else{
+                    displayPlayerPos();
+                }
                 break;
         }
     }
