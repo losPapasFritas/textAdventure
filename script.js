@@ -39,7 +39,7 @@ let char = `none`,
     meleeMagicInfusion = `none`,
     bonusActionUsed = false,
     totalDmgDealt = 0,
-    money = 0,
+    money = 10,
     givenMoney = 0,
     currentDungeon = 0,
     totalDefReduction = 0;
@@ -820,30 +820,36 @@ function combatSetup(setCombat = 0, eIndx = 1) {
             eIndx = getRandomInt(0, 5);
             enemy1 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
             currentEs.push(enemy1);
+            givenMoney = eLvlAll[eIndx] * 5;
         }
         if (randomNum >= 2) {
             eIndx = getRandomInt(0, 5);
             enemy2 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
             currentEs.push(enemy2);
+            givenMoney += eLvlAll[eIndx] * 5;
         }
         if (randomNum >= 3) {
             eIndx = getRandomInt(0, 5);
             enemy3 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
             currentEs.push(enemy3);
+            givenMoney += eLvlAll[eIndx] * 5;
         }
         if (randomNum === 4) {
             eIndx = getRandomInt(0, 5);
             enemy4 = new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx])
             currentEs.push(enemy4);
+            givenMoney += eLvlAll[eIndx] * 5;
         }
         //}
         if (currentEs.length == 0) {
             eIndx = getRandomInt(0, 5);
             currentEs.push(new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx]));
+            givenMoney = eLvlAll[eIndx] * 5;
         }
     }
     else if (setCombat === 1) {
         currentEs.push(new enemy(enemies[eIndx], eHpAll[eIndx], eDmgAll[eIndx], eLvlAll[eIndx], eDefAll[eIndx]));
+        givenMoney = eLvlAll[eIndx] * 5;
     }
     console.log(enemies[0].e)
     let aOrAn1 = aOrAn(currentEs[0].e);
@@ -1398,7 +1404,9 @@ function enemyTurn() {
 function combatEnd() {
     allMain = `<br><br><br><br><section>You win</section>`;
     givePlayerItem();
-
+    allMain +=`<section>You gained ${givenMoney} dollars!</section>`l
+    money += givenMoney;
+    givenMoney = 0;
     allMain += `<br><br><br><br><section><button onclick='${saveState}()'>Continue</button></section>`
     end();
 }
