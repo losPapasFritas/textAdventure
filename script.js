@@ -1,6 +1,7 @@
+//increase max hp, lvl, base dmg, dmg, block buff, base defally dmg buff, maybe add some spells, and magic dmg + base magic dmgM``
 let allMain = `<section>Choose a character! <br><br> <button class="paul">Paul the Knight</button> <button class="hannah">Hannah the Magician</button> <button class="mathew">Mathew the Tamer</button></section>`
 let char = `none`,
-    saveState = `none`,
+    save`State = `none`,
     currentEs = [],
     enemy1,
     enemy2,
@@ -108,7 +109,7 @@ let allDungeonInfo = [
 //mudman is first dungeon boss
 let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`];
 let eHpAll = [70, 10000, 100, 85, 30, 120, 120, 130, 546];
-let eDmgAll = [5, 1, 13, 11, 15, 20, 21, 25, 30];
+let eDmgAll = [5, 1, 13, 11, 15, 17, 19, 20, 25];
 let eLvlAll = [1, 500, 7, 5, 6, 10, 12, 10, 24];
 let eDefAll = [10, 99.99999999, 10, 10, 3, 0, 10, 5, 50];
 let buffItemList = [{ name: `Enchanted Golden Apple`, hp: 10000, def: 10000, dmg: 100, magic: 19 }, { name: `Potion of Minor Healing`, hp: 40, def: 0, dmg: 0, magic: 0 }, { name: `Pot of Healing`, hp: 70, def: 0, dmg: 0, magic: 0 }, { name: `Cauldron of Major Healing`, hp: 100, def: 0, dmg: 0, magic: 0 }, { name: `Coffee`, hp: 25, def: 0, dmg: 0.25, magic: 0.5 }, { name: `Hornet Honey`, hp: 30, def: 5 / 8, dmg: 0, magic: 0.5 }]
@@ -1388,10 +1389,7 @@ function enemyTurn() {
         }
     }
     if (currentEs.length == 0) {
-        if(allDungeonInfo[currentDungeon].numberOfRooms == (allDungeonInfo[currentDungeon].currentRoom - 1)){
-            allDungeonInfo[currentDungeon].completed = true;
-            currentDungeon = -1;
-        }
+        
         combatEnd();
         return undefined;
     }
@@ -1407,6 +1405,11 @@ function combatEnd() {
     allMain +=`<section>You gained ${givenMoney} dollars!</section>`l
     money += givenMoney;
     givenMoney = 0;
+    if(allDungeonInfo[currentDungeon].numberOfRooms == (allDungeonInfo[currentDungeon].currentRoom - 1)){
+        allDungeonInfo[currentDungeon].completed = true;
+        currentDungeon = -1;
+        saveState = lvlUp
+    }
     allMain += `<br><br><br><br><section><button onclick='${saveState}()'>Continue</button></section>`
     end();
 }
@@ -1695,6 +1698,9 @@ function lvlUp() {
             break;
     }
     allMain+=`</section>`
+    if(saveState = `lvlUp`){
+        saveState = `displayPlayerPos`
+    }
     end();
 
 }
