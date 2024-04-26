@@ -1,7 +1,7 @@
 //increase max hp, lvl, base dmg, dmg, block buff, base defally dmg buff, maybe add some spells, and magic dmg + base magic dmgM``
 let allMain = `<section>Choose a character! <br><br> <button class="paul">Paul the Knight</button> <button class="hannah">Hannah the Magician</button> <button class="mathew">Mathew the Tamer</button></section>`
 let char = `none`,
-    save`State = `none`,
+    saveState = `none`,
     currentEs = [],
     enemy1,
     enemy2,
