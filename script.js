@@ -1,5 +1,8 @@
 
-let allMain = `<section>Choose a character! <br><br> <button class="paul">Paul the Knight</button> <button class="hannah">Hannah the Magician</button> <button class="mathew">Mathew the Tamer</button></section>`
+//let allMain = `<section>Choose a character! <br><br> <button class="paul">Paul the Knight</button> <button class="hannah">Hannah the Magician</button> <button class="mathew">Mathew the Tamer</button></section>`
+
+let allMain = `<section>Welcome to Souls Adventure Ver. 1<br><br> Prepare to be cast into the fantastical world of Polend (No affiliation) <Br> Select your vessel to control the world.<button class="hannah">Hannah the Magician</button> </section>`
+
 let char = `none`,
     saveState = `none`,
     currentEs = [],
@@ -165,11 +168,11 @@ let pMap = ``;
 let allDungeonInfo = [
     { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }]
 //mudman is first dungeon boss
-let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`];
-let eHpAll = [70, 10000, 100, 85, 30, 120, 120, 130, 546];
-let eDmgAll = [5, 1, 13, 11, 15, 17, 19, 20, 25];
-let eLvlAll = [1, 500, 7, 5, 6, 10, 12, 10, 24];
-let eDefAll = [10, 99.99999999, 10, 10, 3, 0, 10, 5, 50];
+let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`, `Madsmith`];
+let eHpAll = [70, 10000, 100, 85, 30, 120, 120, 130, 546, 80];
+let eDmgAll = [5, 1, 13, 11, 15, 17, 19, 20, 25, 7];
+let eLvlAll = [1, 500, 7, 5, 6, 10, 12, 10, 24, 7];
+let eDefAll = [10, 99.99999999, 10, 10, 3, 0, 10, 5, 50, 12];
 let keyItems = [];
 let buffItemList = [
     { name: `Enchanted Golden Apple`, hp: 10000, def: 10000, dmg: 100, magic: 19 }, { name: `Potion of Minor Healing`, hp: 40, def: 0, dmg: 0, magic: 0 }, { name: `Pot of Healing`, hp: 70, def: 0, dmg: 0, magic: 0 }, { name: `Cauldron of Major Healing`, hp: 100, def: 0, dmg: 0, magic: 0 }, { name: `Coffee`, hp: 25, def: 0, dmg: 0.25, magic: 0.5 }, { name: `Hornet Honey`, hp: 30, def: 5 / 8, dmg: 0, magic: 0.5 }]
@@ -711,7 +714,8 @@ function han41() {
     end();
 }
 function han43() {
-    allMain += `<br><br><br><br><section>You explore the structure of the forge, looking for a pathway to reach the rooftop. You hear a crackle in the far left corner of the forge, a thimble of burning light flickers in the distance.<br><br><button onclick="han44()">[Fight Engage.]</button></section>`
+    allMain += `<br><br><br><br><section>You explore the structure of the forge, looking for a pathway to reach the rooftop. You hear a crackle in the far left corner of the forge, a thimble of burning light flickers in the distance.<br><br><button onclick="combatSetup(1,9)">[Fight Engage.]</button></section>`
+    saveState = `han44`
     end();
 }
 function han44() {
@@ -723,11 +727,11 @@ function han45() {
     end();
 }
 function han46() {
-    allMain = `<br><br><br><br><section>You go inside the Memorial building from the rooftop door, you appear to be inside the attic.<br><br><button onclick="han47()">[Leave the attic.]</button> <button onclick="han47B()">[Look around.]</button></section>`
+    allMain = `<br><br><br><br><section>You go inside the Memorial building from the rooftop door, you appear to be inside the attic.<br><br><button onclick="han47()">[Leave the attic.]</button> <button onclick="han46B()">[Look around.]</button></section>`
     end();
 }
 function han46B() {
-    allMain = `<br><br><br><br><section>Stale dust and old parchments litter around the shelves and tables. The scent is a cross of an eons-old library and a mausoleum, you sneeze in response.<br><br><button onclick="han39()">[Cool.]</button></section>`
+    allMain = `<br><br><br><br><section>Stale dust and old parchments litter around the shelves and tables. The scent is a cross of an eons-old library and a mausoleum, you sneeze in response.<br><br><button onclick="han46()">[Cool.]</button></section>`
     end();
 }
 function han47() {
@@ -868,6 +872,10 @@ function han69CC() {
     allMain = `<br><br><br><br><section>NO! You really, really do not want that!<br><br><button onclick="han70C()">[Continue on.]</button></section>`
     end();
 }
+function han70B() {
+    allMain = `<br><br><br><br><section>Just kidding.<br><br><button onclick="han74B()">[Sheesh dude.]</button></section>`
+    end();
+}
 function han70C() {
     allMain = `<br><br><br><br><section>You take a hearty swig out of the gross goopy pool of water. Refreshed and revitalized, you descend deeper through the cavernous chambers.<br><br><button onclick="han71C()">[--&gt;]</button></section>`
     end();
@@ -876,6 +884,7 @@ function han71C() {
     allMain = `<br><br><br><br><section>The chamber reaches a dead end, in a corner of the sculpted wall is an old magic metal stick. Concentrated magic that fires for one shot.<br><br><button onclick="han72C()">[Put it into your inventory.]</button></section>`
     end();
 }
+////
 function han72C() {
     allMain = `<br><br><br><br><section>You recieved the magic metal stick.<br><br><button onclick="han73C()">[--&gt;]</button></section>`
     end();
@@ -959,7 +968,7 @@ function han87() {
     end();
 }
 function han88() {
-    allMain = `<br><br><br><br>What a harrowing quest, but now it is over. I want you to take this to South Polend's city and deliver it to the King, this is what he asked for. Be sure to return home after you finish, we shan't risk any more with this perilous fighting.<section><br><br><button onclick="displayPlayerPos()">[Take a journey.]</button> <button onclick="eastSlums()">[Go to the marketland.]</button></section>`
+    allMain = `<br><br><br><br>What a harrowing quest, but now it is over. I want you to take this to South Polend's city and deliver it to the King, this is what he asked for. Be sure to return home after you finish, we shan't risk any more with this perilous fighting.<section><br><br><button onclick="displayPlayerPos()">[Take a rebellious journey.]</button> <button onclick="eastSlums()">[Go to the marketland.]</button></section>`
     end();
 }
 
@@ -2026,7 +2035,7 @@ function displayPlayerPos() {
     printMap();
 }
 function randomCombat() {
-    if (Math.random() <= 0.15) { 
+    if (Math.random() <= 0) { //0.15 
         combatSetup();
     }
     else {
@@ -2037,7 +2046,7 @@ function checkForThings() {
 
     if ((playerY >= 36) && (playerY <= 38) && (playerX >= 4) && (playerX <= 15)) {
         if (keyItems.indexOf(`completeBosses`) != -1) {
-            allMain = `<section>The temple collapsed after you had left, making the enterance inaccessable.<br><br> <button onclick='displayPlayerPos'>Return to map</button></section>`
+            allMain = `<section>The temple collapsed after you had left, making the entrance inaccessable.<br><br> <button onclick='displayPlayerPos'>Return to map</button></section>`
         }
         else {
             bossRushIntro();
@@ -2542,6 +2551,17 @@ function dungeonCheck() {
     }
 }
 
+function VolcanoCheck() {
+    if ((92 <= playerX) && (playerX <= 88) && (27 <= playerY) && (playerY <= 21)) {
+
+        return `theCrypt`;
+    }
+
+    function theCrypt() {
+        allMain = `<br><br><br><section>  <br><br> <button onclick="hanV1">The soil crumbles at your feet and cinders are left within each footprint you leave. This is the summit of the volcano, lava steams and spouts out of the erupting craters. The Dragon's Crypt is near.</button></section>`
+        end();
+    }
+}
 document.addEventListener("DOMContentLoaded", function () {
     let paulAll = document.getElementsByClassName(`paul`);
     let hannahAll = document.getElementsByClassName(`hannah`);
