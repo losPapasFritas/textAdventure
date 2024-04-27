@@ -739,7 +739,7 @@ function han48() {
     end();
 }
 function han49() {
-    allMain = `<br><br><br><br><section>Descending the elegant stairway leads into the atrium, the expansive room is filled by the light coming down from the glass ceiling. You hear a murmur of speech in one of the nearby rooms.<br><br><button onclick="han50()">[--&gt;]</button> <button onclick="han50B">[Look around.]</button></section>`
+    allMain = `<br><br><br><br><section>Descending the elegant stairway leads into the atrium, the expansive room is filled by the light coming down from the glass ceiling. You hear a murmur of speech in one of the nearby rooms.<br><br><button onclick="han50()">[--&gt;]</button> <button onclick="han50B()">[Look around.]</button></section>`
     end();
 }
 function han50B() {
@@ -751,7 +751,7 @@ function han50B2() {
     end();
 }
 function han50() {
-    allMain = `<br><br><br><br><section>You enter what looks like an exhibit room, dedicated to a myth about an ancient ice-deity of some kind. You don't really care about that, ice is a particularly stupid thing to think about. Hannah finds a jolly Grand Wizard Kobain speaking to a friendly stranger.<br><br><button onclick="han51()">[--&gt;]</button></section>`
+    allMain = `<br><br><br><br><section>You enter what looks like an exhibit room, dedicated to a myth about an ancient ice-deity of some kind. You don't really care about that, ice is a particularly stupid thing to think about. Hannah finds a jolly Grand Wizard Cobain speaking to a friendly stranger.<br><br><button onclick="han51()">[--&gt;]</button></section>`
     end();
 }
 function han51() {
@@ -787,7 +787,7 @@ function han56() {
     end();
 }
 function han57() {
-    allMain = `<br><br><br><br><section>“This is the real memorial, Hannah. Within it, lies an ancient relic unbeknownst to most inhabitants of Polend. There are things that wish to obtain it before we, which is why we must retrieve it first. Do you understand?”<br><br><button onclick="han58()">[Of course.]</button> <button onclick="han58B">[Er, no.]</button></section>`
+    allMain = `<br><br><br><br><section>“This is the real memorial, Hannah. Within it, lies an ancient relic unbeknownst to most inhabitants of Polend. There are things that wish to obtain it before we, which is why we must retrieve it first. Do you understand?”<br><br><button onclick="han58()">[Of course.]</button> <button onclick="han58B()">[Er, no.]</button></section>`
     end();
 }
 function han58B() {
@@ -815,7 +815,11 @@ function han62() {
     end();
 }
 function han63B() {
-    allMain = `<br><br><br><br><section>“...”<br><br><button onclick="han63B()">[--&gt;]</button> <button onclick="han63()">Enter the <strong>Dungeon</strong>.</button></section>`
+    allMain = `<br><br><br><br><section>“...”<br><br><button onclick="han63BB()">[--&gt;]</button> <button onclick="han63()">Enter the <strong>Dungeon</strong>.</button></section>`
+    end();
+}
+function han63BB() {
+    allMain = `<br><br><br><br><section>*---*<br><br><button onclick="han63BB()">[--&gt;]</button> <button onclick="han63()">Enter the <strong>Dungeon</strong>.</button></section>`
     end();
 }
 function han63() {
@@ -823,7 +827,7 @@ function han63() {
     end();
 }
 function han64() {
-    allMain = `<br><br><br><br><section>The walls are made of aged mausoleum stone, in a state of cracks and crumbles along its once perfect smoothness. Vines grow out through the larger cracks, slumping their large extremities on the corner of the floor. Across from you is a stone wall of a door, a plaque carved next to it. <br><br><button onclick="han65B()">[Inspect vines.]</button> <button onclick="han65()"></button></section>`
+    allMain = `<br><br><br><br><section>The walls are made of aged mausoleum stone, in a state of cracks and crumbles along its once perfect smoothness. Vines grow out through the larger cracks, slumping their large extremities on the corner of the floor. Across from you is a stone wall of a door, a plaque carved next to it. <br><br><button onclick="han65B()">[Inspect vines.]</button> <button onclick="han65()">[Inspect the stone door.]</button></section>`
     end();
 }
 function han65B() {
@@ -835,11 +839,11 @@ function han65C() {
     end();
 }
 function han65() {
-    allMain = `<br><br><br><br><section>The plaque says, “A stone unturned is a chance forgotten.”<br><br><button onclick="han67()">[Deeply inspect the walls.]</button> <button onclick="han65B()">Inspect vines.</button></section>`
+    allMain = `<br><br><br><br><section>The plaque says, “A stone unturned is a chance forgotten.”<br><br><button onclick="han67()">[Deeply inspect the walls.]</button> <button onclick="han65B()">[Inspect vines.]</button></section>`
     end();
 }
 function han67() {
-    allMain = `<br><br><br><br><section>Upon deeper inspection, there is an unfastened stone sticking out from the wall's crevice. Pushing it in causes a deep click to resonate through the room, making the stone door slowly rise, opening the hallway. The hallway branches into three paths.<br><br> <!--> <button onclick="han68C">[Straight.]</button></section>`
+    allMain = `<br><br><br><br><section>Upon deeper inspection, there is an unfastened stone sticking out from the wall's crevice. Pushing it in causes a deep click to resonate through the room, making the stone door slowly rise, opening the hallway. The hallway branches into two paths.<br><br> <button onclick="han68B()">[Left.]</button> <button onclick="han68C()">[Right.]</button></section>`
     end();
 }
 // 
@@ -849,11 +853,11 @@ function han68B() {
     end();
 }
 function han69B() {
-    allMain = `<br><br><br><br><section>To call this a stick would be an understatement. In it's immaculate beauty and natural shape, it looks more like a well crafted staff, designed in the Heavens and sent down to be picked up by a true hero. Ah yes, this is obviously the greatest stick to ever be discovered. This right here is what you need to be the coolest warlock in Polend<br><br><button onclick="han70B()">[The stick is in your inventory.]</button></section>`
+    allMain = `<br><br><br><br><section>To call this a stick would be an understatement. In it's immaculate beauty and natural shape, it looks more like a well crafted staff, designed in the Heavens and sent down to be picked up by a true hero. Ah yes, this is obviously the greatest stick to ever be discovered. This right here is what you need to be the coolest warlock in Polend<br><br><button onclick="han70B()">[The stick is in your inventory.]</button> <button onclick="han74B()">[--&gt;]</button></section>`
     end();
 }
 function han68C() {
-    allMain = `<br><br><br><br><section>You walk through the the stone esophageal hall. Within the dimly lit section leads into a thin waterfall, the water ran orange from mixing with rust and sediment. It emanates a vile stench that completely repulses you.<br><br><button onclick="han69C()">[Drink the water.]</button> <button onclick="han70C">[Continue on.]</button></section>`
+    allMain = `<br><br><br><br><section>You walk through the stone esophageal hall. Within the dimly lit section leads into a thin waterfall, the water ran orange from mixing with rust and sediment. It emanates a vile stench that completely repulses you.<br><br><button onclick="han69C()">[Drink the water.]</button> <button onclick="han70C">[Continue on.]</button></section>`
     end();
 }
 function han69C() {
@@ -881,7 +885,11 @@ function han73C() {
     end();
 }
 function han74() {
-    allMain = `<br><br><br><br><section>The funny music montage sends you through the harrowing venture through the dungeon's trials and you are now staring down the precipice of a cool, slanted hallway.<br><br><button onclick="han75()">[Shiver in response]</button></section>`
+    allMain = `<br><br><br><br><section>The funny music montage sends you through the harrowing venture through the dungeon's trials and you are now staring down the precipice of a cool, slanted hallway.<br><br><button onclick="han75()">[Shiver in response.]</button></section>`
+    end();
+}
+function han74B() {
+    allMain = `<br><br><br><br><section>You fall down a steep cliff hidden within the shrubbery, you fall into another hallway. You are now staring down the precipice of a cool, slanted hallway.<br><br><button onclick="han75()">[Brr...]</button></section>`
     end();
 }
 function han75() {
@@ -893,7 +901,7 @@ function han76() {
     end();
 }
 function han77() {
-    allMain = `<br><br><br><br><section>With the gooberish tomfoolery of this situation fresh in your mind, you run down the slanted hallway as fast as you can. You see light at the end of the passage.<br><br><button onclick="han()">[Jump through the door.]</button></section>`
+    allMain = `<br><br><br><br><section>With the gooberish tomfoolery of this situation fresh in your mind, you run down the slanted hallway as fast as you can. You see light at the end of the passage.<br><br><button onclick="han78()">[Jump through the door.]</button></section>`
     end();
 }
 function han78() {
@@ -901,11 +909,11 @@ function han78() {
     end();
 }
 function han79() {
-    allMain = `<br><br><br><br><section>You are inside a roughly crafted arena, an aged sycamore tree resides along the perimeter. It looks as though the builder's knew any carvings or detail would be smashed and destroyed in here. In the middle of the arena is a large cube like structure with gridlines in various shapes wrapping across its limestone surface. If this object were personified, you would say its peaceful.<br><br><button onclick="han80()">[Poke it with a stick.]</button></section>`
+    allMain = `<br><br><br><br><section>You are inside a roughly crafted arena, an aged sycamore tree resides along the perimeter. It looks as though the builder's knew any carvings or detail would be smashed and destroyed in here. In the middle of the arena is a large cube like structure with gridlines in various shapes wrapping across its limestone surface. If this object were personified, you would say it was at peace.<br><br><button onclick="han80()">[Poke it with a stick.]</button></section>`
     end();
 }
 function han80() {
-    allMain = `<br><br><br><br><section>You poke the ominous structure with a stick like an absolute dunderhead, the structure immediately responds by glowing orange along its lines and carvings. <br><br><button onclick="han81()">[Uh oh.]</button></section>`
+    allMain = `<br><br><br><br><section>You poke the ominous structure with the stick like an absolute dunderhead, the structure immediately responds by glowing orange along its lines and carvings. <br><br><button onclick="han81()">[Uh oh.]</button></section>`
     end();
 }
 function han81() {
@@ -913,7 +921,8 @@ function han81() {
     end();
 }
 function han82() {
-    allMain = `<br><br><br><br><section>Out of its growing arm shape forms an aesthetically pleasing fist, its defined edges make sharp points. It's face gains structure, it's eyes red with fury and intent of death.<br><br><button onclick="han83()">[Whoops.]</button></section>`
+    allMain = `<br><br><br><br><section>Out of its growing arm shape forms an aesthetically pleasing fist, its defined edges make sharp points. It's face gains structure, it's eyes red with fury and intent of death.<br><br><button onclick="combatSetup(1,5)">[Whoops.]</button></section>`
+    saveState = `han83`
     end();
 }
 function han83() {
@@ -936,21 +945,26 @@ function han85() {
     end();
 }
 function han86() {
-    allMain = `<br><br><br><br><section> An adjacent doorway reveals itself and opens up, it is an upward stairway.<br><br><button onclick="displayPlayerPos()">[Leave the dungeon.]</button> <button onclick="han87()">[Moving on.]</button></section>`
+    allMain = `<br><br><br><br><section> An adjacent doorway reveals itself and opens up, it is an upward stairway.<br><br><button onclick="han86B()">[Leave the dungeon.]</button> <!--></section>`
     end();
 }
+//<button onclick="han87()">[Moving on.]</button>
 
+function han86B() {
+    allMain = `<br><br><br><br><section> "OH HEY HEY HEY, I uh. I just wanted to say you should probably go to the left side of the map to the Dragon Temple" (it's the rectangle made of commas surrounded by the hastag symbols.) said the messenger, popping his head out of a dark unseeable corner. "Yeah no, that's it. Uh yeah so, have fun and stuff." <br><br><button onclick="displayPlayerPos()">[Whatever dude.]</button></section>`
+    end();
+}
 function han87() {
-    allMain = `<br><br><br><section><br>You return to the main hall of the memorial display and find Cobain waiting for you.<br><br><button onclick="han88">[Tell him what happened.]</button></section>`
+    allMain = `<br><br><br><section><br>You return to the main hall of the memorial display and find Cobain waiting for you.<br><br><button onclick="han88()">[Tell him what happened.]</button></section>`
     end();
 }
 function han88() {
-    allMain = `<br><br><br><br>What a harrowing quest, but now it is over. I want you to take this to South Polend's city and deliver it to the King, this is what he asked for. Be sure to return home after you finish, we shan't risk any more with this perilous fighting.<section><br><br><button onclick="displayPlayerPos()">[Take a journey.]</button> <button onclick="eastSlums()">Go to the marketland.</button></section>`
+    allMain = `<br><br><br><br>What a harrowing quest, but now it is over. I want you to take this to South Polend's city and deliver it to the King, this is what he asked for. Be sure to return home after you finish, we shan't risk any more with this perilous fighting.<section><br><br><button onclick="displayPlayerPos()">[Take a journey.]</button> <button onclick="eastSlums()">[Go to the marketland.]</button></section>`
     end();
 }
 
 function eastSlums() {
-    allMain = `<br><br><br><section>You are in the market of the Eastern Slums, &quot;it's not as bad as it looks,&quot; said the rotten towel vendor<br><br><button onclick="EastMerchant()">Find a merchant.</button> <button onclick="displayPlayerPos()">Go to the map.</button> <button>Talk to the Huntsman</button></section>`
+    allMain = `<br><br><br><section>You are in the market of the Eastern Slums, &quot;it's not as bad as it looks,&quot; said the rotten towel vendor<br><br><button onclick='()'>Find a merchant.</button> <button onclick="displayPlayerPos()">Go to the map.</button> <button>Talk to the Locals</button></section>`
     end();
 }
 function combatSetup(setCombat = 0, eIndx = 1) {
@@ -2012,7 +2026,7 @@ function displayPlayerPos() {
     printMap();
 }
 function randomCombat() {
-    if (Math.random() <= 0.15) {
+    if (Math.random() <= 0.15) { 
         combatSetup();
     }
     else {
