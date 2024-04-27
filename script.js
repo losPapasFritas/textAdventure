@@ -42,8 +42,9 @@ let char = `none`,
     totalDmgDealt = 0,
     forcedCombat = false,
     currentCity = -1;
-    money = 10,
+money = 10,
     givenMoney = 0,
+    bossRushIndx = 5,
     currentDungeon = -1,
     totalDefReduction = 0;
 let playerY = 0;
@@ -102,8 +103,8 @@ let map = `@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @((((((((((((((((((((((((((((((CC((((((((((((DDDD(((((((((((((((( . ..........DDD..........DDD....... ######################################### ((((((((((((((((((((((((((((((((((((((((((((( .########*@
 @(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((% .................................. %######################################## (((DDD(((((((((((((((((((((((((((((((DD((((((((( .######*@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`
-let map2 = 
-`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+let map2 =
+    `@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @.............................................................@##################################################################################@((((((((((((((((((((((((((((((((((((((((((((((((((((((@
 @...............................................DDD........@@@##################################################################################@(((((((((((((((((((((((((((((((((((((((((((((((((((((((@
 @.........CCCCCCCCC..................................@@@@@@##################################################################################@((((((((((((((((((((((((((((((((((((((((((((((((((((((((((@
@@ -162,7 +163,7 @@ let pMap = ``;
 // let mapBroken = mapSplice.map(mapSplice => mapSplice + '<br>');
 // map = mapBroken.join(``);
 let allDungeonInfo = [
-    {numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5},{numberOfRooms: 5, currentRoom: 0, completed:false, bossIndx:5}]
+    { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }]
 //mudman is first dungeon boss
 let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`];
 let eHpAll = [70, 10000, 100, 85, 30, 120, 120, 130, 546];
@@ -173,7 +174,7 @@ let keyItems = [];
 let buffItemList = [
     { name: `Enchanted Golden Apple`, hp: 10000, def: 10000, dmg: 100, magic: 19 }, { name: `Potion of Minor Healing`, hp: 40, def: 0, dmg: 0, magic: 0 }, { name: `Pot of Healing`, hp: 70, def: 0, dmg: 0, magic: 0 }, { name: `Cauldron of Major Healing`, hp: 100, def: 0, dmg: 0, magic: 0 }, { name: `Coffee`, hp: 25, def: 0, dmg: 0.25, magic: 0.5 }, { name: `Hornet Honey`, hp: 30, def: 5 / 8, dmg: 0, magic: 0.5 }]
 let offenseItemList = [{ name: `Magic Metal Stick`, hp: 50, def: 20, dmg: 0 }, { name: `Fish`, hp: 9999999, def: 99, dmg: 0 }, { name: `Fire Whip`, hp: 69, def: 0.69, dmg: 0 }, { name: `Twig`, hp: 1, def: 1, dmg: 1 }, { name: `Perfectly shaped stick`, hp: 0, def: 0, dmg: 0 }]
-let allCityInfo = [{type:`dungeon`, items:[0,6,5], cityDungeon : `matx`,localDialogue:`"Well, whatt'ya want then?!"`, cityDesc:`Murky water layers itself underneath the plywood boards that the buildings rest upon. You question how structurally sound this place is.`,dungeonComplete: false},{type:`normal`, items:[], cityDungeon : `none`,localDialogue:`You came a long way, didn't you`, cityDesc:`This place, it's unreal. The golden glimmer of the vast fields in the distance remind you of sunshine mixed with your favorite childhood memories. The surrounding buildings are detailed by historical glyphs.`},{type:`normal`, items:[], cityDungeon : `none`,localDialogue:`"Welcome to our humble town."`, cityDesc:`The city is upkept by its minimalistic features, ran by simple people.`},{type:`dungeon`, items:[], cityDungeon : `paulx`,localDialogue:`"Well, hello there"`, cityDesc:`The main square is bustling with life, trade, and business. A pleasant aroma flows through the streets.`,dungeonComplete: false},{type:`dungeon`, items:[], cityDungeon : `hanx`,localDialogue:`"I sell fairy dust on the weekends by the pouch."`, cityDesc:`The urban style of the city is unmatched. Or, would be if the King gave further funding here.`,dungeonComplete: false},{type:`normal`, items:[], cityDungeon : `none`,localDialogue:`"Lol XD lmao" X3`, cityDesc:`You are in a silly place.`}];
+let allCityInfo = [{ type: `dungeon`, items: [0, 6, 5], cityDungeon: `matx`, localDialogue: `"Well, whatt'ya want then?!"`, cityDesc: `Murky water layers itself underneath the plywood boards that the buildings rest upon. You question how structurally sound this place is.`, dungeonComplete: false }, { type: `normal`, items: [5, 8, 9], cityDungeon: `none`, localDialogue: `You came a long way, didn't you`, cityDesc: `This place, it's unreal. The golden glimmer of the vast fields in the distance remind you of sunshine mixed with your favorite childhood memories. The surrounding buildings are detailed by historical glyphs.` }, { type: `normal`, items: [6, 3, 8], cityDungeon: `none`, localDialogue: `"Welcome to our humble town."`, cityDesc: `The city is upkept by its minimalistic features, ran by simple people.` }, { type: `dungeon`, items: [1, 5, 9], cityDungeon: `paulx`, localDialogue: `"Well, hello there"`, cityDesc: `The main square is bustling with life, trade, and business. A pleasant aroma flows through the streets.`, dungeonComplete: false }, { type: `dungeon`, items: [10, 7, 4], cityDungeon: `hanx`, localDialogue: `"I sell fairy dust on the weekends by the pouch."`, cityDesc: `The urban style of the city is unmatched. Or, would be if the King gave further funding here.`, dungeonComplete: false }, { type: `normal`, items: [5, 2, 8], cityDungeon: `none`, localDialogue: `"Lol XD lmao" X3`, cityDesc: `You are in a silly place.` }];
 let pItems = [];
 let allPSpellType = [
     `fire`,
@@ -436,18 +437,18 @@ function aOrAn(firstLetter) {
     return phrase;
 }
 
-function skipTutorial(){
-    allMain+=`<br><br><section>Would you like to skip the tutorial?`
-    if(char = `han`){
+function skipTutorial() {
+    allMain += `<br><br><section>Would you like to skip the tutorial?`
+    if (char = `han`) {
         allMain += `<button onclick='han63()'>Yes</button>`
     }
-    else if(char = `paul`){
+    else if (char = `paul`) {
         allMain += `<button onclick='displayPlayerPos()'>Yes</button>`
     }
-    else if(char = `mat`){
+    else if (char = `mat`) {
         allMain += `<button onclick='displayPlayerPos()'>Yes</button>`
     }
-    allMain+= ` <button onclick='${saveState}()'>No</button></section>`
+    allMain += ` <button onclick='${saveState}()'>No</button></section>`
     end();
 }
 
@@ -953,7 +954,7 @@ function combatSetup(setCombat = 0, eIndx = 1) {
     if (pHp > pMaxHp) {
         pHp = pMaxHp;
     }
-    
+
     totalDefReduction = 0;
     pIsBlocking = false;
     currentEs = []
@@ -1016,7 +1017,13 @@ function combatSetup(setCombat = 0, eIndx = 1) {
     else {
         allMain += `<button onclick="generalAttk()">Fight</button> `
     }
-    allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="listItems()">Inventory</button> <button onclick="run()">Run</button> <button onclick='abilityList()'>Abilities</button></section> `
+    allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="listItems()">Inventory</button> <button onclick='abilityList()'>Abilities</button>`
+    if(forcedCombat){
+        allMain+=`</section>`
+    }
+    else{
+        allMain+=` <button onclick="run()">Run</button></section>`
+    }
     end();
 }
 
@@ -1403,7 +1410,13 @@ function combatContinue() {
     else {
         allMain += `<button onclick="generalAttk()">Fight</button> `
     }
-    allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="listItems()">Inventory</button> <button onclick="run()">Run</button> <button onclick='abilityList()'>Abilities</button></section> `
+    allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="listItems()">Inventory</button> <button onclick='abilityList()'>Abilities</button>`
+    if(forcedCombat){
+        allMain+=`</section>`
+    }
+    else{
+        allMain+=` <button onclick="run()">Run</button></section>`
+    }
     end();
 }
 
@@ -1418,7 +1431,7 @@ function enemyTurn() {
         combatEnd();
         return undefined;
     }
-    for(item of currentEs){
+    for (item of currentEs) {
         if (item.eDef < 0) {
             item.eDef = 0;
         }
@@ -1532,7 +1545,7 @@ function enemyTurn() {
         }
     }
     if (currentEs.length == 0) {
-        
+
         combatEnd();
         return undefined;
     }
@@ -1545,24 +1558,24 @@ function enemyTurn() {
 function combatEnd() {
     allMain = `<br><br><br><br><section>You win</section>`;
     givePlayerItem();
-    if(givenMoney == 0){
+    if (givenMoney == 0) {
         givenMoney = 30
     }
-    allMain +=`<section>You gained ${givenMoney} dollars!</section>`
+    allMain += `<section>You gained ${givenMoney} dollars!</section>`
     money += givenMoney;
     givenMoney = 0;
-    if(currentDungeon != -1){
-        if(allDungeonInfo[currentDungeon].numberOfRooms == (allDungeonInfo[currentDungeon].currentRoom - 1)){
+    if (currentDungeon != -1) {
+        if (allDungeonInfo[currentDungeon].numberOfRooms == (allDungeonInfo[currentDungeon].currentRoom - 1)) {
             allDungeonInfo[currentDungeon].completed = true;
             currentDungeon = -1;
             saveState = `lvlUp`;
             allMain += `<br><br><br><br><section><button onclick='lvlUp()'>Level Up!</button></section>`
         }
-        else{
+        else {
             allMain += `<br><br><br><br><section><button onclick='${saveState}()'>Continue</button></section>`
         }
     }
-    else{
+    else {
         allMain += `<br><br><br><br><section><button onclick='${saveState}()'>Continue</button></section>`
     }
     end();
@@ -1578,6 +1591,27 @@ function pleaseRun() {
     currentEs = [];
     allMain = `<br><br><br><br><section>Fine then, be that way. See if I care. XP</section>`
     allMain += `<br><br><br><br><section><button onclick='${saveState}()'>Continue</button></section>`
+    end();
+}
+
+function bossRushIntro() {
+    allMain = `<section>WARNING!!! Once you enter the temple, you may not leave until you finish your task. Enter temple?<br><br><button onclick='bossRushContinue()'>Yes</button> <button onclick='displayPlayerPos()'>No</button></section>`
+    end();
+}
+
+function bossRushContinue() {
+    if (bossRushIndx < enemies.length - 1) {
+        forcedCombat = true;
+        combatSetup(1, bossRushIndx);
+        bossRushIndx++
+        saveState = `bossRushContinue`;
+    }
+    else {
+        allMain = `<section>You have killed all of the guardians of the temple and have unlocked access to the mountain.<br> <button onclick='displayPlayerPos()'>Return to the map</button></section>`
+        saveState = `displayPlayerPos`
+        map = map2;
+        keyItems.push(`completeBosses`)
+    }
     end();
 }
 
@@ -1852,12 +1886,12 @@ function lvlUp() {
     pLvl += 1;
     pDmg += 0.05;
     pBaseDmg += 0.05;
-    pBlockBuff+=0.1;
+    pBlockBuff += 0.1;
     pBaseDef += 0.05;
     pMagicDmg += 0.05;
     pBaseMagicDmg += 0.05
-    allMain+=`</section>`
-    if(saveState == `lvlUp`){
+    allMain += `</section>`
+    if (saveState == `lvlUp`) {
         saveState = `displayPlayerPos`
     }
     end();
@@ -1906,7 +1940,7 @@ function addAbility(abilityName, path, active = false) {
             statD++;
             break;
     }
-    if(path != `none`){
+    if (path != `none`) {
         postLvlUp()
     }
     //stat++;
@@ -1963,7 +1997,7 @@ function buffStat(stat, amount) {
 
 }
 
-function postLvlUp(){
+function postLvlUp() {
     allMain = `<section>You leveled up! This action cannot be undone<br><br><button onclick='${saveState}()'>Continue</button></section>`
     end();
 }
@@ -1983,253 +2017,293 @@ function randomCombat() {
     }
 }
 function checkForThings() {
-    if (!dungeonCheck() && !cityCheck()) {
+
+    if ((playerY >= 36) && (playerY <= 38) && (playerX >= 4) && (playerX <= 15)) {
+        if (keyItems.indexOf(`completeBosses`) != -1) {
+            allMain = `<section>The temple collapsed after you had left, making the enterance inaccessable.<br><br> <button onclick='displayPlayerPos'>Return to map</button></section>`
+        }
+        else {
+            bossRushIntro();
+        }
+    }
+    else if (!dungeonCheck() && !cityCheck()) {
         randomCombat()
         // displayPlayerPos()
     }
-    else if(dungeonCheck()){
-        switch(dungeonCheck()){
+    else if (dungeonCheck()) {
+        switch (dungeonCheck()) {
             case `dungeon1`:
                 currentDungeon = 0;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon2`:
                 currentDungeon = 1;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon3`:
                 currentDungeon = 2;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon4`:
                 currentDungeon = 3;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon5`:
                 currentDungeon = 4;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon6`:
                 currentDungeon = 5;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon7`:
                 currentDungeon = 6;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon8`:
                 currentDungeon = 7;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon9`:
                 currentDungeon = 8;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon10`:
                 currentDungeon = 9;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon11`:
                 currentDungeon = 10;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon12`:
                 currentDungeon = 11;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon13`:
                 currentDungeon = 12;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon14`:
                 currentDungeon = 13;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon15`:
                 currentDungeon = 14;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon16`:
                 currentDungeon = 15;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon17`:
                 currentDungeon = 16;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon18`:
-               currentDungeon = 17;
-                if(!allDungeonInfo[currentDungeon].completed){
+                currentDungeon = 17;
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon19`:
                 currentDungeon = 18;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
             case `dungeon20`:
                 currentDungeon = 19;
-                if(!allDungeonInfo[currentDungeon].completed){
+                if (!allDungeonInfo[currentDungeon].completed) {
                     saveState = `displayPlayerPos`
-                    dungeonContinue()
+                    dungeonContinue();
+                    forcedCombat = true;
                 }
-                else{
+                else {
                     currentDungeon = -1;
                     displayPlayerPos();
                 }
                 break;
         }
     }
-    else if(cityCheck()){
-        switch(cityCheck()){
+    else if (cityCheck()) {
+        switch (cityCheck()) {
             case `city1`:
+                currentCity = 0;
+                citySetup();
                 //dungeon city
                 break;
             case `city2`:
+                currentCity = 1;
+                citySetup();
                 break;
             case `city3`:
+                currentCity = 2;
+                citySetup();
                 break;
             case `city4`:
+                currentCity = 3;
+                citySetup();
                 //dungeon city
                 break;
             case `city5`:
+                currentCity = 4;
+                citySetup();
                 //dungeon city
                 break;
             case `city6`:
+                currentCity = 5;
+                citySetup();
                 break;
         }
-        displayPlayerPos()
     }
 }
 function moveNorth() {
@@ -2274,168 +2348,179 @@ function printMap() {
     end();
 }
 
-function citySetup(){
+function citySetup() {
     allMain = `<section>` + allCityInfo[currentCity].cityDesc + `<br><br><button onclick='setShop()'>Go to a shop</button> <button onclick='talking()'>Talk to the locals</button>`
-    
-    if((allCityInfo[currentCity].type == `dungeon`) && (allCityInfo[currentCity].dungeonComplete == false)){
-        allMain+= ` <button onclick='${allCityInfo[currentCity].cityDungeon}'>Go to the dungeon</button>`
+
+    if ((allCityInfo[currentCity].type == `dungeon`) && (allCityInfo[currentCity].dungeonComplete == false)) {
+        allMain += ` <button onclick='${allCityInfo[currentCity].cityDungeon}'>Go to the dungeon</button>`
     }
-    allMain+= `</section>`
+    allMain += ` <button onclick='displayPlayerPos()'>Leave the city</button></section>`
     end();
 }
 
-function talking(){
+function talking() {
     allMain = `<section>You decide to talk to some of the locals. <br><br>${allCityInfo[currentCity].localDialogue} <br><br>...<br><br>You decide to leave the locals alone.<br><br><button onclick='citySetup()'>Return to city</button></section>`
     end()
 }
 
-function setShop(){
+function setShop() {
     allMain = `<section>You enter the city's shop, looking for some items to buy<br><br>`
-    for(let i = 0; i < allCityInfo[currentCity].items.length; i++){
-        allMain+=` <button onclick='purchase('${allCityInfo[currentCity].items[i]}')>Buy `
-        if(allCityInfo[currentCity].items[i] < buffItemList.length){
-            allMain+=`${buffItemList[allCityInfo[currentCity].items[i]].name}!</button>`
+    for (let i = 0; i < allCityInfo[currentCity].items.length; i++) {
+        allMain += ` <button onclick='purchase(${allCityInfo[currentCity].items[i]})'>Buy `
+        if (allCityInfo[currentCity].items[i] < buffItemList.length) {
+            allMain += `${buffItemList[allCityInfo[currentCity].items[i]].name}!</button>`
         }
-        else{
-            allMain+=`${offenseItemList[allCityInfo[currentCity].items[i] - buffItemList.length].name}!</button>`
+        else {
+            allMain += `${offenseItemList[allCityInfo[currentCity].items[i] - buffItemList.length].name}!</button>`
         }
     }
-    allMain+=` <button onclick='citySetup()'>Leave shop</button>`
+    allMain += ` <button onclick='citySetup()'>Leave shop</button>`
     end();
 }
 
-function purchase(itemIndx){
+function purchase(itemIndx) {
     let cost = 0;
-    if(itemIndx < buffItemList.length){
-        cost = Math.ceil(buffItemList[itemIndxlength].hp/10 + buffItemList[itemIndxlength].def/10 + buffItemList[itemIndxlength].dmg/10)
+    let itemName = ``;
+    if (itemIndx < buffItemList.length) {
+        cost = Math.ceil(buffItemList[itemIndx].hp / 10 + buffItemList[itemIndx].def / 10 + buffItemList[itemIndx].dmg / 10);
+        itemName = buffItemList[itemIndx].name;
     }
-    else{
-        cost = Math.ceil(offenseItemList[itemIndx - buffItemList.length].hp/10 + offenseItemList[itemIndx - buffItemList.length].def/10 + offenseItemList[itemIndx - buffItemList.length].dmg/10)
+    else {
+        cost = Math.ceil(offenseItemList[itemIndx - buffItemList.length].hp / 10 + offenseItemList[itemIndx - buffItemList.length].def / 10 + offenseItemList[itemIndx - buffItemList.length].dmg / 10);
+        itemName = offenseItemList[itemIndx - buffItemList.length].name;
     }
+    if (money < cost) {
+        allMain = `<section>You could not purchase the item as you have too little money!<br><br><button onclick='setShop()'>Try to buy another item</button></section>`
+    }
+    else {
+        money -= cost;
+        allMain = `<section>You purchased the ${itemName} from the shop.<br><br><button onclick='setShop()'>Try to buy another item</button> <button onclick='citySetup()'>Return to city</button></section>`
+    }
+    end()
 }
 
-function dungeonContinue(){
-    if(allDungeonInfo[currentDungeon].numberOfRooms == allDungeonInfo[currentDungeon].currentRoom){
-        combatSetup(1,allDungeonInfo[currentDungeon].bossIndx);
+function dungeonContinue() {
+    if (allDungeonInfo[currentDungeon].numberOfRooms == allDungeonInfo[currentDungeon].currentRoom) {
+        combatSetup(1, allDungeonInfo[currentDungeon].bossIndx);
         allDungeonInfo[currentDungeon].currentRoom++
         saveState = `displayPlayerPos`;
     }
-    else{
-        saveState= `dungeonContinue`;
+    else {
+        saveState = `dungeonContinue`;
         allDungeonInfo[currentDungeon].currentRoom++
         combatSetup();
     }
 }
 
-function cityCheck(){
+function cityCheck() {
     if ((10 <= playerX) && (playerX <= 18) && (3 <= playerY) && (playerY <= 5)) {
-        
+
         return `city1`;
     }
     else if ((181 <= playerX) && (playerX <= 188) && (4 <= playerY) && (playerY <= 5)) {
-        
+
         return `city2`;
     }
     else if ((74 <= playerX) && (playerX <= 77) && (38 <= playerY) && (playerY <= 39)) {
-        
+
         return `city3`;
     }
     else if ((179 <= playerX) && (playerX <= 188) && (42 <= playerY) && (playerY <= 44)) {
-        
+
         return `city4`;
     }
     else if ((114 <= playerX) && (playerX <= 121) && (45 <= playerY) && (playerY <= 47)) {
-        
+
         return `city5`;
     }
     else if ((31 <= playerX) && (playerX <= 32) && (51 <= playerY) && (playerY <= 51)) {
-        
+
         return `city6`;
     }
 }
 
 function dungeonCheck() {
     if ((48 <= playerX) && (playerX <= 50) && (playerY == 2)) {
-        
+
         return `dungeon1`;
     }
     else if ((186 <= playerX) && (playerX <= 190) && (6 <= playerY) && (playerY <= 7)) {
-        
+
         return `dungeon2`;
     }
     else if ((24 <= playerX) && (playerX <= 27) && (10 <= playerY) && (playerY <= 11)) {
-        
+
         return `dungeon3`;
     }
     else if ((122 <= playerX) && (playerX <= 126) && (14 <= playerY) && (playerY <= 15)) {
-        
+
         return `dungeon4`;
     }
     else if ((54 <= playerX) && (playerX <= 58) && (15 <= playerY) && (playerY <= 16)) {
-        
+
         return `dungeon5`;
     }
     else if ((22 <= playerX) && (playerX <= 26) && (21 <= playerY) && (playerY <= 22)) {
-        
+
         return `dungeon6`;
     }
     else if ((28 <= playerX) && (playerX <= 30) && (28 <= playerY) && (playerY <= 28)) {
-        
+
         return `dungeon7`;
     }
     else if ((47 <= playerX) && (playerX <= 48) && (30 <= playerY) && (playerY <= 30)) {
-        
+
         return `dungeon8`;
     }
     else if ((171 <= playerX) && (playerX <= 174) && (32 <= playerY) && (playerY <= 32)) {
-        
+
         return `dungeon9`;
     }
     else if ((73 <= playerX) && (playerX <= 75) && (33 <= playerY) && (playerY <= 33)) {
-        
+
         return `dungeon10`;
     }
     else if ((99 <= playerX) && (playerX <= 104) && (38 <= playerY) && (playerY <= 39)) {
-        
+
         return `dungeon11`;
     }
     else if ((128 <= playerX) && (playerX <= 131) && (38 <= playerY) && (playerY <= 38)) {
-        
+
         return `dungeon12`;
     }
     else if ((143 <= playerX) && (playerX <= 144) && (39 <= playerY) && (playerY <= 39)) {
-        
+
         return `dungeon13`;
     }
     else if ((161 <= playerX) && (playerX <= 162) && (43 <= playerY) && (playerY <= 43)) {
-        
+
         return `dungeon14`;
     }
     else if ((21 <= playerX) && (playerX <= 23) && (50 <= playerY) && (playerY <= 50)) {
-        
+
         return `dungeon15`;
     }
     else if ((45 <= playerX) && (playerX <= 48) && (51 <= playerY) && (playerY <= 51)) {
-        
+
         return `dungeon16`;
     }
     else if ((78 <= playerX) && (playerX <= 80) && (51 <= playerY) && (playerY <= 51)) {
-        
+
         return `dungeon17`;
     }
     else if ((91 <= playerX) && (playerX <= 93) && (51 <= playerY) && (playerY <= 51)) {
-        
+
         return `dungeon18`;
     }
     else if ((146 <= playerX) && (playerX <= 148) && (52 <= playerY) && (playerY <= 52)) {
-        
+
         return `dungeon19`;
     }
     else if ((180 <= playerX) && (playerX <= 181) && (52 <= playerY) && (playerY <= 52)) {
-        
+
         return `dungeon20`;
     }
-    else{
+    else {
         return false
     }
 }
