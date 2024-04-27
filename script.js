@@ -2558,7 +2558,15 @@ function VolcanoCheck() {
     }
 
     function theCrypt() {
-        allMain = `<br><br><br><section>  <br><br> <button onclick="hanV1">The soil crumbles at your feet and cinders are left within each footprint you leave. This is the summit of the volcano, lava steams and spouts out of the erupting craters. The Dragon's Crypt is near.</button></section>`
+        allMain = `<br><br><br><section> The soil crumbles at your feet and cinders are left within each footprint you leave. This is the summit of the volcano, lava steams and spouts out of the erupting craters. The Dragon's Crypt is near. <br><br> <button onclick="hanV1"> [Examine the door]</button></section>`
+        end();
+    }
+    function hanv1() {
+        allMain = `<br><br><br><section> It is a red door with cryptic engravings layering the architecture. An ancient door that you are allowed to enter, given from the forgo orb within you.<br><br> <button onclick="hanV2">[Confront the dragon.]</button></section>`
+        end();
+    }
+    function hanv3() {
+        allMain = `<br><br><br><section>"Hey man, been waitin' for you. Let's just cut to the chase. I'm the mighty dragon, with a name unintelligible by human tongue. So just call me Tyler or something."<br><br> <button onclick="">[Put an end to... Tyler]</button></section>`
         end();
     }
 }
