@@ -397,20 +397,20 @@ function hannahSelect() {
     pSpells = [`Fireball`, `Healing Spring`, `Stone Bullet`];
     allMain += `<br><br><br><br><section id="hannahDesc" class="visible">The noble yet troublesome apprentice of the Grand Wizard Master Kobain. She has an immense desire to obtain the powers of the world's elements, however she has a long and dangerous road if she wants to achieve this magnitude of power. Her conscience and belief in the Grand Wizard repels her from the most desperate bargains of terrible evils.  <br><br> <button id="hannahSelect">Select this character</button> <button>Paul the Knight</button> <button>Mathew the Tamer</button></section> `
     allMain += `<br><br><br><br><section class="visible">You take the vessel of Hannah, the noble yet troublesome apprentice of the Grand Wizard Master Kobain. She has an immense desire to obtain the powers of the world's elements, however she has a long and dangerous road if she wants to achieve this magnitude of power. Her conscience and belief in the Grand Wizard repels her from the most desperate bargains of terrible evils.  <br><br></section>`;
-    allMain += `<section>Violence was never a rarity in the Eastern Slums, but matters have only further deteriorated from the threat of the Dragon's wrath in this past month.  You remember that night with defining clarity.<br><br>  <button onclick="han0()">--&gt;</button></section>`;
+    allMain += `<section>Violence was never a rarity in the Eastern Slums, but matters have only further deteriorated from the threat of the Dragon's wrath in this past month.  You remember that night with defining clarity.<br><br>  <button onclick="han0()">[--&gt;]</button></section>`;
     end();
 }
 
 function han0() {
-    allMain += `<br><br><br><br><section>Night was overtaken by the fury from the monsters beneath the land. Great cracks manifested their way from the ground with unknown creatures seeping out of them. Disturbed from their long slumber, the inherent violence of the tangible beings ran rampant throughout the streets of the town. <br><br><button onclick="han1()">Next.</button></section>`;
+    allMain += `<br><br><br><br><section>Night was overtaken by the fury from the monsters beneath the land. Great cracks manifested their way from the ground with unknown creatures seeping out of them. Disturbed from their long slumber, the inherent violence of the tangible beings ran rampant throughout the streets of the town. <br><br><button onclick="han1()">[--&gt;]</button></section>`;
     end();
 }
 function han1() {
-    allMain += `<br><br><br><br><section>You are in the dusty unpaved town square. Before you is a dimly lit alley.<br><br><button onclick="han2()">Go in the alley.</button></section>`;
+    allMain += `<br><br><br><br><section>You are in the dusty unpaved town square. Before you is a dimly lit alley.<br><br><button onclick="han2()">[Go in the alley.]</button></section>`;
     end();
 }
 function han2() {
-    allMain += `<br><br><br><br><section>Large wax candles hang from rusted metal poles that do a terrible job at illuminating the pathway. In the distance of the dark, flickering orange expanse emerges a gruffled shape.<br><br><button onclick="combatSetup(1,0)">Fight Engage.</button></section>`
+    allMain += `<br><br><br><br><section>Large wax candles hang from rusted metal poles that do a terrible job at illuminating the pathway. In the distance of the dark, flickering orange expanse emerges a gruffled shape.<br><br><button onclick="combatSetup(1,0)">[Fight Engage.]</button></section>`
     saveState = `han3`
     end();
 }
@@ -582,7 +582,7 @@ function han41() {
     end();
 }
 function han43() {
-    allMain += `<br><br><br><br><section>You explore the structure of the forge, looking for a pathway to reach the rooftop. You hear a crackle in the far left corner of the forge, a thimble of burning light flickers in the distance.<br><br><button onclick="han44()">[You <em>encounter</em> a stranger.]</button></section>`
+    allMain += `<br><br><br><br><section>You explore the structure of the forge, looking for a pathway to reach the rooftop. You hear a crackle in the far left corner of the forge, a thimble of burning light flickers in the distance.<br><br><button onclick="han44()">[Fight Engage.]</button></section>`
     end();
 }
 function han44() {
@@ -694,23 +694,27 @@ function han63() {
     end();
 }
 function han64() {
-    allMain += `<br><br><br><br><section>The walls are made of aged mausoleum stone, in a state of cracks and crumbles along its once perfect smoothness. Vines grow out through the larger cracks, slumping their large extremities on the corner of the floor. Across from you is a stone wall of a door, a plaque carved next to it. <br><br><button onclick="han65B()">[Inspect vines.]</button> <button onclick="han65()"></button></section>`
+    allMain += `<br><br><br><br><section>The walls are made of aged mausoleum stone, in a state of cracks and crumbles along its once perfect smoothness. Vines grow out through the larger cracks, slumping their large extremities on the corner of the floor. Across from you is a stone wall of a door, a plaque carved next to it. <br><br><button onclick="han65B()">[Inspect vines.]</button> <button onclick="han65()">[Inspect stone door.]</button></section>`
     end();
 }
 function han65B() {
     allMain += `<br><br><br><br><section>The ends of the vines all collect into this corner, they seem to be blocking something.<br><br><button onclick="han65()">[Inspect stone door.]</button></section>`
     end();
 }
+function han65C() {
+    allMain += `<br><br><br><br><section>Nature still perserveres despite the living conditions, a true testament to life.<br><br><button onclick="han65B()">[Inspect vines.]</button> <button onclick="han67()">[Deeply inspect the walls.]</button></section>`
+    end();
+}
 function han65() {
-    allMain += `<br><br><br><br><section>The plaque says, “A stone unturned is a chance forgotten.”<br><br><button onclick="han67()">[Deeply inspect the walls.]</button> <button onclick="han65B()">Inspect vines.</button></section>`
+    allMain += `<br><br><br><br><section>The plaque says, “A stone unturned is a chance forgotten.”<br><br><button onclick="han67()">[Deeply inspect the walls.]</button> <button onclick="han65C()">[Inspect greenery.]</button></section>`
     end();
 }
 function han67() {
-    allMain += `<br><br><br><br><section>Upon deeper inspection, there is an unfastened stone sticking out from the wall's crevice. Pushing it in causes a deep click to resonate through the room, making the stone door slowly rise, opening the hallway. The hallway branches into three paths.<br><br> <!--> <button onclick="han68C">[Straight.]</button></section>`
+    allMain += `<br><br><br><br><section>Upon deeper inspection, there is an unfastened stone sticking out from the wall's crevice. Pushing it in causes a deep click to resonate through the room, making the stone door slowly rise, opening the hallway. The hallway branches into three paths.<br><br> <button onclick="han68B()">[Left.]</button> <button onclick="han68C">[Straight.]</button> <button onclick="han68()">[Right.]</button></section>`
     end();
 }
-// <button onclick="han68B()">[Left.]</button>
-// <button onclick="han68()">[Right.]</button>
+// 
+// 
 function han68B() {
     allMain += `<br><br><br><br><section>Amidst a patch of long dead shrubbery, lies a perfectly shaped stick.<br><br><button onclick="han69B()">[Inspect the stick.]</button></section>`
     end();
@@ -776,11 +780,11 @@ function han80() {
     end();
 }
 function han81() {
-    allMain += `<br><br><br><br><section>the structure moves gruffly and sluggishly changes its shape, sliding against its once petrified resting position and morphing into a humanoid shape.<br><br><button onclick="han82()">[--&gt;]</button></section>`
+    allMain += `<br><br><br><br><section>the structure moves gruffly and sluggishly changes its shape, sliding against its once petrified resting position and morphing into a humanoid shape.<br><br><button onclick="han82()">[UH OH.]</button></section>`
     end();
 }
 function han82() {
-    allMain += `<br><br><br><br><section>Out of its growing arm shape forms an aesthetically pleasing fist, its defined edges make sharp points. It's face gains structure, it's eyes red with fury and intent of death.<br><br><button onclick="han()">[Whoops.]</button></section>`
+    allMain += `<br><br><br><br><section>Out of its growing arm shape forms an aesthetically pleasing fist, its defined edges make sharp points. It's face gains structure, it's eyes red with fury and intent of death.<br><br><button onclick="han83()">[Whoops.]</button></section>`
     end();
 }
 function han83() {
@@ -789,16 +793,16 @@ function han83() {
 }
 function han84() {
     allMain += `<br><br><br><br><section>You know what this is. It's a Forgo orb, the power and knowledge of the defeated slump of sediment lie within its visceral center. All one would have to do is touch it and they would gain an equivalent exchange of knowledge.
-    <br><br><button onclick="han85()">[Touch it.]</button> <button>[Poke it with a stick.]</button></section>`
+    <br><br><button onclick="han85()">[Touch it.]</button> <button onclick="han84B()">[Poke it with a stick.]</button></section>`
     end();
 }
 function han84B() {
-    allMain += `<br><br><br><br><section>You use your perfect stick to interact with the perfect shape, a perfect combo for a perfectly cool Warlockian. The pops away from reality, the angelically iridescent light disappears, and you think about how cool your stick is, your brain forms ideas you've never had before. Sticks.<br><br><button onclick="han86()">[Moving on]</button></section>`
+    allMain += `<br><br><br><br><section>You use your perfect stick to interact with the perfect sphere, a perfect combo for a perfectly cool magician. The orb pops away from reality, the angelically iridescent light disappears, and you think about how cool your stick is. Your brain forms ideas you've never had before. You think about sticks as well.<br><br><button onclick="lvlUp()">[Go to skill tree.]</button></section>`
     end();
 }
 function han85() {
     allMain += `<br><br><br><br><section>You walk up to it like you have seen the love of your life for the first time. This is an experience most magical intellects would only dream of encountering. You put your hand against it and it gently pops away from reality, the angelically vivid light fades, and you feel ideas in your brain, thoughts you've never had before.
-    <br><br><button onclick="han()">[Go to skill tree.]</button> <button onclick="han86()">[Moving on.]</button></section>`
+    <br><br><button onclick="lvlUp()">[Go to skill tree.]</button> <button onclick="han86()">[Moving on.]</button></section>`
     end();
 }
 function han86() {
