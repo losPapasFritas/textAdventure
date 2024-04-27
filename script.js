@@ -1,7 +1,5 @@
 
-//let allMain = `<section>Choose a character! <br><br> <button class="paul">Paul the Knight</button> <button class="hannah">Hannah the Magician</button> <button class="mathew">Mathew the Tamer</button></section>`
-
-let allMain = `<section>Welcome to Souls Adventure Ver. 1<br><br> Prepare to be cast into the fantastical world of Polend (No affiliation) <Br> Select your vessel to control the world.<button class="hannah">Hannah the Magician</button> </section>`
+let allMain = `<section>Choose a character! <br><br> <button class="paul">Paul the Knight</button> <button class="hannah">Hannah the Magician</button> <button class="mathew">Mathew the Tamer</button></section>`
 
 let char = `none`,
     saveState = `none`,
