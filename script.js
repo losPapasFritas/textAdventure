@@ -2550,7 +2550,7 @@ function dungeonCheck() {
 }
 
 function VolcanoCheck() {
-    if ((92 <= playerX) && (playerX <= 88) && (27 <= playerY) && (playerY <= 21)) {
+    if ((92 >= playerX) && (playerX >= 88) && (27 >= playerY) && (playerY >= 21)) {
 
         return `theCrypt`;
     }
