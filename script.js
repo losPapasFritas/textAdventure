@@ -166,11 +166,11 @@ let pMap = ``;
 let allDungeonInfo = [
     { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }, { numberOfRooms: 5, currentRoom: 0, completed: false, bossIndx: 5 }]
 //mudman is first dungeon boss
-let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`, `Madsmith`];
-let eHpAll = [70, 10000, 100, 85, 30, 120, 120, 130, 546, 80];
-let eDmgAll = [5, 1, 13, 11, 15, 17, 19, 20, 25, 7];
-let eLvlAll = [1, 500, 7, 5, 6, 10, 12, 10, 24, 7];
-let eDefAll = [10, 99.99999999, 10, 10, 3, 0, 10, 5, 50, 12];
+let enemies = [`goblin`, `immortal worm`, `bandit`, `imp`, `walking fish`, `mud man`, `stone golem`, `cyclopes`, `Madsmith`, `Thysiusdagurontescipiusdebduteustharidonxocemonthemonbatrius(Tyler for short)`];
+let eHpAll = [70, 10000, 100, 85, 30, 120, 120, 130, 80, 546];
+let eDmgAll = [5, 1, 13, 11, 15, 17, 19, 20, 7, 25];
+let eLvlAll = [1, 500, 7, 5, 6, 10, 12, 10, 7, 24];
+let eDefAll = [10, 99.99999999, 10, 10, 3, 0, 10, 5, 12, 50];
 let keyItems = [];
 let buffItemList = [
     { name: `Enchanted Golden Apple`, hp: 10000, def: 10000, dmg: 100, magic: 19 }, { name: `Potion of Minor Healing`, hp: 40, def: 0, dmg: 0, magic: 0 }, { name: `Pot of Healing`, hp: 70, def: 0, dmg: 0, magic: 0 }, { name: `Cauldron of Major Healing`, hp: 100, def: 0, dmg: 0, magic: 0 }, { name: `Coffee`, hp: 25, def: 0, dmg: 0.25, magic: 0.5 }, { name: `Hornet Honey`, hp: 30, def: 5 / 8, dmg: 0, magic: 0.5 }]
@@ -712,7 +712,7 @@ function han41() {
     end();
 }
 function han43() {
-    allMain += `<br><br><br><br><section>You explore the structure of the forge, looking for a pathway to reach the rooftop. You hear a crackle in the far left corner of the forge, a thimble of burning light flickers in the distance.<br><br><button onclick="combatSetup(1,9)">[Fight Engage.]</button></section>`
+    allMain += `<br><br><br><br><section>You explore the structure of the forge, looking for a pathway to reach the rooftop. You hear a crackle in the far left corner of the forge, a thimble of burning light flickers in the distance.<br><br><button onclick="combatSetup(1,8)">[Fight Engage.]</button></section>`
     saveState = `han44`
     end();
 }
@@ -1606,8 +1606,14 @@ function combatEnd() {
 }
 
 function playerLost() {
-    allMain = `You lost<br>Refresh the page to play again`
-    end();
+    if(saveState == `gameEnd`){
+        allMain = `After the long battle against Tyler, you fall to the ground. The ash is blown around as he lands. "After all this effort, all this time, this is what your skills amounted to?" Tyler bellows, "Maybe you should have stayed home, safe from my grandiose power." You lose conciousness, and perish.<br><br>The world continued to grow more infested with monsters, many towns getting destroyed in their rampage. Releasing the barrier only allowed Tyler to escape Polend, seeking new countries to terrorize. Maybe something different would have happend should you have defeated him. However, the only way for that to happen would be for a complete reset to occur.`
+        end();
+    }
+    else{
+        allMain = `You lost<br>Refresh the page to play again`
+        end();
+    }
 }
 
 //similar to combat end
@@ -2050,7 +2056,7 @@ function checkForThings() {
             bossRushIntro();
         }
     }
-    else if (!dungeonCheck() && !cityCheck()) {
+    else if (!dungeonCheck() && !cityCheck() && !VolcanoCheck()) {
         randomCombat()
         // displayPlayerPos()
     }
@@ -2329,6 +2335,9 @@ function checkForThings() {
                 break;
         }
     }
+    else if(!VolcanoCheck()){
+        theCrypt();
+    }
 }
 function moveNorth() {
     playerY--;
@@ -2554,19 +2563,19 @@ function VolcanoCheck() {
 
         return `theCrypt`;
     }
-
-    function theCrypt() {
-        allMain = `<br><br><br><section> The soil crumbles at your feet and cinders are left within each footprint you leave. This is the summit of the volcano, lava steams and spouts out of the erupting craters. The Dragon's Crypt is near. <br><br> <button onclick="hanV1"> [Examine the door]</button></section>`
-        end();
-    }
-    function hanv1() {
-        allMain = `<br><br><br><section> It is a red door with cryptic engravings layering the architecture. An ancient door that you are allowed to enter, given from the forgo orb within you.<br><br> <button onclick="hanV2">[Confront the dragon.]</button></section>`
-        end();
-    }
-    function hanv3() {
-        allMain = `<br><br><br><section>"Hey man, been waitin' for you. Let's just cut to the chase. I'm the mighty dragon, with a name unintelligible by human tongue. So just call me Tyler or something."<br><br> <button onclick="">[Put an end to... Tyler]</button></section>`
-        end();
-    }
+}
+function theCrypt() {
+    allMain = `<br><br><br><section> The soil crumbles at your feet and cinders are left within each footprint you leave. This is the summit of the volcano, lava steams and spouts out of the erupting craters. The Dragon's Crypt is near. <br><br> <button onclick="hanV1"> [Examine the door]</button></section>`
+    end();
+}
+function hanv1() {
+    allMain = `<br><br><br><section> It is a red door with cryptic engravings layering the architecture. An ancient door that you are allowed to enter, given from the forgo orb within you.<br><br> <button onclick="hanV2">[Confront the dragon.]</button></section>`
+    end();
+}
+function hanv3() {
+    allMain = `<br><br><br><section>"Hey man, been waitin' for you. Let's just cut to the chase. I'm the mighty dragon, with a name unintelligible by human tongue. So just call me Tyler or something."<br><br> <button onclick="">[Put an end to... Tyler]</button></section>`
+    saveState = `gameEnd`;
+    end();
 }
 document.addEventListener("DOMContentLoaded", function () {
     let paulAll = document.getElementsByClassName(`paul`);
