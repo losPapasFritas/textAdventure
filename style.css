@@ -47,3 +47,7 @@ p{
 .unlocked:hover{
     cursor: not-allowed;
 }
+
+.player-pos{
+    color: rgb(48, 203, 255);
+}
