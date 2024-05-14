@@ -27,6 +27,7 @@ let char = `none`,
     statB = 0,
     statC = 0,
     statD = 0,
+    pStats = [statA,statB,statC,statC];
     waterBuff = 0,
     earthBuff = 0,
     fireDotBuff = 0,
@@ -43,11 +44,11 @@ let char = `none`,
     totalDmgDealt = 0,
     forcedCombat = false,
     currentCity = -1;
-money = 10,
+    money = 10,
     givenMoney = 0,
     bossRushIndx = 5,
-    currentDungeon = -1,
-    totalDefReduction = 0;
+    currentDungeon = -1;
+let totalDefReduction = 0;
 let playerY = 0;
 let playerX = 0;
 let map = `@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -439,7 +440,7 @@ function aOrAn(firstLetter) {
 }
 
 function skipTutorial() {
-    allMain += `<br><br><section>Would you like to skip the tutorial?`
+    allMain = `<br><br><section>Would you like to skip the tutorial?<br><br>`
     if (char = `han`) {
         allMain += `<button onclick='han63()'>Yes</button>`
     }
@@ -525,7 +526,12 @@ function hannahSelect() {
     pMagicDmg = 1.5;
     pSpellType = `all`;
     pSpells = [`Fireball`, `Healing Spring`, `Stone Bullet`];
-    // allMain = `<br><br><br><br><section id="hannahDesc" class="visible">The noble yet troublesome apprentice of the Grand Wizard Master Kobain. She has an immense desire to obtain the powers of the world's elements, however she has a long and dangerous road if she wants to achieve this magnitude of power. Her conscience and belief in the Grand Wizard repels her from the most desperate bargains of terrible evils.  <br><br> <button id="hannahSelect">Select this character</button> <button>Paul the Knight</button> <button>Mathew the Tamer</button></section> `
+    saveState = `hanPre0`;
+    skipTutorial();
+
+}
+
+function hanPre0() {
     allMain = `<br><br><br><br><section class="visible">You take the vessel of Hannah, the noble yet troublesome apprentice of the Grand Wizard Master Kobain. She has an immense desire to obtain the powers of the world's elements, however she has a long and dangerous road if she wants to achieve this magnitude of power. Her conscience and belief in the Grand Wizard repels her from the most desperate bargains of terrible evils.  <br><br></section>`;
     allMain += `<section>Violence was never a rarity in the Eastern Slums, but matters have only further deteriorated from the threat of the Dragon's wrath in this past month.  You remember that night with defining clarity.<br><br>  <button onclick="han0()">[--&gt;]</button></section>`;
     end();
@@ -826,6 +832,10 @@ function han63BB() {
 }
 function han63() {
     allMain = `<br><br><br><br><section>You find yourself inside a cubelike room. Simple in nature, with clear details.<br><br><button onclick="han64()">[--&gt;]</button></section>`
+    if (saveState == `hanPre0`) {
+        saveState = `han63`;
+        lvlUp();
+    }
     end();
 }
 function han64() {
@@ -875,7 +885,8 @@ function han70B() {
     end();
 }
 function han70C() {
-    allMain = `<br><br><br><br><section>You take a hearty swig out of the gross goopy pool of water. Refreshed and revitalized, you descend deeper through the cavernous chambers.<br><br><button onclick="han71C()">[--&gt;]</button></section>`
+    allMain = `<br><br><br><br><section>You take a hearty swig out of the gross goopy pool of "water". Refreshed and revitalized, you descend deeper through the cavernous chambers.<br><br><button onclick="han71C()">[--&gt;]</button></section>`
+    pHp = pMaxHp;
     end();
 }
 function han71C() {
@@ -884,6 +895,7 @@ function han71C() {
 }
 ////
 function han72C() {
+    givePlayerItem(6);
     allMain = `<br><br><br><br><section>You recieved the magic metal stick.<br><br><button onclick="han73C()">[--&gt;]</button></section>`
     end();
 }
@@ -1042,11 +1054,11 @@ function combatSetup(setCombat = 0, eIndx = 1) {
         allMain += `<button onclick="generalAttk()">Fight</button> `
     }
     allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="listItems()">Inventory</button> <button onclick='abilityList()'>Abilities</button>`
-    if(forcedCombat){
-        allMain+=`</section>`
+    if (forcedCombat) {
+        allMain += `</section>`
     }
-    else{
-        allMain+=` <button onclick="run()">Run</button></section>`
+    else {
+        allMain += ` <button onclick="run()">Run</button></section>`
     }
     end();
 }
@@ -1435,11 +1447,11 @@ function combatContinue() {
         allMain += `<button onclick="generalAttk()">Fight</button> `
     }
     allMain += `<button onclick="inspect()">Inspect Enemy</button> <button onclick="blockE()">Block</button> <button onclick="listItems()">Inventory</button> <button onclick='abilityList()'>Abilities</button>`
-    if(forcedCombat){
-        allMain+=`</section>`
+    if (forcedCombat) {
+        allMain += `</section>`
     }
-    else{
-        allMain+=` <button onclick="run()">Run</button></section>`
+    else {
+        allMain += ` <button onclick="run()">Run</button></section>`
     }
     end();
 }
@@ -1478,8 +1490,18 @@ function enemyTurn() {
     let dmgToP = 0;
     let randomDmg = 0;
     for (item of currentEs) {
-        while (randomDmg < 0.75) {
-            randomDmg = Math.random();
+        let pDamaged = false;
+        while (!pDamaged) {
+            if(randomDmg < 0.25){
+                randomDmg = 0;
+                pDamaged = true
+            }
+            else if(randomDmg > 0.75){
+                pDamaged = true
+            }
+            else{
+                randomDmg = Math.random();
+            }
         }
         dmgToP += Math.round(item.eDmg * randomDmg);
         randomDmg = 0;
@@ -1588,6 +1610,9 @@ function combatEnd() {
     allMain += `<section>You gained ${givenMoney} dollars!</section>`
     money += givenMoney;
     givenMoney = 0;
+    if (saveState = `gameEnd`) {
+        allMain = `<section>You slay Tyler after the long battle. Exhaused, you fall to the ground. "Well," Tyler groans, "You did well to defeat me. I cannot fathom how you gained such power since my awakening. This... was... a good fight." With those final words, he passes away. You, meanwhile, lose conciousness atop the volcano, the blistering heat and the fight draining your energy.</section>`
+    }
     if (currentDungeon != -1) {
         if (allDungeonInfo[currentDungeon].numberOfRooms == (allDungeonInfo[currentDungeon].currentRoom - 1)) {
             allDungeonInfo[currentDungeon].completed = true;
@@ -1606,11 +1631,11 @@ function combatEnd() {
 }
 
 function playerLost() {
-    if(saveState == `gameEnd`){
-        allMain = `After the long battle against Tyler, you fall to the ground. The ash is blown around as he lands. "After all this effort, all this time, this is what your skills amounted to?" Tyler bellows, "Maybe you should have stayed home, safe from my grandiose power." You lose conciousness, and perish.<br><br>The world continued to grow more infested with monsters, many towns getting destroyed in their rampage. Releasing the barrier only allowed Tyler to escape Polend, seeking new countries to terrorize. Maybe something different would have happend should you have defeated him. However, the only way for that to happen would be for a complete reset to occur.`
+    if (saveState == `gameEnd`) {
+        allMain = `<section>After the long battle against Tyler, you fall to the ground. The ash is blown around as he lands. "After all this effort, all this time, this is what your skills amounted to?" Tyler bellows, "Maybe you should have stayed home, safe from my grandiose power." You lose conciousness, and perish.<br><br>The world continued to grow more infested with monsters, many towns getting destroyed in their rampage. Releasing the barrier only allowed Tyler to escape Polend, seeking new countries to terrorize. Maybe something different would have happend should you have defeated him. However, the only way for that to happen would be for a complete reset to occur.</section>`
         end();
     }
-    else{
+    else {
         allMain = `You lost<br>Refresh the page to play again`
         end();
     }
@@ -1648,95 +1673,95 @@ function bossRushContinue() {
 function lvlUp() {
     allMain = `<section>Select an Upgrade!<br><br><section class='allSkills'><section class='skillColumn'>`
     if (statA == 0) {
-        allMain += `<button onclick='buffStat("def",${5})'>Block Def Up</button>`
+        allMain += `<button class="skill-btn" onclick='buffStat("def",${5})'>Block Def Up</button>`
     }
     else if (statA == 1) {
-        allMain += `<button>Block Def Up</button> <button onclick='addAbility("blockDmgUp")'>Blocking increses dmg by a small percent for the next turn</button>`
+        allMain += `<button class="skill-btn unlocked">Block Def Up</button> <button class="skill-btn" onclick='addAbility("blockDmgUp","def")'>Blocking increses dmg by a small percent for the next turn</button>`
     }
     else if (statA == 2) {
-        allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onclick='buffStat("def",${5})'>Block Def Up</button>`
+        allMain += `<button class="skill-btn unlocked">Block Def Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn" onclick='buffStat("def",${5})'>Block Def Up</button>`
     }
     else if (statA == 3) {
-        allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button onclick='addAbility("blockImmunity")'>While blocking, have a 25% chance to not take dmg</button>`
+        allMain += `<button class="skill-btn unlocked">Block Def Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn unlocked">Block Def Up</button> <button class="skill-btn" onclick='addAbility("blockImmunity","def")'>While blocking, have a 25% chance to not take dmg</button>`
     }
     else if (statA == 4) {
-        allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button onclick='buffStat("def",${5})'>Block Def Up</button>`
+        allMain += `<button class="skill-btn unlocked">Block Def Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn unlocked">Block Def Up</button> <button class="skill-btn unlocked">While blocking, have a 25% chance to not take dmg</button> <button class="skill-btn" onclick='buffStat("def",${5})'>Block Def Up</button>`
     }
     else if (statA == 5) {
-        allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button>Block Def Up</button> <button onclick='addAbility("parry")'>You no longer take damage while blocking</button>`
+        allMain += `<button class="skill-btn unlocked">Block Def Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn unlocked">Block Def Up</button> <button class="skill-btn unlocked">While blocking, have a 25% chance to not take dmg</button> <button class="skill-btn unlocked">Block Def Up</button> <button class="skill-btn" onclick='addAbility("parry","def")'>You no longer take damage while blocking</button>`
     }
     else if (statA == 6) {
-        allMain += `<button>Block Def Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Block Def Up</button> <button>While blocking, have a 25% chance to not take dmg</button> <button>Block Def Up</button> <button>You no longer take damage while blocking</button>`
+        allMain += `<button class="skill-btn unlocked">Block Def Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn unlocked">Block Def Up</button> <button class="skill-btn unlocked">While blocking, have a 25% chance to not take dmg</button> <button class="skill-btn unlocked">Block Def Up</button> <button class="skill-btn unlocked">You no longer take damage while blocking</button>`
     }
     allMain += `</section><section class='skillColumn'>`
 
     switch (pSpellType) {
         case `all`:
             if (statB == 0) {
-                allMain += `<button onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
+                allMain += `<button class="skill-btn" onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
             }
             else if (statB == 1) {
-                allMain += `<button>Fire Damage Over Time Length Up</button> <button onclick='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
+                allMain += `<button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn" onclick='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
             }
             else if (statB == 2) {
-                allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
+                allMain += `<button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn" onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
             }
             else if (statB == 3) {
-                allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button onclick='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
+                allMain += `<button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn" onclick='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
             }
             else if (statB == 4) {
-                allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
+                allMain += `<button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button class="skill-btn" onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
             }
             else if (statB == 5) {
-                allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire Damage Over Time Length Up</button> <button onclick='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
+                allMain += `<button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn" onclick='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
             }
             else if (statB == 6) {
-                allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire Damage Over Time Length Up</button> <button>If your Hp drops to 0, regain half hp</button>`
+                allMain += `<button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">If your Hp drops to 0, regain half hp</button>`
             }
             allMain += `</section><section class='skillColumn'>`
             if (statC == 0) {
-                allMain += `<button onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                allMain += `<button class="skill-btn" onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
             }
             else if (statC == 1) {
-                allMain += `<button>Healing Power Up</button> <button onclick='addAbility("coolDown","water",coolDown)'>You can remove DOT afflictions using an ability</button>`
+                allMain += `<button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn" onclick='addAbility("coolDown","water",coolDown)'>You can remove DOT afflictions using an ability</button>`
             }
             else if (statC == 2) {
-                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                allMain += `<button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">You can remove DOT afflictions using an ability</button> <button class="skill-btn" onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
             }
             else if (statC == 3) {
-                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button onclick='addAbility("waterShield","water")'>Healing increases defense by a moderate amount for a turn</button>`
+                allMain += `<button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">You can remove DOT afflictions using an ability</button> <button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn" onclick='addAbility("waterShield","water")'>Healing increases defense by a moderate amount for a turn</button>`
             }
             else if (statC == 4) {
-                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                allMain += `<button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">You can remove DOT afflictions using an ability</button> <button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">Healing increases defense by a moderate amount for a turn</button> <button class="skill-btn" onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
             }
             else if (statC == 5) {
-                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button onclick='addAbility("quickHeal","water")'>You can attack and heal in the same turn</button>`
+                allMain += `<button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">You can remove DOT afflictions using an ability</button> <button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">Healing increases defense by a moderate amount for a turn</button> <button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn" onclick='addAbility("quickHeal","water")'>You can attack and heal in the same turn</button>`
             }
             else if (statC == 6) {
-                allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button>You can attack and heal in the same turn</button>`
+                allMain += `<button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">You can remove DOT afflictions using an ability</button> <button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">Healing increases defense by a moderate amount for a turn</button> <button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">You can attack and heal in the same turn</button>`
             }
             allMain += `</section><section class='skillColumn'>`
             if (statD == 0) {
-                allMain += `<button onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                allMain += `<button class="skill-btn" onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
             }
             else if (statD == 1) {
-                allMain += `<button>Earth Dmg Up</button> <button onclick='addAbility("doubleEarth","earth")'>Earth attacks can hit twice</button>`
+                allMain += `<button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn" onclick='addAbility("doubleEarth","earth")'>Earth attacks can hit twice</button>`
             }
             else if (statD == 2) {
-                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                allMain += `<button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Earth attacks can hit twice</button> <button class="skill-btn" onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
             }
             else if (statD == 3) {
-                allMain += (`<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button>
-                <button onclick='addAbility("InstaKill","earth", instaKill'>Adds ability to defeat any enemy whose hp is under 10%</button>`)
+                allMain += (`<button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Earth attacks can hit twice</button> <button class="skill-btn unlocked">Earth Dmg Up</button>
+                <button class="skill-btn" onclick='addAbility("InstaKill","earth", instaKill)'>Adds ability to defeat any enemy whose hp is under 10%</button>`)
             }
             else if (statD == 4) {
-                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                allMain += `<button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Earth attacks can hit twice</button> <button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Adds ability to defeat any enemy whose hp is under 10%</button> <button class="skill-btn" onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
             }
             else if (statD == 5) {
-                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button onclick='addAbility("quadHit","earth")'>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
+                allMain += `<button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Earth attacks can hit twice</button> <button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Adds ability to defeat any enemy whose hp is under 10%</button> <button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn" onclick='addAbility("quadHit","earth")'>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
             }
             else if (statD == 6) {
-                allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
+                allMain += `<button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Earth attacks can hit twice</button> <button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Adds ability to defeat any enemy whose hp is under 10%</button> <button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
             }
             allMain += `</section>`
             break;
@@ -1744,168 +1769,168 @@ function lvlUp() {
             switch (pSpellType) {
                 case `fire`:
                     if (statB == 0) {
-                        allMain += `<button onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
+                        allMain += `<button class="skill-btn" onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
                     }
                     else if (statB == 1) {
-                        allMain += `<button>Fire Damage Over Time Length Up</button> <button onclick='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
+                        allMain += `<button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn" onclick='addAbility("fireBlock","fire")'>Blocking deals fire damage to enemy</button>`
                     }
                     else if (statB == 2) {
-                        allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn" onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
                     }
                     else if (statB == 3) {
-                        allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button onclick='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
+                        allMain += `<button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn" onclick='addAbility("firebomb","fire")'>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button>`
                     }
                     else if (statB == 4) {
-                        allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button class="skill-btn" onclick='buffStat("fireDotBuff",${1})'>Fire Damage Over Time Length Up</button>`
                     }
                     else if (statB == 5) {
-                        allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire Damage Over Time Length Up</button> <button onclick='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
+                        allMain += `<button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn" onclick='addAbility("phoenix","fire")'>If your Hp drops to 0, regain half hp</button>`
                     }
                     else if (statB == 6) {
-                        allMain += `<button>Fire Damage Over Time Length Up</button> <button>Blocking increses dmg by a small percent for the next turn</button> <button>Fire Damage Over Time Length Up</button> <button>Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button>Fire Damage Over Time Length Up</button> <button>If your Hp drops to 0, regain half hp</button>`
+                        allMain += `<button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Blocking increses dmg by a small percent for the next turn</button> <button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">Every turn has ${(pLvl - 1) / 25 * 100}% chance to cast a firebomb, cooldown is 5 turns</button> <button class="skill-btn unlocked">Fire Damage Over Time Length Up</button> <button class="skill-btn unlocked">If your Hp drops to 0, regain half hp</button>`
                     }
                     break;
                 case `water`:
                     if (statB == 0) {
-                        allMain += `<button onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                        allMain += `<button class="skill-btn" onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
                     }
                     else if (statB == 1) {
-                        allMain += `<button>Healing Power Up</button> <button onclick='addAbility("coolDown","water",coolDown)'>You can remove DOT afflictions using an ability</button>`
+                        allMain += `<button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn" onclick='addAbility("coolDown","water",coolDown)'>You can remove DOT afflictions using an ability</button>`
                     }
                     else if (statB == 2) {
-                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">You can remove DOT afflictions using an ability</button> <button class="skill-btn" onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
                     }
                     else if (statB == 3) {
-                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button onclick='addAbility("waterShield","water")'>Healing increases defense by a moderate amount for a turn</button>`
+                        allMain += `<button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">You can remove DOT afflictions using an ability</button> <button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn" onclick='addAbility("waterShield","water")'>Healing increases defense by a moderate amount for a turn</button>`
                     }
                     else if (statB == 4) {
-                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">You can remove DOT afflictions using an ability</button> <button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">Healing increases defense by a moderate amount for a turn</button> <button class="skill-btn" onclick='buffStat("waterBuff",${0.25})'>Healing Power Up</button>`
                     }
                     else if (statB == 5) {
-                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button onclick='addAbility("quickHeal","water")'>You can attack and heal in the same turn</button>`
+                        allMain += `<button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">You can remove DOT afflictions using an ability</button> <button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">Healing increases defense by a moderate amount for a turn</button> <button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn" onclick='addAbility("quickHeal","water")'>You can attack and heal in the same turn</button>`
                     }
                     else if (statB == 6) {
-                        allMain += `<button>Healing Power Up</button> <button>You can remove DOT afflictions using an ability</button> <button>Healing Power Up</button> <button>Healing increases defense by a moderate amount for a turn</button> <button>Healing Power Up</button> <button>You can attack and heal in the same turn</button>`
+                        allMain += `<button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">You can remove DOT afflictions using an ability</button> <button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">Healing increases defense by a moderate amount for a turn</button> <button class="skill-btn unlocked">Healing Power Up</button> <button class="skill-btn unlocked">You can attack and heal in the same turn</button>`
                     }
                     break;
                 case `earth`:
                     if (statB == 0) {
-                        allMain += `<button onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                        allMain += `<button class="skill-btn" onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
                     }
                     else if (statB == 1) {
-                        allMain += `<button>Earth Dmg Up</button> <button onclick='addAbility("doubleEarth","earth")'>Earth attacks can hit twice</button>`
+                        allMain += `<button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn" onclick='addAbility("doubleEarth","earth")'>Earth attacks can hit twice</button>`
                     }
                     else if (statB == 2) {
-                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Earth attacks can hit twice</button> <button class="skill-btn" onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
                     }
                     else if (statB == 3) {
-                        allMain += (`<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button>
-                        <button onclick='addAbility("InstaKill","earth", instaKill)'>Adds ability to defeat any enemy whose hp is under 10%</button>`)
+                        allMain += (`<button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Earth attacks can hit twice</button> <button class="skill-btn unlocked">Earth Dmg Up</button>
+                        <button class="skill-btn" onclick='addAbility("InstaKill","earth", "instaKill")'>Adds ability to defeat any enemy whose hp is under 10%</button>`)
                     }
                     else if (statB == 4) {
-                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Earth attacks can hit twice</button> <button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Adds ability to defeat any enemy whose hp is under 10%</button> <button class="skill-btn" onclick='buffStat("earthBuff",${0.25})'>Earth Dmg Up</button>`
                     }
                     else if (statB == 5) {
-                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button onclick='addAbility("quadHit","earth")'>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
+                        allMain += `<button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Earth attacks can hit twice</button> <button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Adds ability to defeat any enemy whose hp is under 10%</button> <button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn" onclick='addAbility("quadHit","earth")'>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
                     }
                     else if (statB == 6) {
-                        allMain += `<button>Earth Dmg Up</button> <button>Earth attacks can hit twice</button> <button>Earth Dmg Up</button> <button>Adds ability to defeat any enemy whose hp is under 10%</button> <button>Earth Dmg Up</button> <button>All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
+                        allMain += `<button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Earth attacks can hit twice</button> <button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">Adds ability to defeat any enemy whose hp is under 10%</button> <button class="skill-btn unlocked">Earth Dmg Up</button> <button class="skill-btn unlocked">All attacks have a ${(pLvl - 1) / 25 * 100}% chance to hit 4 times</button>`
                     }
                     break;
             }
             switch (char) {
                 case `paul`:
                     if (statC == 0) {
-                        allMain += `<button onclick='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
+                        allMain += `<button class="skill-btn" onclick='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
                     }
                     else if (statC == 1) {
-                        allMain += `<button>Sword Dmg Up</button> <button onclick='addAbility("defReduction","p1", eDefReduction)'>Adds ability which reduces enemy defense</button>`
+                        allMain += `<button class="skill-btn unlocked">Sword Dmg Up</button> <button class="skill-btn" onclick='addAbility("defReduction","p1", eDefReduction)'>Adds ability which reduces enemy defense</button>`
                     }
                     else if (statC == 2) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button onclick='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Sword Dmg Up</button> <button class="skill-btn unlocked">Adds ability which reduces enemy defense</button> <button class="skill-btn" onclick='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
                     }
                     else if (statC == 3) {
-                        allMain += (`<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button>
-                        <button onclick='addAbility("multiHit","p1")'>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 25)} times</button>`)
+                        allMain += (`<button class="skill-btn unlocked">Sword Dmg Up</button> <button class="skill-btn unlocked">Adds ability which reduces enemy defense</button> <button class="skill-btn unlocked">Sword Dmg Up</button>
+                        <button class="skill-btn" onclick='addAbility("multiHit","p1")'>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 25)} times</button>`)
                     }
                     else if (statC == 4) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button onclick='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Sword Dmg Up</button> <button class="skill-btn unlocked">Adds ability which reduces enemy defense</button> <button class="skill-btn unlocked">Sword Dmg Up</button> <button class="skill-btn unlocked">A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button class="skill-btn" onclick='buffStat("pDmg",${0.25})'>Sword Dmg Up</button>`
                     }
                     else if (statC == 5) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button onclick='addAbility("highMelee","p1")'>For every 50 damage you deal, your damage increases by ${pLvl * 10 / 25}%</button>`
+                        allMain += `<button class="skill-btn unlocked">Sword Dmg Up</button> <button class="skill-btn unlocked">Adds ability which reduces enemy defense</button> <button class="skill-btn unlocked">Sword Dmg Up</button> <button class="skill-btn unlocked">A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button class="skill-btn unlocked">Sword Dmg Up</button> <button class="skill-btn" onclick='addAbility("highMelee","p1")'>For every 50 damage you deal, your damage increases by ${pLvl * 10 / 25}%</button>`
                     }
                     else if (statC == 6) {
-                        allMain += `<button>Sword Dmg Up</button> <button>Adds ability which reduces enemy defense</button> <button>Sword Dmg Up</button> <button>A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button>Sword Dmg Up</button> <button>For every 50 damage you deal, your damage increases by ${pLvl * 10 / 24}%</button>`
+                        allMain += `<button class="skill-btn unlocked">Sword Dmg Up</button> <button class="skill-btn unlocked">Adds ability which reduces enemy defense</button> <button class="skill-btn unlocked">Sword Dmg Up</button> <button class="skill-btn unlocked">A non-magic infused attack has a chance to hit ${(pLvl * 5 / 24)} times</button> <button class="skill-btn unlocked">Sword Dmg Up</button> <button class="skill-btn unlocked">For every 50 damage you deal, your damage increases by ${pLvl * 10 / 24}%</button>`
                     }
 
                     if (statD == 0) {
-                        allMain += `<button onclick='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
+                        allMain += `<button class="skill-btn" onclick='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
                     }
                     else if (statD == 1) {
-                        allMain += `<button>Magic Dmg Up</button> <button onclick='addAbility("Melee Infusion","p2",infuseMelee)'>All melee attacks can be infused with selected magic attribute</button>`
+                        allMain += `<button class="skill-btn unlocked">Magic Dmg Up</button> <button class="skill-btn" onclick='addAbility("Melee Infusion","p2",infuseMelee)'>All melee attacks can be infused with selected magic attribute</button>`
                     }
                     else if (statD == 2) {
-                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button onclick='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Magic Dmg Up</button> <button class="skill-btn unlocked">All melee attacks can be infused with selected magic attribute</button> <button class="skill-btn" onclick='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
                     }
                     else if (statD == 3) {
-                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button>
-                        <button onclick='addAbility("enemyWeakener,"p2")'>Repeated melee attacks weakens the enemy</button>`
+                        allMain += `<button class="skill-btn unlocked">Magic Dmg Up</button> <button class="skill-btn unlocked">All melee attacks can be infused with selected magic attribute</button> <button class="skill-btn unlocked">Magic Dmg Up</button>
+                        <button class="skill-btn" onclick='addAbility("enemyWeakener,"p2")'>Repeated melee attacks weakens the enemy</button>`
                     }
                     else if (statD == 4) {
-                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button onclick='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Magic Dmg Up</button> <button class="skill-btn unlocked">All melee attacks can be infused with selected magic attribute</button> <button class="skill-btn unlocked">Magic Dmg Up</button> <button class="skill-btn unlocked">Repeated melee attacks weakens the enemy</button> <button class="skill-btn" onclick='buffStat("pMagicDmg",${0.25})'>Magic Dmg Up</button>`
                     }
                     else if (statD == 5) {
-                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button>Magic Dmg Up</button> <button onclick='addAbility("maxInfusion","p2")'>Melee attacks can be infused with all elements</button>`
+                        allMain += `<button class="skill-btn unlocked">Magic Dmg Up</button> <button class="skill-btn unlocked">All melee attacks can be infused with selected magic attribute</button> <button class="skill-btn unlocked">Magic Dmg Up</button> <button class="skill-btn unlocked">Repeated melee attacks weakens the enemy</button> <button class="skill-btn unlocked">Magic Dmg Up</button> <button class="skill-btn" onclick='addAbility("maxInfusion","p2")'>Melee attacks can be infused with all elements</button>`
                     }
                     else if (statD == 6) {
-                        allMain += `<button>Magic Dmg Up</button> <button>All melee attacks can be infused with selected magic attribute</button> <button>Magic Dmg Up</button> <button>Repeated melee attacks weakens the enemy</button> <button>Magic Dmg Up</button> <button>Melee attacks can be infused with all elements</button>`
+                        allMain += `<button class="skill-btn unlocked">Magic Dmg Up</button> <button class="skill-btn unlocked">All melee attacks can be infused with selected magic attribute</button> <button class="skill-btn unlocked">Magic Dmg Up</button> <button class="skill-btn unlocked">Repeated melee attacks weakens the enemy</button> <button class="skill-btn unlocked">Magic Dmg Up</button> <button class="skill-btn unlocked">Melee attacks can be infused with all elements</button>`
                     }
                     break;
                 case `mat`:
                     if (statC == 0) {
-                        allMain += `<button onclick='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
+                        allMain += `<button class="skill-btn" onclick='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
                     }
                     else if (statC == 1) {
-                        allMain += `<button>Ally Dmg Up</button> <button onclick='addAbility("Ally Infusion","m1",infuseMelee)'>You can infuse  infuse allies with your elemental attribute</button>`
+                        allMain += `<button class="skill-btn unlocked">Ally Dmg Up</button> <button class="skill-btn" onclick='addAbility("Ally Infusion","m1",infuseMelee)'>You can infuse  infuse allies with your elemental attribute</button>`
                     }
                     else if (statC == 2) {
-                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button onclick='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Ally Dmg Up</button> <button class="skill-btn unlocked">You can infuse  infuse allies with your elemental attribute</button> <button class="skill-btn" onclick='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
                     }
                     else if (statC == 3) {
-                        allMain += (`<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button>
-                        <button onclick='addAbility("allyHeal","m1", allyHeal())'>You can heal all allies ${pLvl / 25 * 35}% of their health</button>`)
+                        allMain += (`<button class="skill-btn unlocked">Ally Dmg Up</button> <button class="skill-btn unlocked">You can infuse  infuse allies with your elemental attribute</button> <button class="skill-btn unlocked">Ally Dmg Up</button>
+                        <button class="skill-btn" onclick='addAbility("allyHeal","m1", allyHeal())'>You can heal all allies ${pLvl / 25 * 35}% of their health</button>`)
                     }
                     else if (statC == 4) {
-                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button onclick='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Ally Dmg Up</button> <button class="skill-btn unlocked">You can infuse  infuse allies with your elemental attribute</button> <button class="skill-btn unlocked">Ally Dmg Up</button> <button class="skill-btn unlocked">You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button class="skill-btn" onclick='buffStat("allyDmg",${0.25})'>Ally Dmg Up</button>`
                     }
                     else if (statC == 5) {
-                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button>Ally Dmg Up</button> <button onclick='addAbility("allyBonusAction","m1")'>You can do an extra action while your ally attacks</button>`
+                        allMain += `<button class="skill-btn unlocked">Ally Dmg Up</button> <button class="skill-btn unlocked">You can infuse  infuse allies with your elemental attribute</button> <button class="skill-btn unlocked">Ally Dmg Up</button> <button class="skill-btn unlocked">You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button class="skill-btn unlocked">Ally Dmg Up</button> <button class="skill-btn" onclick='addAbility("allyBonusAction","m1")'>You can do an extra action while your ally attacks</button>`
                     }
                     else if (statC == 6) {
-                        allMain += `<button>Ally Dmg Up</button> <button>You can infuse  infuse allies with your elemental attribute</button> <button>Ally Dmg Up</button> <button>You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button>Ally Dmg Up</button> <button>You can do an extra action while your ally attacks</button>`
+                        allMain += `<button class="skill-btn unlocked">Ally Dmg Up</button> <button class="skill-btn unlocked">You can infuse  infuse allies with your elemental attribute</button> <button class="skill-btn unlocked">Ally Dmg Up</button> <button class="skill-btn unlocked">You can heal all allies ${pLvl / 25 * 35}% of their health</button> <button class="skill-btn unlocked">Ally Dmg Up</button> <button class="skill-btn unlocked">You can do an extra action while your ally attacks</button>`
                     }
 
                     if (statD == 0) {
-                        allMain += `<button onclick='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
+                        allMain += `<button class="skill-btn" onclick='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
                     }
                     else if (statD == 1) {
-                        allMain += `<button>Max Ally Num Up</button> <button onclick='addAbility("allyChanceUp","m2")'>Recruiting an ally is more successful</button>`
+                        allMain += `<button class="skill-btn unlocked">Max Ally Num Up</button> <button class="skill-btn" onclick='addAbility("allyChanceUp","m2")'>Recruiting an ally is more successful</button>`
                     }
                     else if (statD == 2) {
-                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button onclick='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Max Ally Num Up</button> <button class="skill-btn unlocked">Recruiting an ally is more successful</button> <button class="skill-btn" onclick='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
                     }
                     else if (statD == 3) {
-                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button>
-                        <button onclick='addAbility("allyStrengthen,"m2")'>Allies have higher stats when recruited</button>`
+                        allMain += `<button class="skill-btn unlocked">Max Ally Num Up</button> <button class="skill-btn unlocked">Recruiting an ally is more successful</button> <button class="skill-btn unlocked">Max Ally Num Up</button>
+                        <button class="skill-btn" onclick='addAbility("allyStrengthen,"m2")'>Allies have higher stats when recruited</button>`
                     }
                     else if (statD == 4) {
-                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button> <button>Allies have higher stats when recruited</button> <button onclick='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
+                        allMain += `<button class="skill-btn unlocked">Max Ally Num Up</button> <button class="skill-btn unlocked">Recruiting an ally is more successful</button> <button class="skill-btn unlocked">Max Ally Num Up</button> <button class="skill-btn unlocked">Allies have higher stats when recruited</button> <button class="skill-btn" onclick='buffStat("allyNum",${0.25})'>Max Ally Num Up</button>`
                     }
                     else if (statD == 5) {
-                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button> <button>Allies have higher stats when recruited</button> <button>Max Ally Num Up</button> <button onclick='addAbility("stInNumbers","m2")'>If player has the max number of allies, all allies deal increased damage</button>`
+                        allMain += `<button class="skill-btn unlocked">Max Ally Num Up</button> <button class="skill-btn unlocked">Recruiting an ally is more successful</button> <button class="skill-btn unlocked">Max Ally Num Up</button> <button class="skill-btn unlocked">Allies have higher stats when recruited</button> <button class="skill-btn unlocked">Max Ally Num Up</button> <button class="skill-btn" onclick='addAbility("stInNumbers","m2")'>If player has the max number of allies, all allies deal increased damage</button>`
                     }
                     else if (statD == 6) {
-                        allMain += `<button>Max Ally Num Up</button> <button>Recruiting an ally is more successful</button> <button>Max Ally Num Up</button> <button>Allies have higher stats when recruited</button> <button>Max Ally Num Up</button> <button>If player has the max number of allies, all allies deal increased damage</button>`
+                        allMain += `<button class="skill-btn unlocked">Max Ally Num Up</button> <button class="skill-btn unlocked">Recruiting an ally is more successful</button> <button class="skill-btn unlocked">Max Ally Num Up</button> <button class="skill-btn unlocked">Allies have higher stats when recruited</button> <button class="skill-btn unlocked">Max Ally Num Up</button> <button class="skill-btn unlocked">If player has the max number of allies, all allies deal increased damage</button>`
                     }
                     break;
             }
@@ -1938,6 +1963,9 @@ function addAbility(abilityName, path, active = false) {
         pActiveAbilities[pActiveAbilities.length - 1].effect = active
     }
     switch (path) {
+        case `def` :
+            statA++;
+            break;
         case `fire`:
             statB++;
             break;
@@ -1970,6 +1998,7 @@ function addAbility(abilityName, path, active = false) {
             statD++;
             break;
     }
+    pStats=[statA,statB,statC,statD];
     if (path != `none`) {
         postLvlUp()
     }
@@ -1981,6 +2010,7 @@ function buffStat(stat, amount) {
         case `def`:
             pBaseDef += amount;
             pBlockDef += amount;
+            statA++;
             break;
         case `fireDotBuff`:
             fireDotBuff += amount;
@@ -2023,6 +2053,7 @@ function buffStat(stat, amount) {
             break;
     }
     //stat++;
+    pStats=[statA,statB,statC,statD];
     postLvlUp()
 
 }
@@ -2335,7 +2366,7 @@ function checkForThings() {
                 break;
         }
     }
-    else if(!VolcanoCheck()){
+    else if (!VolcanoCheck()) {
         theCrypt();
     }
 }

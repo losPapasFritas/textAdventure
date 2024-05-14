@@ -23,11 +23,27 @@ p{
 }
 .allSkills{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     flex-direction: row;
 }
 .skillColumn{
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
+}
+.skill-btn{
+    height: 50px;
+    background-color: lightblue;
+}
+
+.skill-btn:hover{
+    cursor: pointer;
+}
+
+.unlocked{
+    color: gold;
+    background-color: black;
+}
+.unlocked:hover{
+    cursor: not-allowed;
 }
