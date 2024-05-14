@@ -1610,7 +1610,7 @@ function combatEnd() {
     allMain += `<section>You gained ${givenMoney} dollars!</section>`
     money += givenMoney;
     givenMoney = 0;
-    if (saveState = `gameEnd`) {
+    if (saveState == `gameEnd`) {
         allMain = `<section>You slay Tyler after the long battle. Exhaused, you fall to the ground. "Well," Tyler groans, "You did well to defeat me. I cannot fathom how you gained such power since my awakening. This... was... a good fight." With those final words, he passes away. You, meanwhile, lose conciousness atop the volcano, the blistering heat and the fight draining your energy.</section>`
     }
     if (currentDungeon != -1) {
