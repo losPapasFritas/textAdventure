@@ -869,7 +869,7 @@ function han69B() {
     end();
 }
 function han68C() {
-    allMain = `<br><br><br><br><section>You walk through the stone esophageal hall. Within the dimly lit section leads into a thin waterfall, the water ran orange from mixing with rust and sediment. It emanates a vile stench that completely repulses you.<br><br><button onclick="han69C()">[Drink the water.]</button> <button onclick="han70C">[Continue on.]</button></section>`
+    allMain = `<br><br><br><br><section>You walk through the stone esophageal hall. Within the dimly lit section leads into a thin waterfall, the water ran orange from mixing with rust and sediment. It emanates a vile stench that completely repulses you.<br><br><button onclick="han69C()">[Drink the water.]</button> <button onclick="han70C()">[Continue on.]</button></section>`
     end();
 }
 function han69C() {
@@ -1490,18 +1490,8 @@ function enemyTurn() {
     let dmgToP = 0;
     let randomDmg = 0;
     for (item of currentEs) {
-        let pDamaged = false;
-        while (!pDamaged) {
-            if(randomDmg < 0.25){
-                randomDmg = 0;
-                pDamaged = true
-            }
-            else if(randomDmg > 0.75){
-                pDamaged = true
-            }
-            else{
-                randomDmg = Math.random();
-            }
+        while (randomDmg < 0.75) {
+            randomDmg = Math.random();
         }
         dmgToP += Math.round(item.eDmg * randomDmg);
         randomDmg = 0;
@@ -2071,7 +2061,7 @@ function displayPlayerPos() {
     printMap();
 }
 function randomCombat() {
-    if (Math.random() <= 0) { //0.15 
+    if (Math.random() <= 0.15) { 
         combatSetup();
     }
     else {
